@@ -25,6 +25,7 @@ fn grouped<'a>(hits: &'a [SignatureHit]) -> BTreeMap<&'a str, Vec<&'a SignatureH
     }
     for v in out.values_mut() {
         v.sort_by(|a, b| a.name.cmp(&b.name));
+        v.dedup_by(|a, b| a.name == b.name);
     }
     out
 }
@@ -55,13 +56,8 @@ fn module_ident(module: &str) -> String {
 /// it, after the convention keyword if present.  When the input doesn't
 /// look like a prototype we fall back to the generic variadic shape.
 fn proto_to_fnptr(proto: &str) -> String {
-    if let Some(paren) = proto.find('(') {
-        let head = proto[..paren].trim_end();
-        let tail = &proto[paren..];
-        format!("{}(*){}", head, tail)
-    } else {
-        "void(__fastcall*)(void*, ...)".to_string()
-    }
+    // Always use generic function pointer to avoid IDA-specific types like _QWORD, _DWORD, etc.
+    "void(__fastcall*)(void*, ...)".to_string()
 }
 
 fn markdown_cell(value: &str) -> String {
