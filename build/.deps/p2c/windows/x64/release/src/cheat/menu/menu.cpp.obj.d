@@ -261,54 +261,44 @@
             \"c:\\\\program files (x86)\\\\windows kits\\\\10\\\\include\\\\10.0.26100.0\\\\um\\\\d3d10shader.h\",\
             \"c:\\\\program files (x86)\\\\windows kits\\\\10\\\\include\\\\10.0.26100.0\\\\um\\\\d3d10effect.h\",\
             \"c:\\\\program files (x86)\\\\windows kits\\\\10\\\\include\\\\10.0.26100.0\\\\um\\\\d3d10_1shader.h\",\
-            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\src\\\\cheat\\\\hooks\\\\hooks.hpp\",\
-            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\src\\\\utils\\\\utils.hpp\",\
-            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\src\\\\utils\\\\io.hpp\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\fstream\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\src\\\\config\\\\config.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\json.hpp\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\algorithm\",\
             \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\yvals_core.h\",\
             \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\xkeycheck.h\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\__msvc_filebuf.hpp\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\__msvc_heap_algorithms.hpp\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\xutility\",\
             \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\yvals.h\",\
             \"c:\\\\program files (x86)\\\\windows kits\\\\10\\\\include\\\\10.0.26100.0\\\\ucrt\\\\crtdbg.h\",\
             \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\vcruntime_new_debug.h\",\
             \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\vcruntime_new.h\",\
             \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\crtdefs.h\",\
             \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\use_ansi.h\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\__msvc_iter_core.hpp\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\utility\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\initializer_list\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\cstddef\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\xtr1common\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\type_traits\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\cstdint\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\stdint.h\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\compare\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\concepts\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\cstdlib\",\
+            \"c:\\\\program files (x86)\\\\windows kits\\\\10\\\\include\\\\10.0.26100.0\\\\ucrt\\\\math.h\",\
+            \"c:\\\\program files (x86)\\\\windows kits\\\\10\\\\include\\\\10.0.26100.0\\\\ucrt\\\\corecrt_math.h\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\climits\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\cstring\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\cwchar\",\
             \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\cstdio\",\
             \"c:\\\\program files (x86)\\\\windows kits\\\\10\\\\include\\\\10.0.26100.0\\\\ucrt\\\\stdio.h\",\
             \"c:\\\\program files (x86)\\\\windows kits\\\\10\\\\include\\\\10.0.26100.0\\\\ucrt\\\\corecrt_wstdio.h\",\
             \"c:\\\\program files (x86)\\\\windows kits\\\\10\\\\include\\\\10.0.26100.0\\\\ucrt\\\\corecrt_stdio_config.h\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\streambuf\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\xiosbase\",\
-            \"c:\\\\program files (x86)\\\\windows kits\\\\10\\\\include\\\\10.0.26100.0\\\\ucrt\\\\share.h\",\
-            \"c:\\\\program files (x86)\\\\windows kits\\\\10\\\\include\\\\10.0.26100.0\\\\ucrt\\\\corecrt_share.h\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\system_error\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\__msvc_system_error_abi.hpp\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\cstddef\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\xtr1common\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\cerrno\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\cstdlib\",\
-            \"c:\\\\program files (x86)\\\\windows kits\\\\10\\\\include\\\\10.0.26100.0\\\\ucrt\\\\math.h\",\
-            \"c:\\\\program files (x86)\\\\windows kits\\\\10\\\\include\\\\10.0.26100.0\\\\ucrt\\\\corecrt_math.h\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\stdexcept\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\exception\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\type_traits\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\cstdint\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\stdint.h\",\
-            \"c:\\\\program files (x86)\\\\windows kits\\\\10\\\\include\\\\10.0.26100.0\\\\ucrt\\\\malloc.h\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\vcruntime_exception.h\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\eh.h\",\
-            \"c:\\\\program files (x86)\\\\windows kits\\\\10\\\\include\\\\10.0.26100.0\\\\ucrt\\\\corecrt_terminate.h\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\xstring\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\__msvc_sanitizer_annotate_container.hpp\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\__msvc_string_view.hpp\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\iosfwd\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\cstring\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\cwchar\",\
             \"c:\\\\program files (x86)\\\\windows kits\\\\10\\\\include\\\\10.0.26100.0\\\\ucrt\\\\wchar.h\",\
             \"c:\\\\program files (x86)\\\\windows kits\\\\10\\\\include\\\\10.0.26100.0\\\\ucrt\\\\corecrt_wconio.h\",\
             \"c:\\\\program files (x86)\\\\windows kits\\\\10\\\\include\\\\10.0.26100.0\\\\ucrt\\\\corecrt_wdirect.h\",\
             \"c:\\\\program files (x86)\\\\windows kits\\\\10\\\\include\\\\10.0.26100.0\\\\ucrt\\\\corecrt_wio.h\",\
+            \"c:\\\\program files (x86)\\\\windows kits\\\\10\\\\include\\\\10.0.26100.0\\\\ucrt\\\\corecrt_share.h\",\
             \"c:\\\\program files (x86)\\\\windows kits\\\\10\\\\include\\\\10.0.26100.0\\\\ucrt\\\\corecrt_wprocess.h\",\
             \"c:\\\\program files (x86)\\\\windows kits\\\\10\\\\include\\\\10.0.26100.0\\\\ucrt\\\\corecrt_wtime.h\",\
             \"c:\\\\program files (x86)\\\\windows kits\\\\10\\\\include\\\\10.0.26100.0\\\\ucrt\\\\sys\\\\stat.h\",\
@@ -325,25 +315,40 @@
             \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\emmintrin.h\",\
             \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\xmmintrin.h\",\
             \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\mmintrin.h\",\
+            \"c:\\\\program files (x86)\\\\windows kits\\\\10\\\\include\\\\10.0.26100.0\\\\ucrt\\\\malloc.h\",\
             \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\zmmintrin.h\",\
             \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\ammintrin.h\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\xutility\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\__msvc_iter_core.hpp\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\utility\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\initializer_list\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\compare\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\concepts\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\climits\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\__msvc_minmax.hpp\",\
             \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\xmemory\",\
             \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\limits\",\
             \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\cfloat\",\
             \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\intrin0.h\",\
             \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\new\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\exception\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\vcruntime_exception.h\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\eh.h\",\
+            \"c:\\\\program files (x86)\\\\windows kits\\\\10\\\\include\\\\10.0.26100.0\\\\ucrt\\\\corecrt_terminate.h\",\
             \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\xatomic.h\",\
             \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\tuple\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\optional\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\xsmf_control.h\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\functional\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\typeinfo\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\vcruntime_typeinfo.h\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\unordered_map\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\xhash\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\cmath\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\list\",\
             \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\xpolymorphic_allocator.h\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\xcall_once.h\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\xerrc.h\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\vector\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\__msvc_bit_utils.hpp\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\__msvc_sanitizer_annotate_container.hpp\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\__msvc_formatter.hpp\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\xbit_ops.h\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\xnode_handle.h\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\iosfwd\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\iterator\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\memory\",\
             \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\atomic\",\
             \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\xatomic_wait.h\",\
             \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\xthreads.h\",\
@@ -351,83 +356,119 @@
             \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\xtimec.h\",\
             \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\ctime\",\
             \"c:\\\\program files (x86)\\\\windows kits\\\\10\\\\include\\\\10.0.26100.0\\\\ucrt\\\\time.h\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\string\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\xstring\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\__msvc_string_view.hpp\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\cctype\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\adl_serializer.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\abi_macros.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\conversions\\\\from_json.hpp\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\array\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\forward_list\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\map\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\xtree\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\valarray\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\exceptions.hpp\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\stdexcept\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\value_t.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\macro_scope.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\meta\\\\detected.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\meta\\\\void_t.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\thirdparty\\\\hedley\\\\hedley.hpp\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\version\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\cassert\",\
+            \"c:\\\\program files (x86)\\\\windows kits\\\\10\\\\include\\\\10.0.26100.0\\\\ucrt\\\\assert.h\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\string_escape.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\input\\\\position_t.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\meta\\\\cpp_future.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\meta\\\\type_traits.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\iterators\\\\iterator_traits.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\meta\\\\call_std\\\\begin.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\meta\\\\call_std\\\\end.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\json_fwd.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\string_concat.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\meta\\\\identity_tag.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\meta\\\\std_fs.hpp\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\filesystem\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\chrono\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\__msvc_chrono.hpp\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\ratio\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\system_error\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\__msvc_system_error_abi.hpp\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\cerrno\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\xcall_once.h\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\xerrc.h\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\xfilesystem_abi.h\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\__msvc_tzdb.hpp\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\format\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\__msvc_format_ucd_tables.hpp\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\__msvc_print.hpp\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\__msvc_ranges_tuple_formatter.hpp\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\bit\",\
             \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\xlocale\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\memory\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\typeinfo\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\vcruntime_typeinfo.h\",\
             \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\xfacet\",\
             \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\xlocinfo\",\
             \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\__msvc_xlocinfo_types.hpp\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\cctype\",\
             \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\clocale\",\
             \"c:\\\\program files (x86)\\\\windows kits\\\\10\\\\include\\\\10.0.26100.0\\\\ucrt\\\\locale.h\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\istream\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\__msvc_ostream.hpp\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\ios\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\xlocnum\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\cmath\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\iterator\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\format\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\__msvc_format_ucd_tables.hpp\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\__msvc_formatter.hpp\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\__msvc_print.hpp\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\xfilesystem_abi.h\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\__msvc_ranges_tuple_formatter.hpp\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\bit\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\__msvc_bit_utils.hpp\",\
             \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\charconv\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\xbit_ops.h\",\
             \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\xcharconv.h\",\
             \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\xcharconv_ryu.h\",\
             \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\xcharconv_ryu_tables.h\",\
             \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\xcharconv_tables.h\",\
             \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\locale\",\
             \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\xlocbuf\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\streambuf\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\xiosbase\",\
+            \"c:\\\\program files (x86)\\\\windows kits\\\\10\\\\include\\\\10.0.26100.0\\\\ucrt\\\\share.h\",\
             \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\xlocmes\",\
             \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\xlocmon\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\xlocnum\",\
             \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\xloctime\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\print\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\chrono\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\__msvc_chrono.hpp\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\ratio\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\__msvc_tzdb.hpp\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\forward_list\",\
             \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\iomanip\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\optional\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\xsmf_control.h\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\istream\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\__msvc_ostream.hpp\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\ios\",\
             \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\sstream\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\string\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\vector\",\
-            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\src\\\\utils\\\\memory.hpp\",\
-            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\src\\\\utils\\\\modules.hpp\",\
-            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\safetyhook\\\\include\\\\safetyhook.hpp\",\
-            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\safetyhook\\\\include\\\\safetyhook\\\\os.hpp\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\expected\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\functional\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\unordered_map\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\xhash\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\list\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\xnode_handle.h\",\
-            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\safetyhook\\\\include\\\\safetyhook\\\\common.hpp\",\
-            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\safetyhook\\\\include\\\\safetyhook\\\\easy.hpp\",\
-            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\safetyhook\\\\include\\\\safetyhook\\\\inline_hook.hpp\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\mutex\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\thread\",\
-            \"c:\\\\program files (x86)\\\\windows kits\\\\10\\\\include\\\\10.0.26100.0\\\\ucrt\\\\process.h\",\
-            \"c:\\\\program files (x86)\\\\windows kits\\\\10\\\\include\\\\10.0.26100.0\\\\ucrt\\\\corecrt_startup.h\",\
-            \"c:\\\\program files (x86)\\\\windows kits\\\\10\\\\include\\\\10.0.26100.0\\\\ucrt\\\\math.h\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\vcruntime_startup.h\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\stop_token\",\
-            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\safetyhook\\\\include\\\\safetyhook\\\\allocator.hpp\",\
-            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\safetyhook\\\\include\\\\safetyhook\\\\utility.hpp\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\algorithm\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\__msvc_heap_algorithms.hpp\",\
-            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\__msvc_minmax.hpp\",\
-            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\safetyhook\\\\include\\\\safetyhook\\\\mid_hook.hpp\",\
-            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\safetyhook\\\\include\\\\safetyhook\\\\context.hpp\",\
-            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\safetyhook\\\\include\\\\safetyhook\\\\vmt_hook.hpp\",\
-            \"c:\\\\program files (x86)\\\\windows kits\\\\10\\\\include\\\\10.0.26100.0\\\\shared\\\\dxgi1_2.h\",\
-            \"c:\\\\program files (x86)\\\\windows kits\\\\10\\\\include\\\\10.0.26100.0\\\\um\\\\psapi.h\"\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\meta\\\\logic.hpp\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\string_view\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\conversions\\\\to_json.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\iterators\\\\iteration_proxy.hpp\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\ranges\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\__msvc_int128.hpp\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\__msvc_ranges_to.hpp\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\span\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\string_utils.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\byte_container_with_subtype.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\hash.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\input\\\\binary_reader.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\input\\\\input_adapters.hpp\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\numeric\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\input\\\\json_sax.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\input\\\\lexer.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\meta\\\\is_sax.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\input\\\\parser.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\iterators\\\\internal_iterator.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\iterators\\\\primitive_iterator.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\iterators\\\\iter_impl.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\iterators\\\\json_reverse_iterator.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\json_custom_base_class.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\json_pointer.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\json_ref.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\output\\\\binary_writer.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\output\\\\output_adapters.hpp\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\ostream\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\__msvc_filebuf.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\output\\\\serializer.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\conversions\\\\to_chars.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\ordered_map.hpp\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\any\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\macro_unscope.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\thirdparty\\\\hedley\\\\hedley_undef.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\src\\\\utils\\\\input.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\src\\\\utils\\\\io.hpp\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\fstream\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\print\"\
         ],\
         \"ImportedModules\": [],\
         \"ImportedHeaderUnits\": []\
@@ -443,6 +484,7 @@
             "-Isrc",
             [[-Ivendor\imgui]],
             [[-Ivendor\imgui\backends]],
+            [[-Ivendor\json\include]],
             [[-Ivendor\cs2-universal-offsets\output]],
             [[-Ivendor\safetyhook\include]],
             [[-Ivendor\safetyhook\src]],

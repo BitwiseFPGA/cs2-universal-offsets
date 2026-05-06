@@ -3729,5 +3729,14 @@ pub static CS2_SIGNATURES: &[Signature] = &[
         extra_off: 0,
         prototype: "__int64 __fastcall sub_180A0D380(__int64 a1, unsigned int a2)",
     },
+    Signature {
+        name: "SDL_EventHandler",
+        module: "inputsystem.dll",
+        needle: "53 48 81 EC ? ? ? ? 8B 02 48 8B DA 2D 00 04 00 00",
+        resolve: NONE,
+        extra_off: 0,
+        prototype: "void __fastcall SDL_EventHandler(__int64 a1, SDL_Event* event)",
+    },
 
 ];
+

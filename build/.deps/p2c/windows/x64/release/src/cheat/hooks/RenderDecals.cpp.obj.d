@@ -1,5 +1,32 @@
 {
     depfiles_format = "cl_json",
+    files = {
+        [[src\cheat\hooks\RenderDecals.cpp]]
+    },
+    values = {
+        [[C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.50.35717\bin\HostX64\x64\cl.exe]],
+        {
+            "-nologo",
+            "-MD",
+            "-O2",
+            "-std:c++23preview",
+            "-Isrc",
+            [[-Ivendor\imgui]],
+            [[-Ivendor\imgui\backends]],
+            [[-Ivendor\json\include]],
+            [[-Ivendor\cs2-universal-offsets\output]],
+            [[-Ivendor\safetyhook\include]],
+            [[-Ivendor\safetyhook\src]],
+            [[-Ivendor\zydis\src]],
+            [[-Ivendor\zydis]],
+            [[-Ivendor\zydis\include]],
+            [[-Ivendor\zydis\dependencies\zycore\include]],
+            "-DZYDIS_STATIC_BUILD",
+            "-DZYCORE_STATIC_BUILD",
+            "/EHsc",
+            "-DNDEBUG"
+        }
+    },
     depfiles = "{\
     \"Version\": \"1.2\",\
     \"Data\": {\
@@ -408,37 +435,10 @@
             \"c:\\\\program files (x86)\\\\windows kits\\\\10\\\\include\\\\10.0.26100.0\\\\shared\\\\dxgicommon.h\",\
             \"c:\\\\program files (x86)\\\\windows kits\\\\10\\\\include\\\\10.0.26100.0\\\\shared\\\\dxgitype.h\",\
             \"c:\\\\program files (x86)\\\\windows kits\\\\10\\\\include\\\\10.0.26100.0\\\\shared\\\\dxgiformat.h\",\
-            \"c:\\\\program files (x86)\\\\windows kits\\\\10\\\\include\\\\10.0.26100.0\\\\shared\\\\dxgi1_2.h\",\
-            \"c:\\\\program files (x86)\\\\windows kits\\\\10\\\\include\\\\10.0.26100.0\\\\um\\\\psapi.h\"\
+            \"c:\\\\program files (x86)\\\\windows kits\\\\10\\\\include\\\\10.0.26100.0\\\\shared\\\\dxgi1_2.h\"\
         ],\
         \"ImportedModules\": [],\
         \"ImportedHeaderUnits\": []\
     }\
-}",
-    values = {
-        [[C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.50.35717\bin\HostX64\x64\cl.exe]],
-        {
-            "-nologo",
-            "-MD",
-            "-O2",
-            "-std:c++23preview",
-            "-Isrc",
-            [[-Ivendor\imgui]],
-            [[-Ivendor\imgui\backends]],
-            [[-Ivendor\cs2-universal-offsets\output]],
-            [[-Ivendor\safetyhook\include]],
-            [[-Ivendor\safetyhook\src]],
-            [[-Ivendor\zydis\src]],
-            [[-Ivendor\zydis]],
-            [[-Ivendor\zydis\include]],
-            [[-Ivendor\zydis\dependencies\zycore\include]],
-            "-DZYDIS_STATIC_BUILD",
-            "-DZYCORE_STATIC_BUILD",
-            "/EHsc",
-            "-DNDEBUG"
-        }
-    },
-    files = {
-        [[src\cheat\hooks\RenderDecals.cpp]]
-    }
+}"
 }

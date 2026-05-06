@@ -4,7 +4,7 @@
 // classes:       9
 // enums:         5
 // build_number:  14158
-// generated_at:  2026-05-06T13:12:46.596619600+00:00
+// generated_at:  2026-05-06T15:15:45.637537700+00:00
 //
 // Use:
 //   auto* pawn = reinterpret_cast<C_CSPlayerPawn*>(addr);
@@ -78,21 +78,6 @@ namespace cs2::sdk::scenesystem {
         SCHEMA_FIELD(::CUtlString                    , m_ViewName                                      , 0x10) // CUtlString
     };
 
-    // CSSDSMsg_ViewTargetList
-    //   fields: 3
-    class CSSDSMsg_ViewTargetList {
-    public:
-        SCHEMA_FIELD(SceneViewId_t                   , m_viewId                                        , 0x0) // SceneViewId_t
-        SCHEMA_FIELD(::CUtlString                    , m_ViewName                                      , 0x10) // CUtlString
-        SCHEMA_FIELD(CUtlVector<CSSDSMsg_ViewTarget> , m_Targets                                       , 0x18) // CUtlVector<CSSDSMsg_ViewTarget>
-    };
-
-    // CSSDSMsg_PreLayer
-    //   fields: 0
-    class CSSDSMsg_PreLayer {
-    public:
-    };
-
     // CSSDSMsg_LayerBase
     //   fields: 5
     class CSSDSMsg_LayerBase {
@@ -104,18 +89,10 @@ namespace cs2::sdk::scenesystem {
         SCHEMA_FIELD(::CUtlString                    , m_displayText                                   , 0x28) // CUtlString
     };
 
-    // CSSDSMsg_PostLayer
+    // CSSDSMsg_PreLayer
     //   fields: 0
-    class CSSDSMsg_PostLayer {
+    class CSSDSMsg_PreLayer {
     public:
-    };
-
-    // CSSDSEndFrameViewInfo
-    //   fields: 2
-    class CSSDSEndFrameViewInfo {
-    public:
-        SCHEMA_FIELD(std::uint64_t                   , m_nViewId                                       , 0x0) // uint64
-        SCHEMA_FIELD(::CUtlString                    , m_ViewName                                      , 0x8) // CUtlString
     };
 
     // CSSDSMsg_EndFrame
@@ -139,6 +116,29 @@ namespace cs2::sdk::scenesystem {
         SCHEMA_FIELD(std::int32_t                    , m_nDepth                                        , 0x24) // int32
         SCHEMA_FIELD(std::int32_t                    , m_nMultisampleNumSamples                        , 0x28) // int32
         SCHEMA_FIELD(std::int32_t                    , m_nFormat                                       , 0x2C) // int32
+    };
+
+    // CSSDSMsg_PostLayer
+    //   fields: 0
+    class CSSDSMsg_PostLayer {
+    public:
+    };
+
+    // CSSDSEndFrameViewInfo
+    //   fields: 2
+    class CSSDSEndFrameViewInfo {
+    public:
+        SCHEMA_FIELD(std::uint64_t                   , m_nViewId                                       , 0x0) // uint64
+        SCHEMA_FIELD(::CUtlString                    , m_ViewName                                      , 0x8) // CUtlString
+    };
+
+    // CSSDSMsg_ViewTargetList
+    //   fields: 3
+    class CSSDSMsg_ViewTargetList {
+    public:
+        SCHEMA_FIELD(SceneViewId_t                   , m_viewId                                        , 0x0) // SceneViewId_t
+        SCHEMA_FIELD(::CUtlString                    , m_ViewName                                      , 0x10) // CUtlString
+        SCHEMA_FIELD(CUtlVector<CSSDSMsg_ViewTarget> , m_Targets                                       , 0x18) // CUtlVector<CSSDSMsg_ViewTarget>
     };
 
     // SceneViewId_t

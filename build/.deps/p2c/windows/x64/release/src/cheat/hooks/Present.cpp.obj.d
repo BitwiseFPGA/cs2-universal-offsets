@@ -1,5 +1,4 @@
 {
-    depfiles_format = "cl_json",
     depfiles = "{\
     \"Version\": \"1.2\",\
     \"Data\": {\
@@ -409,8 +408,8 @@
             \"c:\\\\program files (x86)\\\\windows kits\\\\10\\\\include\\\\10.0.26100.0\\\\shared\\\\dxgitype.h\",\
             \"c:\\\\program files (x86)\\\\windows kits\\\\10\\\\include\\\\10.0.26100.0\\\\shared\\\\dxgiformat.h\",\
             \"c:\\\\program files (x86)\\\\windows kits\\\\10\\\\include\\\\10.0.26100.0\\\\shared\\\\dxgi1_2.h\",\
-            \"c:\\\\program files (x86)\\\\windows kits\\\\10\\\\include\\\\10.0.26100.0\\\\um\\\\psapi.h\",\
             \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\src\\\\cheat\\\\menu\\\\menu.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\src\\\\globals.hpp\",\
             \"c:\\\\program files (x86)\\\\windows kits\\\\10\\\\include\\\\10.0.26100.0\\\\um\\\\d3d11.h\",\
             \"c:\\\\program files (x86)\\\\windows kits\\\\10\\\\include\\\\10.0.26100.0\\\\um\\\\d3dcommon.h\",\
             \"c:\\\\program files (x86)\\\\windows kits\\\\10\\\\include\\\\10.0.26100.0\\\\um\\\\d3d11sdklayers.h\",\
@@ -421,12 +420,79 @@
             \"c:\\\\program files (x86)\\\\windows kits\\\\10\\\\include\\\\10.0.26100.0\\\\um\\\\d3d10shader.h\",\
             \"c:\\\\program files (x86)\\\\windows kits\\\\10\\\\include\\\\10.0.26100.0\\\\um\\\\d3d10effect.h\",\
             \"c:\\\\program files (x86)\\\\windows kits\\\\10\\\\include\\\\10.0.26100.0\\\\um\\\\d3d10_1shader.h\",\
-            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\src\\\\globals.hpp\"\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\src\\\\config\\\\config.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\json.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\adl_serializer.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\abi_macros.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\conversions\\\\from_json.hpp\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\array\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\map\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\xtree\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\valarray\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\exceptions.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\value_t.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\macro_scope.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\meta\\\\detected.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\meta\\\\void_t.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\thirdparty\\\\hedley\\\\hedley.hpp\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\version\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\cassert\",\
+            \"c:\\\\program files (x86)\\\\windows kits\\\\10\\\\include\\\\10.0.26100.0\\\\ucrt\\\\assert.h\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\string_escape.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\input\\\\position_t.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\meta\\\\cpp_future.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\meta\\\\type_traits.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\iterators\\\\iterator_traits.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\meta\\\\call_std\\\\begin.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\meta\\\\call_std\\\\end.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\json_fwd.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\string_concat.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\meta\\\\identity_tag.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\meta\\\\std_fs.hpp\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\filesystem\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\meta\\\\logic.hpp\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\string_view\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\conversions\\\\to_json.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\iterators\\\\iteration_proxy.hpp\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\ranges\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\__msvc_int128.hpp\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\__msvc_ranges_to.hpp\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\span\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\string_utils.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\byte_container_with_subtype.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\hash.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\input\\\\binary_reader.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\input\\\\input_adapters.hpp\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\numeric\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\input\\\\json_sax.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\input\\\\lexer.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\meta\\\\is_sax.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\input\\\\parser.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\iterators\\\\internal_iterator.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\iterators\\\\primitive_iterator.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\iterators\\\\iter_impl.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\iterators\\\\json_reverse_iterator.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\json_custom_base_class.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\json_pointer.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\json_ref.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\output\\\\binary_writer.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\output\\\\output_adapters.hpp\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\ostream\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\output\\\\serializer.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\conversions\\\\to_chars.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\ordered_map.hpp\",\
+            \"c:\\\\program files\\\\microsoft visual studio\\\\18\\\\community\\\\vc\\\\tools\\\\msvc\\\\14.50.35717\\\\include\\\\any\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\detail\\\\macro_unscope.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\vendor\\\\json\\\\include\\\\nlohmann\\\\thirdparty\\\\hedley\\\\hedley_undef.hpp\",\
+            \"c:\\\\users\\\\macin\\\\desktop\\\\cool\\\\src\\\\utils\\\\input.hpp\"\
         ],\
         \"ImportedModules\": [],\
         \"ImportedHeaderUnits\": []\
     }\
 }",
+    files = {
+        [[src\cheat\hooks\Present.cpp]]
+    },
     values = {
         [[C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.50.35717\bin\HostX64\x64\cl.exe]],
         {
@@ -437,6 +503,7 @@
             "-Isrc",
             [[-Ivendor\imgui]],
             [[-Ivendor\imgui\backends]],
+            [[-Ivendor\json\include]],
             [[-Ivendor\cs2-universal-offsets\output]],
             [[-Ivendor\safetyhook\include]],
             [[-Ivendor\safetyhook\src]],
@@ -450,7 +517,5 @@
             "-DNDEBUG"
         }
     },
-    files = {
-        [[src\cheat\hooks\Present.cpp]]
-    }
+    depfiles_format = "cl_json"
 }

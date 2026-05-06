@@ -4,7 +4,7 @@
 // classes:       8
 // enums:         8
 // build_number:  14158
-// generated_at:  2026-05-06T13:12:46.596619600+00:00
+// generated_at:  2026-05-06T15:15:45.637537700+00:00
 //
 // Use:
 //   auto* pawn = reinterpret_cast<C_CSPlayerPawn*>(addr);
@@ -105,33 +105,6 @@ namespace cs2::sdk::rendersystemdx11 {
         RENDER_SLOT_PER_INSTANCE = 0x1,
     };
 
-    // SheetSequenceIntegerId_t
-    //   fields: 1
-    class SheetSequenceIntegerId_t {
-    public:
-        SCHEMA_FIELD(std::uint32_t                   , m_Value                                         , 0x0) // uint32
-    };
-
-    // RsDepthStencilStateDesc_t
-    //   fields: 4
-    class RsDepthStencilStateDesc_t {
-    public:
-        // SKIPPED: m_bDepthTestEnable (bitfield type not supported)
-        // SKIPPED: m_bDepthWriteEnable (bitfield type not supported)
-        SCHEMA_FIELD(RsComparison_t                  , m_depthFunc                                     , 0x1) // RsComparison_t
-        SCHEMA_FIELD(RsStencilStateDesc_t            , m_stencilState                                  , 0x2) // RsStencilStateDesc_t
-    };
-
-    // VsInputSignatureElement_t
-    //   fields: 4
-    class VsInputSignatureElement_t {
-    public:
-        SCHEMA_FIELD(char                            , m_pName                                         , 0x0) // char[64]
-        SCHEMA_FIELD(char                            , m_pSemantic                                     , 0x40) // char[64]
-        SCHEMA_FIELD(char                            , m_pD3DSemanticName                              , 0x80) // char[64]
-        SCHEMA_FIELD(std::int32_t                    , m_nD3DSemanticIndex                             , 0xC0) // int32
-    };
-
     // RsStencilStateDesc_t
     //   fields: 11
     class RsStencilStateDesc_t {
@@ -147,6 +120,29 @@ namespace cs2::sdk::rendersystemdx11 {
         // SKIPPED: m_backStencilFunc (bitfield type not supported)
         SCHEMA_FIELD(std::uint8_t                    , m_nStencilReadMask                              , 0x4) // uint8
         SCHEMA_FIELD(std::uint8_t                    , m_nStencilWriteMask                             , 0x5) // uint8
+    };
+
+    // RsRasterizerStateDesc_t
+    //   fields: 7
+    class RsRasterizerStateDesc_t {
+    public:
+        SCHEMA_FIELD(RsFillMode_t                    , m_nFillMode                                     , 0x0) // RsFillMode_t
+        SCHEMA_FIELD(RsCullMode_t                    , m_nCullMode                                     , 0x1) // RsCullMode_t
+        SCHEMA_FIELD(bool                            , m_bDepthClipEnable                              , 0x2) // bool
+        SCHEMA_FIELD(bool                            , m_bMultisampleEnable                            , 0x3) // bool
+        SCHEMA_FIELD(std::int32_t                    , m_nDepthBias                                    , 0x4) // int32
+        SCHEMA_FIELD(float                           , m_flDepthBiasClamp                              , 0x8) // float32
+        SCHEMA_FIELD(float                           , m_flSlopeScaledDepthBias                        , 0xC) // float32
+    };
+
+    // VsInputSignatureElement_t
+    //   fields: 4
+    class VsInputSignatureElement_t {
+    public:
+        SCHEMA_FIELD(char                            , m_pName                                         , 0x0) // char[64]
+        SCHEMA_FIELD(char                            , m_pSemantic                                     , 0x40) // char[64]
+        SCHEMA_FIELD(char                            , m_pD3DSemanticName                              , 0x80) // char[64]
+        SCHEMA_FIELD(std::int32_t                    , m_nD3DSemanticIndex                             , 0xC0) // int32
     };
 
     // RsBlendStateDesc_t
@@ -186,17 +182,21 @@ namespace cs2::sdk::rendersystemdx11 {
         SCHEMA_FIELD(char                            , m_szShaderSemantic                              , 0x2C) // char[32]
     };
 
-    // RsRasterizerStateDesc_t
-    //   fields: 7
-    class RsRasterizerStateDesc_t {
+    // SheetSequenceIntegerId_t
+    //   fields: 1
+    class SheetSequenceIntegerId_t {
     public:
-        SCHEMA_FIELD(RsFillMode_t                    , m_nFillMode                                     , 0x0) // RsFillMode_t
-        SCHEMA_FIELD(RsCullMode_t                    , m_nCullMode                                     , 0x1) // RsCullMode_t
-        SCHEMA_FIELD(bool                            , m_bDepthClipEnable                              , 0x2) // bool
-        SCHEMA_FIELD(bool                            , m_bMultisampleEnable                            , 0x3) // bool
-        SCHEMA_FIELD(std::int32_t                    , m_nDepthBias                                    , 0x4) // int32
-        SCHEMA_FIELD(float                           , m_flDepthBiasClamp                              , 0x8) // float32
-        SCHEMA_FIELD(float                           , m_flSlopeScaledDepthBias                        , 0xC) // float32
+        SCHEMA_FIELD(std::uint32_t                   , m_Value                                         , 0x0) // uint32
+    };
+
+    // RsDepthStencilStateDesc_t
+    //   fields: 4
+    class RsDepthStencilStateDesc_t {
+    public:
+        // SKIPPED: m_bDepthTestEnable (bitfield type not supported)
+        // SKIPPED: m_bDepthWriteEnable (bitfield type not supported)
+        SCHEMA_FIELD(RsComparison_t                  , m_depthFunc                                     , 0x1) // RsComparison_t
+        SCHEMA_FIELD(RsStencilStateDesc_t            , m_stencilState                                  , 0x2) // RsStencilStateDesc_t
     };
 
 } // namespace cs2::sdk::rendersystemdx11

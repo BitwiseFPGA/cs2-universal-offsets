@@ -2,6 +2,7 @@
     files = {
         [[vendor\cs2-universal-offsets\build\.objs\p2c\windows\x64\release\src\cheat\cheat.cpp.obj]],
         [[vendor\cs2-universal-offsets\build\.objs\p2c\windows\x64\release\src\cheat\hooks\AggregateSceneObjectArray.cpp.obj]],
+        [[vendor\cs2-universal-offsets\build\.objs\p2c\windows\x64\release\src\cheat\hooks\InputBlock.cpp.obj]],
         [[vendor\cs2-universal-offsets\build\.objs\p2c\windows\x64\release\src\cheat\hooks\Present.cpp.obj]],
         [[vendor\cs2-universal-offsets\build\.objs\p2c\windows\x64\release\src\cheat\hooks\RenderDecals.cpp.obj]],
         [[vendor\cs2-universal-offsets\build\.objs\p2c\windows\x64\release\src\cheat\hooks\hooks.cpp.obj]],
@@ -9,6 +10,7 @@
         [[vendor\cs2-universal-offsets\build\.objs\p2c\windows\x64\release\src\cheat\test\test_bhop.cpp.obj]],
         [[vendor\cs2-universal-offsets\build\.objs\p2c\windows\x64\release\src\cheat\test\test_chams.cpp.obj]],
         [[vendor\cs2-universal-offsets\build\.objs\p2c\windows\x64\release\src\cheat\test\test_skinchanger.cpp.obj]],
+        [[vendor\cs2-universal-offsets\build\.objs\p2c\windows\x64\release\src\config\config.cpp.obj]],
         [[vendor\cs2-universal-offsets\build\.objs\p2c\windows\x64\release\src\entry.cpp.obj]],
         [[vendor\cs2-universal-offsets\build\.objs\p2c\windows\x64\release\src\utils\io.cpp.obj]],
         [[vendor\cs2-universal-offsets\build\.objs\p2c\windows\x64\release\src\utils\memory.cpp.obj]],

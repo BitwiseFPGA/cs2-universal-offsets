@@ -635,6 +635,8 @@ pub mod inputsystem {
     pub const CInputSystem_AttachToWindow: &str = "48 89 5C 24 20 55 48 83 EC 20 48 63 41 30 48 8B";
     pub const InputSystemSvc_ptr: &str = "48 8D 05 ? ? ? ? C3 CC CC CC CC CC CC CC CC 40 53 48 83 EC 20 33 DB";
     pub const InputSystem_ptr: &str = "48 89 05 ? ? ? ? 33 C0";
+    /// `void __fastcall SDL_EventHandler(__int64 a1, SDL_Event* event)`
+    pub const SDL_EventHandler: &str = "53 48 81 EC 60 01 00 00 8B 02 48 8B DA 2D 00 04";
 }
 
 pub mod matchmaking {

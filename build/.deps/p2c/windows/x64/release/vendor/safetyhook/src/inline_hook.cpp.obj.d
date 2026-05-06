@@ -1,7 +1,4 @@
 {
-    files = {
-        [[vendor\safetyhook\src\inline_hook.cpp]]
-    },
     depfiles = "{\
     \"Version\": \"1.2\",\
     \"Data\": {\
@@ -178,7 +175,9 @@
         \"ImportedHeaderUnits\": []\
     }\
 }",
-    depfiles_format = "cl_json",
+    files = {
+        [[vendor\safetyhook\src\inline_hook.cpp]]
+    },
     values = {
         [[C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.50.35717\bin\HostX64\x64\cl.exe]],
         {
@@ -189,6 +188,7 @@
             "-Isrc",
             [[-Ivendor\imgui]],
             [[-Ivendor\imgui\backends]],
+            [[-Ivendor\json\include]],
             [[-Ivendor\cs2-universal-offsets\output]],
             [[-Ivendor\safetyhook\include]],
             [[-Ivendor\safetyhook\src]],
@@ -201,5 +201,6 @@
             "/EHsc",
             "-DNDEBUG"
         }
-    }
+    },
+    depfiles_format = "cl_json"
 }

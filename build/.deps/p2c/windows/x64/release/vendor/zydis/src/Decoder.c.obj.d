@@ -1,26 +1,4 @@
 {
-    values = {
-        [[C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.50.35717\bin\HostX64\x64\cl.exe]],
-        {
-            "-nologo",
-            "-MD",
-            "-O2",
-            "-Isrc",
-            [[-Ivendor\imgui]],
-            [[-Ivendor\imgui\backends]],
-            [[-Ivendor\cs2-universal-offsets\output]],
-            [[-Ivendor\safetyhook\include]],
-            [[-Ivendor\safetyhook\src]],
-            [[-Ivendor\zydis\src]],
-            [[-Ivendor\zydis]],
-            [[-Ivendor\zydis\include]],
-            [[-Ivendor\zydis\dependencies\zycore\include]],
-            "-DZYDIS_STATIC_BUILD",
-            "-DZYCORE_STATIC_BUILD",
-            "/EHsc",
-            "-DNDEBUG"
-        }
-    },
     depfiles = "{\
     \"Version\": \"1.2\",\
     \"Data\": {\
@@ -75,6 +53,29 @@
 }",
     files = {
         [[vendor\zydis\src\Decoder.c]]
+    },
+    values = {
+        [[C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.50.35717\bin\HostX64\x64\cl.exe]],
+        {
+            "-nologo",
+            "-MD",
+            "-O2",
+            "-Isrc",
+            [[-Ivendor\imgui]],
+            [[-Ivendor\imgui\backends]],
+            [[-Ivendor\json\include]],
+            [[-Ivendor\cs2-universal-offsets\output]],
+            [[-Ivendor\safetyhook\include]],
+            [[-Ivendor\safetyhook\src]],
+            [[-Ivendor\zydis\src]],
+            [[-Ivendor\zydis]],
+            [[-Ivendor\zydis\include]],
+            [[-Ivendor\zydis\dependencies\zycore\include]],
+            "-DZYDIS_STATIC_BUILD",
+            "-DZYCORE_STATIC_BUILD",
+            "/EHsc",
+            "-DNDEBUG"
+        }
     },
     depfiles_format = "cl_json"
 }

@@ -6,6 +6,7 @@
     values = {
         [[src\cheat\cheat.cpp]],
         [[src\cheat\hooks\AggregateSceneObjectArray.cpp]],
+        [[src\cheat\hooks\InputBlock.cpp]],
         [[src\cheat\hooks\Present.cpp]],
         [[src\cheat\hooks\RenderDecals.cpp]],
         [[src\cheat\hooks\hooks.cpp]],
@@ -13,6 +14,7 @@
         [[src\cheat\test\test_bhop.cpp]],
         [[src\cheat\test\test_chams.cpp]],
         [[src\cheat\test\test_skinchanger.cpp]],
+        [[src\config\config.cpp]],
         [[src\entry.cpp]],
         [[src\utils\io.cpp]],
         [[src\utils\memory.cpp]],

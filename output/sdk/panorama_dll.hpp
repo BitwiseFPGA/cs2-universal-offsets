@@ -4,7 +4,7 @@
 // classes:       0
 // enums:         2
 // build_number:  14158
-// generated_at:  2026-05-06T13:12:46.596619600+00:00
+// generated_at:  2026-05-06T15:15:45.637537700+00:00
 //
 // Use:
 //   auto* pawn = reinterpret_cast<C_CSPlayerPawn*>(addr);

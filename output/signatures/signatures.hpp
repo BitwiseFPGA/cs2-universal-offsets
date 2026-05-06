@@ -347,6 +347,7 @@ namespace cs2::signatures {
         inline constexpr std::string_view CInputSystem_AttachToWindow = "48 89 5C 24 20 55 48 83 EC 20 48 63 41 30 48 8B";
         inline constexpr std::string_view InputSystemSvc_ptr = "48 8D 05 ? ? ? ? C3 CC CC CC CC CC CC CC CC 40 53 48 83 EC 20 33 DB";
         inline constexpr std::string_view InputSystem_ptr = "48 89 05 ? ? ? ? 33 C0";
+        inline constexpr std::string_view SDL_EventHandler = "53 48 81 EC 60 01 00 00 8B 02 48 8B DA 2D 00 04";
     }
     namespace matchmaking {
         inline constexpr std::string_view CMatchSessionOfflineCustom_InitializeGameSettings = "40 53 48 81 EC 40 01 00 00 48 89 BC 24 58 01 00 00 48 8D 15 ? ? ? ? 48 8B F9 41 B0 01 48 8B 49 10 FF 15 60 41 06 00";
@@ -1092,6 +1093,8 @@ namespace cs2::fn {
         using CInputSystem_AttachToWindow_t = void(__fastcall*)(void*, ...);
         using InputSystemSvc_ptr_t = void(__fastcall*)(void*, ...);
         using InputSystem_ptr_t = void(__fastcall*)(void*, ...);
+        // void __fastcall SDL_EventHandler(__int64 a1, SDL_Event* event)
+        using SDL_EventHandler_t = void(__fastcall*)(void*, ...);
     }
     namespace matchmaking {
         // char __fastcall sub_1800EE6A0(__int64 a1)
