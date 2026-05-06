@@ -3738,5 +3738,50 @@ pub static CS2_SIGNATURES: &[Signature] = &[
         prototype: "void __fastcall SDL_EventHandler(__int64 a1, SDL_Event* event)",
     },
 
-];
+    // ---------- Osiris (danielkrupinski/Osiris) ports ----------------------
+    // ----- client.dll -----
+    Signature { name: "Osiris_MainMenuPanelPointer", module: "client.dll", needle: "EC ? 48 8B 05 ? ? ? ? 48 8D 15 ? ? ? ? 48", resolve: ResolveKind::RipRel { rel_off: 5 }, extra_off: 0, prototype: "" },
+    Signature { name: "Osiris_HudPanelPointer", module: "client.dll", needle: "48 89 35 ? ? ? ? E8 ? ? ? ? 48 85", resolve: ResolveKind::RipRel { rel_off: 3 }, extra_off: 0, prototype: "" },
+    Signature { name: "Osiris_GlobalVarsPointer", module: "client.dll", needle: "48 8B 05 ? ? ? ? 0F 57 C0 8B 48", resolve: ResolveKind::RipRel { rel_off: 3 }, extra_off: 0, prototype: "" },
+    Signature { name: "Osiris_TransformTranslate3dVMT", module: "client.dll", needle: "00 00 80 00 48 8D 05 ? ? ? ? 48 C7 42 ? 00", resolve: ResolveKind::RipRel { rel_off: 7 }, extra_off: 0, prototype: "" },
+    Signature { name: "Osiris_TransformScale3dVMT", module: "client.dll", needle: "48 8D 0D ? ? ? ? F3 0F 10 4B ? F3 0F 10 43", resolve: ResolveKind::RipRel { rel_off: 3 }, extra_off: 0, prototype: "" },
+    Signature { name: "Osiris_WorldToProjectionMatrixPointer", module: "client.dll", needle: "48 8D 0D ? ? ? ? 48 C1 E0 06", resolve: ResolveKind::RipRel { rel_off: 3 }, extra_off: 0, prototype: "" },
+    Signature { name: "Osiris_ViewToProjectionMatrixPointer", module: "client.dll", needle: "48 89 4C 24 ? 4C 8D 0D ? ? ? ? 48 8B 0D", resolve: ResolveKind::RipRel { rel_off: 8 }, extra_off: 0, prototype: "" },
+    Signature { name: "Osiris_ViewRenderPointer", module: "client.dll", needle: "48 89 05 ? ? ? ? 48 8B C8 48 85 C0", resolve: ResolveKind::RipRel { rel_off: 3 }, extra_off: 0, prototype: "" },
+    Signature { name: "Osiris_ManageGlowSceneObjectPointer", module: "client.dll", needle: "E8 ? ? ? ? 48 8B 4F ? 0F 28 7C", resolve: ResolveKind::RipRel { rel_off: 1 }, extra_off: 0, prototype: "" },
+    Signature { name: "Osiris_SetSceneObjectAttributeFloat4", module: "client.dll", needle: "E8 ? ? ? ? FF C6 48 83 C3 ? 49 3B", resolve: ResolveKind::RipRel { rel_off: 1 }, extra_off: 0, prototype: "" },
+    Signature { name: "Osiris_PointerToClientMode", module: "client.dll", needle: "57 48 83 EC ? 33 DB 48 8D 3D ? ? ? ? 48 8D", resolve: ResolveKind::RipRel { rel_off: 10 }, extra_off: 0, prototype: "" },
+    Signature { name: "Osiris_CvarPointer", module: "client.dll", needle: "48 83 EC ? ? 8B ? ? ? ? ? 48 8D 54 ? ? 4C", resolve: ResolveKind::RipRel { rel_off: 7 }, extra_off: 0, prototype: "" },
+    Signature { name: "Osiris_GetAbsOriginFunction", module: "client.dll", needle: "F8 ? 75 ? E8 ? ? ? ? F3", resolve: ResolveKind::RipRel { rel_off: 5 }, extra_off: 0, prototype: "" },
+    Signature { name: "Osiris_EntitySystemPointer", module: "client.dll", needle: "48 89 ? ? ? ? ? 4C 63 ? ? ? ? ? 44 3B ? ? ? ? ? 0F", resolve: ResolveKind::RipRel { rel_off: 3 }, extra_off: 0, prototype: "" },
+    Signature { name: "Osiris_GameRulesPointer", module: "client.dll", needle: "F6 ? ? 0F 85 ? ? ? ? ? 8B ? ? ? ? ? ? 85 ? 0F", resolve: ResolveKind::RipRel { rel_off: 12 }, extra_off: 0, prototype: "" },
+    Signature { name: "Osiris_PanelConstructorPointer", module: "client.dll", needle: "48 89 5C 24 ? 48 89 74 24 ? 57 48 83 EC 30 48 8B F1 48 8B FA B9 ? ? ? ? E8 ? ? ? ? 48 8B D8 48 85 C0 74 ? 48", resolve: NONE, extra_off: 0, prototype: "" },
+    Signature { name: "Osiris_SetSelectedIndexFunctionPointer", module: "client.dll", needle: "48 89 5C 24 ? 48 89 74 24 ? 57 48 83 EC ? 48 8B F1 8B DA 48 83", resolve: NONE, extra_off: 0, prototype: "" },
+    Signature { name: "Osiris_SetImageFunctionPointer", module: "client.dll", needle: "CF E8 ? ? ? ? 41 0F B6 C5", resolve: ResolveKind::RipRel { rel_off: 2 }, extra_off: 0, prototype: "" },
+    Signature { name: "Osiris_ImagePanelConstructorPointer", module: "client.dll", needle: "? ? ? ? 48 8B C8 EB 03 49 8B ? 48 89", resolve: ResolveKind::RipRel { rel_off: 0 }, extra_off: 0, prototype: "" },
+    Signature { name: "Osiris_LabelPanelConstructorPointer", module: "client.dll", needle: "C8 E8 ? ? ? ? 48 8B F0 48 8B 57", resolve: ResolveKind::RipRel { rel_off: 2 }, extra_off: 0, prototype: "" },
+    Signature { name: "Osiris_SetLabelTextFunctionPointer", module: "client.dll", needle: "41 B1 01 41 B8 ? ? ? ? E9 ? ? ? ?", resolve: ResolveKind::RipRel { rel_off: 10 }, extra_off: 0, prototype: "" },
+    Signature { name: "Osiris_UiEnginePointer", module: "client.dll", needle: "48 89 78 ? 48 89 0D ? ? ? ?", resolve: ResolveKind::RipRel { rel_off: 7 }, extra_off: 0, prototype: "" },
+    Signature { name: "Osiris_PlantedC4sPointer", module: "client.dll", needle: "0F ? ? ? ? ? 39 ? ? ? ? ? 7E ? 48 8B 0D", resolve: ResolveKind::RipRel { rel_off: 8 }, extra_off: 0, prototype: "" },
+    Signature { name: "Osiris_GetBombsiteACenter", module: "client.dll", needle: "54 24 ? E8 ? ? ? ? EB 0A", resolve: ResolveKind::RipRel { rel_off: 4 }, extra_off: 0, prototype: "" },
+    Signature { name: "Osiris_GetBombsiteBCenter", module: "client.dll", needle: "EB 0A 48 8D 54 24 ? E8 ? ? ? ? F2", resolve: ResolveKind::RipRel { rel_off: 8 }, extra_off: 0, prototype: "" },
+    Signature { name: "Osiris_SliderSetValueFunction", module: "client.dll", needle: "CF E8 ? ? ? ? 0F 28 74 24 ? 48 8B 74", resolve: ResolveKind::RipRel { rel_off: 2 }, extra_off: 0, prototype: "" },
+    Signature { name: "Osiris_TextEntrySetTextFunction", module: "client.dll", needle: "8B 89 ? ? ? ? E8 ? ? ? ? B0", resolve: ResolveKind::RipRel { rel_off: 7 }, extra_off: 0, prototype: "" },
+    Signature { name: "Osiris_SetItemItemIdFunction", module: "client.dll", needle: "CF 48 8B D0 48 8B 5C 24 ? 48 83 C4 ? 5F E9 ? ? ? ?", resolve: ResolveKind::RipRel { rel_off: 15 }, extra_off: 0, prototype: "" },
+    Signature { name: "Osiris_PointerToGetInaccuracyFunction", module: "client.dll", needle: "48 89 5C 24 ? 55 56 57 48 81 EC ? ? ? ? 44", resolve: NONE, extra_off: 0, prototype: "" },
+    Signature { name: "Osiris_PointerToGetSpreadFunction", module: "client.dll", needle: "48 83 EC ? 48 63 91", resolve: NONE, extra_off: 0, prototype: "" },
+    // ----- panorama.dll -----
+    Signature { name: "Osiris_SetPanelStylePropertyFunctionPointer", module: "panorama.dll", needle: "E8 ? ? ? ? 48 8D 05 ? ? ? ? 48 89 45 ? EB ? 0F", resolve: ResolveKind::RipRel { rel_off: 1 }, extra_off: 0, prototype: "" },
+    Signature { name: "Osiris_GetPanelPointerFunctionPointer", module: "panorama.dll", needle: "4C 63 0A 4C 8B DA", resolve: NONE, extra_off: 0, prototype: "" },
+    Signature { name: "Osiris_RunScriptFunctionPointer", module: "panorama.dll", needle: "48 89 5C 24 ? 4C 89 4C 24 ? 48 89 54 24 ? 55 56 57 41 54 41 55 41 56 41 57 48 8D", resolve: NONE, extra_off: 0, prototype: "" },
+    Signature { name: "Osiris_MakeSymbolFunctionPointer", module: "panorama.dll", needle: "40 55 56 48 83 EC ? 48 63", resolve: NONE, extra_off: 0, prototype: "" },
+    Signature { name: "Osiris_OnDeletePanelFunctionPointer", module: "panorama.dll", needle: "48 85 D2 0F 84 ? ? ? ? 48 89 ? 24 ? 57 48 83 EC ? 48", resolve: NONE, extra_off: 0, prototype: "" },
+    Signature { name: "Osiris_RegisterEventHandlerFunctionPointer", module: "panorama.dll", needle: "48 89 5C 24 ? 66 89 54 24 ? 55 56 57 41 56 41 57 48 83 EC ? 48 8D 05 ? ? ? ? 48 C7 44 24 28 ? ? ? ? 48 89 44 24 ? 4D", resolve: NONE, extra_off: 0, prototype: "" },
+    // ----- scenesystem.dll -----
+    Signature { name: "Osiris_SceneSystemPointer", module: "scenesystem.dll", needle: "72 ? ? 8B ? ? ? ? ? 48 8D 0D ? ? ? ? 48", resolve: ResolveKind::RipRel { rel_off: 12 }, extra_off: 0, prototype: "" },
+    Signature { name: "Osiris_DeleteSceneObjectFunctionPointer", module: "scenesystem.dll", needle: "48 85 D2 0F 84 ? ? ? ? 48 8B C4 48 89 50", resolve: NONE, extra_off: 0, prototype: "" },
+    Signature { name: "Osiris_AllocateAttributeListFunctionPointer", module: "scenesystem.dll", needle: "40 55 48 83 EC ? 48 83 BA", resolve: NONE, extra_off: 0, prototype: "" },
+    // ----- soundsystem.dll -----
+    Signature { name: "Osiris_SoundChannelsPointer", module: "soundsystem.dll", needle: "8B 3D ? ? ? ? 48 89 58", resolve: ResolveKind::RipRel { rel_off: 2 }, extra_off: 0, prototype: "" },
 
+];
