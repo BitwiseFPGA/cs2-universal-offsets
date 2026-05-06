@@ -1,6 +1,6 @@
 {
   "build_number": 14158,
-  "generated_at": "2026-05-06T10:15:44.085387600-05:00",
+  "generated_at": "2026-05-06T11:20:30.936479100-05:00",
   "modules": {
     "animationsystem.dll": {
       "base": "0x7FFC42DD0000",
@@ -15,7 +15,7 @@
       "timestamp": 1777586562
     },
     "engine2.dll": {
-      "base": "0x7FFC49690000",
+      "base": "0x7FFC4E160000",
       "image": 9822208,
       "size": 9822208,
       "timestamp": 1777391601
@@ -27,19 +27,19 @@
       "timestamp": 1776898674
     },
     "host.dll": {
-      "base": "0x7FFC58050000",
+      "base": "0x7FFC55C70000",
       "image": 1413120,
       "size": 1413120,
       "timestamp": 1777391383
     },
     "inputsystem.dll": {
-      "base": "0x7FFCB34D0000",
+      "base": "0x7FFCB6390000",
       "image": 323584,
       "size": 323584,
       "timestamp": 1777391389
     },
     "materialsystem2.dll": {
-      "base": "0x7FFC976F0000",
+      "base": "0x7FFC938B0000",
       "image": 1564672,
       "size": 1564672,
       "timestamp": 1776898699
@@ -87,19 +87,19 @@
       "timestamp": 1777391434
     },
     "schemasystem.dll": {
-      "base": "0x7FFC9D160000",
+      "base": "0x7FFCB34E0000",
       "image": 520192,
       "size": 520192,
       "timestamp": 1776898723
     },
     "server.dll": {
-      "base": "0x7FFC30390000",
+      "base": "0x7FFC30990000",
       "image": 36450304,
       "size": 36450304,
       "timestamp": 1777586562
     },
     "soundsystem.dll": {
-      "base": "0x7FFC43B90000",
+      "base": "0x7FFC45E10000",
       "image": 6864896,
       "size": 6864896,
       "timestamp": 1777391455
@@ -111,7 +111,7 @@
       "timestamp": 1776898444
     },
     "vphysics2.dll": {
-      "base": "0x7FFC45F60000",
+      "base": "0x7FFC47E30000",
       "image": 5459968,
       "size": 5459968,
       "timestamp": 1777391399
@@ -120,17 +120,17 @@
   "process": "cs2.exe",
   "stages": {
     "offsets": {
-      "elapsed_ms": 1509,
+      "elapsed_ms": 1347,
       "enabled": true,
       "output_dir": "output\\sdk",
       "success": true
     },
     "signatures": {
       "counts": {
-        "found": 423,
-        "total": 469
+        "found": 462,
+        "total": 508
       },
-      "elapsed_ms": 14933,
+      "elapsed_ms": 16293,
       "enabled": true,
       "output_dir": "output\\signatures",
       "success": true

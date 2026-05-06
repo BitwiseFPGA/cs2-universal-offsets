@@ -261,6 +261,7 @@ pub mod client {
     pub const CreateParticleEffect: &str = "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 50 F3 0F 10 1D 21";
     /// `__int64 sub_180FF7770()`
     pub const CreateSOSubclassEconItem: &str = "48 83 EC 28 B9 48 00 00 00 E8 ? ? ? ? 48 85";
+    pub const CvarPointer: &str = "48 83 EC ? ? 8B ? ? ? ? ? 48 8D 54 ? ? 4C";
     /// `void __fastcall sub_18081FB40(__int64 a1, _QWORD *a2, __int64 a3)`
     pub const DamageFeedbackEmitter: &str = "48 89 4C 24 08 55 53 41 54 41 55 41 57 48 8D AC";
     /// `void __fastcall sub_1809463E0(__int64 a1, __int64 a2, unsigned __int8 a3, char a4)`
@@ -281,6 +282,7 @@ pub mod client {
     pub const DrawSmokeVertex: &str = "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 57 41 56 41 57 48 83 EC 40 48 8B 9C 24 88 00 00 00 4D 8B F8 48 8B FA 48 8B";
     /// `__int64 __fastcall sub_180B63B10(__int64 a1, int a2, int a3, __int64 a4)`
     pub const EmitSoundByHandle: &str = "40 53 48 83 EC 30 4C 89 4C 24 20 48 8B D9 45 8B";
+    pub const EntitySystemPointer: &str = "48 89 ? ? ? ? ? 4C 63 ? ? ? ? ? 44 3B ? ? ? ? ? 0F";
     /// `void sub_180C7E380(unsigned int a1, __int64 a2, __int64 a3, __int64 *a4, __int64 a5, int a6, int a7, ...)`
     pub const FX_FireBullets: &str = "48 8B C4 4C 89 48 20 48 89 50 10 55 53 57 41 54";
     /// `_QWORD **__fastcall sub_180DC1D50(__int64 a1, unsigned __int8 a2)`
@@ -300,10 +302,14 @@ pub mod client {
     pub const GameEventManager_AddListener: &str = "48 89 5C 24 10 48 89 6C 24 18 56 57 41 56 48 83 EC 50 41 0F";
     /// `__int64 __fastcall sub_180992900(__int64 a1, __int64 a2)`
     pub const GameEventManager_UnserializeEvent: &str = "48 8B C4 48 89 50 10 55 41 54 41 55 41 56 48 8D";
+    pub const GameRulesPointer: &str = "F6 ? ? 0F 85 ? ? ? ? ? 8B ? ? ? ? ? ? 85 ? 0F";
     pub const GameRules_ptr: &str = "48 8B 1D ? ? ? ? 48 8D 54 24 ? 0F 28 D0 48 8D 4C 24 ?";
+    pub const GetAbsOriginFunction: &str = "40 53 48 83 EC 20 48 8B 99 30 03 00 00 90 80 BB 10 01 00 00 00 75 0C 48 8B CB E8 51";
     pub const GetBBox_ptr: &str = "48 8B 0D ? ? ? ? 48 85 C9 74 ? ? ? ? 48 FF A0 ? ? ? ? 48 8D 05";
     /// `__int64 __fastcall sub_180967600(__int64 a1, int a2)`
     pub const GetBaseEntity: &str = "4C 8D 49 10 81 FA FE 7F 00 00 77 47 8B CA C1 F9";
+    pub const GetBombsiteACenter: &str = "48 89 5C 24 08 57 48 83 EC 20 48 8B F9 48 8B DA 48 8B 0D C1";
+    pub const GetBombsiteBCenter: &str = "48 89 5C 24 08 57 48 83 EC 20 48 8B F9 48 8B DA 48 8B 0D ? ? ? ? 48 85 C9 74 19 E8 2F 35 EB";
     /// `__int64 __fastcall sub_1808C81E0(__int64 a1, __int64 a2)`
     pub const GetBonePositionByName: &str = "40 53 48 83 EC 20 48 8B 89 30 03 00 00 48 8B DA 48 8B 01 FF 50 50 48 8B";
     /// `__int64 sub_1810C3670()`
@@ -362,6 +368,7 @@ pub mod client {
     /// `_BYTE *__fastcall sub_180A8B5A0(__int64 a1)`
     pub const GlobalLightUpdateState: &str = "40 57 48 81 EC C0 00 00 00 48 8B F9 BA FF FF FF";
     pub const GlobalVariables_ptr: &str = "48 89 15 ? ? ? ? 48 89 42";
+    pub const GlobalVarsPointer: &str = "48 8B 05 ? ? ? ? 0F 57 C0 8B 48";
     /// `void __fastcall sub_180BC1460(int *a1)`
     pub const GloveApply_PerTick: &str = "40 55 56 57 48 8D AC 24 30 FD FF FF 48 81 EC D0";
     pub const GlowManager_ptr: &str = "48 8B 05 ? ? ? ? C3 CC CC CC CC CC CC CC CC 8B 41";
@@ -375,6 +382,8 @@ pub mod client {
     pub const HandleTeamIntro: &str = "48 83 EC 28 45 0F B6 08 44 38 89 04 0F 00 00 74";
     /// `__int64 sub_1810C10F0(__int64 a1, unsigned int a2, __int64 a3, ...)`
     pub const HudChatPrintf: &str = "4C 89 44 24 18 4C 89 4C 24 20 53 B8 40 10 00 00";
+    pub const HudPanelPointer: &str = "48 89 35 ? ? ? ? E8 ? ? ? ? 48 85";
+    pub const ImagePanelConstructorPointer: &str = "40 53 48 83 EC 30 41 B9 02 00 00 00 48 8B D9 E8";
     /// `__int64 __fastcall sub_1813D90B0(int a1, __int64 a2)`
     pub const InfoForResourceTypeCCompositeMaterialKit_TypeManager: &str = "40 55 41 56 48 83 EC 78 4C 8B F2 83 F9 06 0F 87 ? ? ? ? 48 63 C1 48 8D 15 32 6F";
     /// `__int64 __fastcall sub_1813D9600(int a1, __int64 a2)`
@@ -389,6 +398,7 @@ pub mod client {
     pub const IsGlowing: &str = "0F B6 41 51 C3 CC CC CC CC CC CC CC CC CC CC CC";
     /// `__int64 __fastcall sub_18084B0F0(__int64 a1, __int64 a2)`
     pub const KillFeedbackEmitter: &str = "48 89 5C 24 08 48 89 74 24 18 48 89 7C 24 20 55 41 56 41 57 48 8B EC 48 81 EC 80 00";
+    pub const LabelPanelConstructorPointer: &str = "40 56 48 83 EC 40 48 8B F1 E8 ? ? ? ? 48 8D";
     /// `__int64 __fastcall sub_1808D0100(__int64 a1)`
     pub const LevelInit: &str = "40 55 56 41 56 48 8D 6C 24 90 48 81 EC 70 01 00";
     /// `void __fastcall sub_18091BF40(__int64 a1)`
@@ -398,12 +408,15 @@ pub mod client {
     pub const LocalPlayerController_ptr: &str = "48 8B 05 ? ? ? ? 41 89 BE";
     /// `__int64 __fastcall sub_1808C81E0(__int64 a1, __int64 a2)`
     pub const LookupBone: &str = "40 53 48 83 EC 20 48 8B 89 30 03 00 00 48 8B DA 48 8B 01 FF 50 50 48 8B";
+    pub const MainMenuPanelPointer: &str = "EC ? 48 8B 05 ? ? ? ? 48 8D 15 ? ? ? ? 48";
+    pub const ManageGlowSceneObjectPointer: &str = "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 48 89 7C 24 20 41 56 48 83 EC 60 48 8B F2 45 33 F6";
     /// `__int64 __fastcall sub_1809DA450(__int64 a1, char a2)`
     pub const ModulationUpdate: &str = "48 89 5C 24 08 57 48 83 EC 20 8B FA 48 8B D9 E8 ? ? ? ? 84 C0 0F 84";
     /// `__int64 __fastcall sub_180166C00(__int64 a1)`
     pub const NoClipOnChange: &str = "48 89 5C 24 10 48 89 74 24 18 48 89 7C 24 20 55 48 8B EC 48 83 EC 30 48 8D 05 AA 1A";
     /// `__int64 __fastcall sub_180C7E2D0(__int64 a1, __int64 a2, int a3)`
     pub const NoSpread1: &str = "48 89 5C 24 08 57 48 81 EC F0 00 00 00 F3 0F 10";
+    pub const PanelConstructorPointer: &str = "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 30 48 8B F1 48 8B FA B9 20 00";
     /// `__int64 __fastcall sub_1801F4D90(__int64 a1)`
     pub const ParticleCollection: &str = "48 89 5C 24 08 57 48 83 EC 20 0F 28 05 AF 37 2E";
     pub const ParticleManager_ptr: &str = "48 8B 0D ? ? ? ? 41 B8 ? ? ? ? F3 0F 11 74 24 ? 48 C7 44 24 ? ? ? ? ?";
@@ -411,8 +424,12 @@ pub mod client {
     pub const PhysicsRunThink_Ctrl: &str = "48 89 5C 24 20 57 48 81 EC D0 06 00 00 48 8B 01";
     /// `char __fastcall sub_180B0ED50(__int64 a1)`
     pub const PhysicsRunThink_Pawn: &str = "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 20 8B 81 74 03 00";
+    pub const PlantedC4sPointer: &str = "0F ? ? ? ? ? 39 ? ? ? ? ? 7E ? 48 8B 0D";
     /// `__int64 __fastcall sub_18150ED00(__int64 a1)`
     pub const PlayVSound_client: &str = "48 89 5C 24 08 48 89 74 24 18 48 89 7C 24 20 55 48 8D 6C 24 A9 48 81 EC 90 00 00 00";
+    pub const PointerToClientMode: &str = "57 48 83 EC ? 33 DB 48 8D 3D ? ? ? ? 48 8D";
+    pub const PointerToGetInaccuracyFunction: &str = "48 89 5C 24 10 55 56 57 48 81 EC B0 00 00 00 44";
+    pub const PointerToGetSpreadFunction: &str = "48 83 EC 38 48 63 91 B8 17 00 00 48 8B 81 88 03";
     pub const Prediction_ptr: &str = "48 8D 05 ? ? ? ? C3 CC CC CC CC CC CC CC CC 40 53 56 41 54";
     /// `__int64 __fastcall sub_1809CEA50(_QWORD *a1, __int64 a2, __int64 a3)`
     pub const ProcessImpacts: &str = "48 8B C4 53 56 41 55 48 81 EC E0 00 00 00 44 0F";
@@ -449,12 +466,17 @@ pub mod client {
     pub const SetDynamicAttributeValue: &str = "48 89 6C 24 20 57 41 56 41 57 48 81 EC A0 00 00 00 48 8B FA C7 44 24 20 00 00 00 00 4D 8B F8 4C 8D 0D ? ? ? ? 48 8B E9 ? ? ? ? CD 12 01";
     /// `__int64 __fastcall sub_181004F60(__int64 a1, __int64 a2, _DWORD *a3)`
     pub const SetDynamicAttributeValue_raw: &str = "48 89 6C 24 20 57 41 56 41 57 48 81 EC A0 00 00 00 48 8B FA C7 44 24 20 00 00 00 00 4D 8B F8 4C 8D 0D ? ? ? ? 48 8B E9 ? ? ? ? CD 12 01";
+    pub const SetImageFunctionPointer: &str = "48 89 5C 24 10 48 89 6C 24 18 56 57 41 54 41 56 41 57 48 83 EC 30 48 8B F1 4D 8B F1";
+    pub const SetItemItemIdFunction: &str = "48 89 5C 24 08 48 89 74 24 10 48 89 7C 24 18 55 41 56 41 57 48 8D AC 24 50 FF FF FF";
+    pub const SetLabelTextFunctionPointer: &str = "40 53 56 41 56 41 57 48 83 EC 48 80 3D E2 6B A7";
     /// `__int64 __fastcall sub_180A2DB50(__int64 a1, __int64 a2)`
     pub const SetMeshGroupMask: &str = "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 20 48 8D 99 50 01";
     /// `__int64 __fastcall sub_1808DB1C0(__int64 a1, __int64 a2)`
     pub const SetModel: &str = "40 53 48 83 EC 20 48 8B D9 4C 8B C2 48 8B 0D ED";
     /// `char __fastcall sub_180F1DD90(__int64 a1, __int64 a2)`
     pub const SetPlayerReady: &str = "40 53 48 83 EC 20 48 8B DA 48 8D 15 ? ? ? ? 48 8B CB FF";
+    pub const SetSceneObjectAttributeFloat4: &str = "48 89 6C 24 10 48 89 74 24 18 57 48 83 EC 20 66 0F 6E CA 49 8B F0 66 0F 70 C9 00 8B EA 48 8B F9 45 33 C9 48 8B C1 66 66 0F 1F 84 00 00 00 00 00";
+    pub const SetSelectedIndexFunctionPointer: &str = "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 20 48 8B F1 8B DA";
     /// `__int64 __fastcall sub_1807D4810(int *a1, _OWORD *a2)`
     pub const SetTraceData: &str = "48 89 6C 24 18 48 89 7C 24 20 41 56 48 83 EC 20 48 63 29 4C 8B F2 48 8B F9 3B 69 10 0F 85 ? ? ? ? F7 41 14 00 00 00 40 0F 85 ? ? ? ? 8B";
     /// `unsigned __int64 *__fastcall sub_18181AEB0(unsigned __int64 *a1, unsigned __int8 a2, unsigned __int8 a3)`
@@ -468,6 +490,7 @@ pub mod client {
     /// `__int64 __fastcall sub_181186C10(__int64 a1, __int64 a2, __int64 a3, __int64 a4)`
     pub const SetupMovementMoves: &str = "48 8B CE E8 ? ? ? ? 48 8B 5C 24 50 48 8B 6C 24 58 48 83";
     pub const ShowMessageBox: &str = "44 88 4C 24 20 53 41 56 41 57 48 81 EC 60 02 00";
+    pub const SliderSetValueFunction: &str = "40 57 48 83 EC 30 F3 0F 5F 49 40 48 8B F9 F3 0F";
     /// `float __fastcall sub_180A572B0(__int64 a1, int a2, unsigned int a3)`
     pub const SomeTimingFromPawn: &str = "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 20 49 63 D8 48 8B";
     /// `char __fastcall sub_180BC3FE0(_QWORD *a1)`
@@ -478,6 +501,7 @@ pub mod client {
     pub const SpreadSeedGen: &str = "48 89 5C 24 08 57 48 81 EC F0 00 00 00 F3 0F 10";
     /// `void __fastcall sub_180806E30(__int64 a1, float a2, float a3, float a4, int a5, int a6, __int64 a7)`
     pub const TestSurfaces: &str = "40 53 57 41 56 48 83 EC 50 8B 84 24 90 00 00 00";
+    pub const TextEntrySetTextFunction: &str = "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 57 41 56 41 57 48 83 EC 40 48 8B F1 48";
     /// `__int64 sub_180ACA2B0()`
     pub const ThirdPersonOffHandler: &str = "48 83 EC 28 48 8B 0D ? ? ? ? 48 8D 54 24 30 48 8B 01 FF 90 08 03 00 00 83 7C 24 30 00 75 69";
     /// `__int64 sub_180ACA390()`
@@ -502,6 +526,9 @@ pub mod client {
     pub const TraceShape_Client: &str = "48 89 5C 24 20 48 89 4C 24 08 55 57 41 54 41 55";
     /// `char __fastcall sub_180804900(__int64 a1, __int64 a2, int a3, __int64 a4, int a5, char a6)`
     pub const TraceToExit: &str = "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 57 41 56 41 57 48 83 EC 50 F2 0F 10 02";
+    pub const TransformScale3dVMT: &str = "48 8D 0D ? ? ? ? F3 0F 10 4B ? F3 0F 10 43";
+    pub const TransformTranslate3dVMT: &str = "00 00 80 00 48 8D 05 ? ? ? ? 48 C7 42 ? 00";
+    pub const UiEnginePointer: &str = "48 89 78 ? 48 89 0D ? ? ? ?";
     /// `void *__fastcall sub_180AE4730(__int64 a1, void *a2)`
     pub const UpdateGlobalVars: &str = "48 8B 0D ? ? ? ? 4C 8D 05 ? ? ? ? 48 85 D2 48 8D 05";
     /// `void __fastcall sub_180F21F20(__int64 a1, _BYTE *a2)`
@@ -516,7 +543,9 @@ pub mod client {
     /// `__int64 __fastcall sub_1807A0460(__int64 a1, __int64 a2, __int64 **a3)`
     pub const ViewModelHideZoomed: &str = "48 89 5C 24 20 55 56 57 41 54 41 56 48 8B EC 48 83 EC 50 48 8D 05 86 01";
     pub const ViewRender_ptr: &str = "48 89 05 ? ? ? ? 48 8B C8 48 85 C0";
+    pub const ViewToProjectionMatrixPointer: &str = "48 89 4C 24 ? 4C 8D 0D ? ? ? ? 48 8B 0D";
     pub const WeaponC4_ptr: &str = "48 8B 15 ? ? ? ? 48 8B 5C 24 ? FF C0 89 05 ? ? ? ? 48 8B C6 48 89 34 EA 80 BE";
+    pub const WorldToProjectionMatrixPointer: &str = "48 8D 0D ? ? ? ? 48 C1 E0 06";
     pub const WriteSubtickFromEntry: &str = "48 89 5C 24 18 55 57 41 56 48 8D 6C 24 C9 48 81";
     /// `void __fastcall sub_180ACC120(__int64 *a1, int a2, char a3)`
     pub const create_move_v2: &str = "85 D2 0F 85 ? ? ? ? 48 8B C4 44 88 40 18 89";
@@ -707,6 +736,12 @@ pub mod panorama {
     pub const CUIEngine_DispatchEvent: &str = "48 8B C4 48 89 58 18 88 50 10 55 56 57 41 54 41";
     /// `__int64 __fastcall sub_1800A95F0(_QWORD *a1)`
     pub const CUIEngine_RunFrame: &str = "48 89 5C 24 10 48 89 6C 24 18 56 57 41 54 41 56 41 57 48 81 EC 80 00 00 00 45 33 F6";
+    pub const GetPanelPointerFunctionPointer: &str = "4C 63 0A 4C 8B DA 44 3B 89 20 02 00 00 73 71 41";
+    pub const MakeSymbolFunctionPointer: &str = "40 55 56 48 83 EC 48 48 63 EA 49 8B F0 4D 85 C0";
+    pub const OnDeletePanelFunctionPointer: &str = "48 85 D2 0F 84 ? ? ? ? 48 89 74 24 18 57 48";
+    pub const RegisterEventHandlerFunctionPointer: &str = "48 89 5C 24 08 66 89 54 24 10 55 56 57 41 56 41";
+    pub const RunScriptFunctionPointer: &str = "48 89 5C 24 18 4C 89 4C 24 20 48 89 54 24 10 55 56 57 41 54 41 55 41 56 41 57 48 8D";
+    pub const SetPanelStylePropertyFunctionPointer: &str = "48 89 5C 24 20 44 88 44 24 18 55 56 41 55 41 56";
 }
 
 pub mod particles {
@@ -742,6 +777,7 @@ pub mod resourcesystem {
 }
 
 pub mod scenesystem {
+    pub const AllocateAttributeListFunctionPointer: &str = "40 55 48 83 EC 20 48 83 BA A8 00 00 00 00 48 8B";
     pub const BuildSceneInfoGpu: &str = "4C 89 4C 24 20 4C 89 44 24 18 48 89 4C 24 08 55 48 8D AC 24 00 E3 FF FF";
     pub const CSceneAnimatableObject__GeneratePrimitives: &str = "48 8B C4 48 89 58 08 48 89 50 10 55 56 57 41 54 41 55 41 56 41 57 48 81";
     pub const CSceneAnimatableObject_GeneratePrimitives: &str = "48 8B C4 48 89 58 08 48 89 50 10 55 56 57 41 54 41 55 41 56 41 57 48 81";
@@ -750,11 +786,13 @@ pub mod scenesystem {
     pub const CSceneSystem_InitGfxObjects: &str = "40 55 53 56 57 41 54 41 55 41 56 41 57 48 8D AC 24 08 FE FF";
     pub const CSceneSystem_RenderViewLayer_Dispatch: &str = "48 8B C4 48 89 48 08 55 53 56 57 41 54 41 55 41 56 41 57 48 8D A8 B8 FE";
     pub const CSceneSystem_Thread_CullView: &str = "4C 89 44 24 18 48 89 54 24 10 48 89 4C 24 08 55 53 56 57 41 54 41 55 41 56 41 57 48 8D 6C 24 E1";
+    pub const DeleteSceneObjectFunctionPointer: &str = "48 85 D2 0F 84 ? ? ? ? 48 8B C4 48 89 50 10";
     pub const DrawAggregateSceneObjectArray: &str = "48 8B C4 48 89 50 10 48 89 48 08 55 53 56 57 41 54 41 55 41 56 41 57 48 8D A8 38 F9";
     pub const DrawObject_legacy: &str = "48 8B C4 53 57 41 54 48 81 EC D0 00 00 00 49 63";
     pub const DrawSkyboxArray: &str = "45 85 C9 0F 8E ? ? ? ? 4C 8B DC 55 41 56 49";
     pub const SceneSystem__DrawAggeregateObject: &str = "48 8B C4 4C 89 48 20 4C 89 40 18 48 89 50 10 55 53 41 57 48";
     pub const SceneSystem__DrawArrayLight: &str = "48 89 5C 24 08 48 89 6C 24 18 48 89 54 24 10 56 57 41 56 48";
+    pub const SceneSystemPointer: &str = "72 ? ? 8B ? ? ? ? ? 48 8D 0D ? ? ? ? 48";
     pub const SceneSystem_Thread_RenderSceneDrawList: &str = "40 55 53 56 57 41 54 41 55 41 56 41 57 48 8D 6C 24 E1 48 81 EC D8 00 00";
     pub const SceneSystem_ptr: &str = "48 8D 05 ? ? ? ? C3 CC CC CC CC CC CC CC CC 48 8D 0D ? ? ? ? E9";
 }
@@ -781,6 +819,7 @@ pub mod server {
 
 pub mod soundsystem {
     pub const CSosOperatorSystem_StartSoundEvent: &str = "40 53 55 56 48 83 EC 20 83 B9 EC 24 00 00 00 49";
+    pub const SoundChannelsPointer: &str = "8B 3D ? ? ? ? 48 89 58";
     /// `_UNKNOWN **__fastcall sub_180349840(__int64 a1, __int64 a2, int a3, int a4)`
     pub const SoundSystem__PlayVSound: &str = "48 8B C4 48 89 58 08 57 48 81 EC A0 00 00 00 33";
     /// `__int64 __fastcall sub_1800B0740(__int64 a1, unsigned int a2)`

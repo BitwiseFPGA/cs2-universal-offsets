@@ -5044,7 +5044,7 @@ namespace cs2::vtables {
             inline constexpr std::ptrdiff_t method_13                                        =   13; // scenesystem.dll + 0xC9F10
             inline constexpr std::ptrdiff_t method_14                                        =   14; // scenesystem.dll + 0xCA070
             inline constexpr std::ptrdiff_t method_15                                        =   15; // scenesystem.dll + 0xCA390
-            inline constexpr std::ptrdiff_t method_16                                        =   16; // scenesystem.dll + 0xCB380
+            inline constexpr std::ptrdiff_t DeleteSceneObjectFunctionPointer                 =   16; // scenesystem.dll + 0xCB380
             inline constexpr std::ptrdiff_t method_17                                        =   17; // scenesystem.dll + 0xCB6B0
             inline constexpr std::ptrdiff_t method_18                                        =   18; // scenesystem.dll + 0xCB7E0
             inline constexpr std::ptrdiff_t method_19                                        =   19; // scenesystem.dll + 0xCB890
@@ -5149,7 +5149,7 @@ namespace cs2::vtables {
             inline constexpr std::ptrdiff_t method_118                                       =  118; // scenesystem.dll + 0x1506B0
             inline constexpr std::ptrdiff_t method_119                                       =  119; // scenesystem.dll + 0xC7AB0
             inline constexpr std::ptrdiff_t method_120                                       =  120; // scenesystem.dll + 0xC7B50
-            inline constexpr std::ptrdiff_t method_121                                       =  121; // scenesystem.dll + 0xC7C50
+            inline constexpr std::ptrdiff_t AllocateAttributeListFunctionPointer             =  121; // scenesystem.dll + 0xC7C50
             inline constexpr std::ptrdiff_t method_122                                       =  122; // scenesystem.dll + 0xC7DB0
             inline constexpr std::ptrdiff_t method_123                                       =  123; // scenesystem.dll + 0xC8D10
             inline constexpr std::ptrdiff_t method_124                                       =  124; // scenesystem.dll + 0xC7E20

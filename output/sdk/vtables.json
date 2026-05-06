@@ -28496,7 +28496,7 @@
         {
           "index": 16,
           "module": "scenesystem.dll",
-          "name": "method_16",
+          "name": "DeleteSceneObjectFunctionPointer",
           "rva": "0xCB380"
         },
         {
@@ -29126,7 +29126,7 @@
         {
           "index": 121,
           "module": "scenesystem.dll",
-          "name": "method_121",
+          "name": "AllocateAttributeListFunctionPointer",
           "rva": "0xC7C50"
         },
         {
