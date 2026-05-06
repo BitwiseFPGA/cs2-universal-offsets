@@ -3747,7 +3747,7 @@ pub static CS2_SIGNATURES: &[Signature] = &[
     Signature { name: "Osiris_TransformScale3dVMT", module: "client.dll", needle: "48 8D 0D ? ? ? ? F3 0F 10 4B ? F3 0F 10 43", resolve: ResolveKind::RipRel { rel_off: 3 }, extra_off: 0, prototype: "" },
     Signature { name: "Osiris_WorldToProjectionMatrixPointer", module: "client.dll", needle: "48 8D 0D ? ? ? ? 48 C1 E0 06", resolve: ResolveKind::RipRel { rel_off: 3 }, extra_off: 0, prototype: "" },
     Signature { name: "Osiris_ViewToProjectionMatrixPointer", module: "client.dll", needle: "48 89 4C 24 ? 4C 8D 0D ? ? ? ? 48 8B 0D", resolve: ResolveKind::RipRel { rel_off: 8 }, extra_off: 0, prototype: "" },
-    Signature { name: "Osiris_ViewRenderPointer", module: "client.dll", needle: "48 89 05 ? ? ? ? 48 8B C8 48 85 C0", resolve: ResolveKind::RipRel { rel_off: 3 }, extra_off: 0, prototype: "" },
+    // Osiris_ViewRenderPointer dropped — identical needle/resolve to existing `ViewRender_ptr`.
     Signature { name: "Osiris_ManageGlowSceneObjectPointer", module: "client.dll", needle: "E8 ? ? ? ? 48 8B 4F ? 0F 28 7C", resolve: ResolveKind::RipRel { rel_off: 1 }, extra_off: 0, prototype: "" },
     Signature { name: "Osiris_SetSceneObjectAttributeFloat4", module: "client.dll", needle: "E8 ? ? ? ? FF C6 48 83 C3 ? 49 3B", resolve: ResolveKind::RipRel { rel_off: 1 }, extra_off: 0, prototype: "" },
     Signature { name: "Osiris_PointerToClientMode", module: "client.dll", needle: "57 48 83 EC ? 33 DB 48 8D 3D ? ? ? ? 48 8D", resolve: ResolveKind::RipRel { rel_off: 10 }, extra_off: 0, prototype: "" },
