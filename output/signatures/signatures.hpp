@@ -80,6 +80,7 @@ namespace cs2::signatures {
         inline constexpr std::string_view CMolotovProjectile = "48 83 EC 28 48 8D 15 ? ? ? ? 48 8D 4C 24 38 E8 EB 98 09";
         inline constexpr std::string_view CPaintKitDefinitions_FindOrCreateByName = "48 89 5C 24 08 48 89 6C 24 18 56 57 41 56 48 81 EC 50 01 00";
         inline constexpr std::string_view CPaintKitDefinitions_LoadDefaultKit = "48 89 6C 24 20 56 57 41 54 41 55 41 57 48 81 EC";
+        inline constexpr std::string_view CPlantedC4_Use = "40 55 53 56 48 8D AC 24 C0 FE FF FF 48 81 EC 40";
         inline constexpr std::string_view CPostProcessingVolume = "48 83 EC 28 48 8D 15 ? ? ? ? 48 8D 4C 24 38 E8 7B 3F 54";
         inline constexpr std::string_view CS2ItemEditor_BuildTemplateMaterialFromFile = "48 89 54 24 10 55 53 41 55 41 57 48 8D AC 24 18";
         inline constexpr std::string_view CSBaseGunFireData_fn = "48 8B C4 55 53 56 57 41 54 41 55 41 56 41 57 48 8D 68 A8 48";
@@ -102,6 +103,7 @@ namespace cs2::signatures {
         inline constexpr std::string_view C_BaseEntity_ProcessInterpolatedList = "4C 8B DC 49 89 5B 10 49 89 6B 18 49 89 73 20 57 41 54 41 57";
         inline constexpr std::string_view C_BaseEntity_RestoreData = "40 55 53 56 41 54 41 57 48 8D AC 24 20 FF FF FF";
         inline constexpr std::string_view C_BaseEntity_SaveData = "48 8B C4 55 56 57 41 56 41 57 48 8D A8 E8 FD FF";
+        inline constexpr std::string_view C_BaseEntity_StartParticleSystem = "48 89 5C 24 08 55 48 8B EC 48 83 EC 40 E8 7E 5C";
         inline constexpr std::string_view C_BaseModelEntity = "40 55 41 56 48 83 EC 78 4C 8B F2 83 F9 06 0F 87 ? ? ? ? 48 63 C1 48 8D 15 02 7E";
         inline constexpr std::string_view C_BasePlayerPawn = "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 20 65 48 8B 04 25 58 00 00 00 48 8D 35 ? ? ? ? 8B 0D ? ? ? ? 33 FF BA 98 00 00 00 48 8B 1C C8";
         inline constexpr std::string_view C_CSPlayerPawn = "40 56 48 83 EC 40 48 8B F2 83 F9 06 0F 87 85 01";
@@ -581,6 +583,7 @@ namespace cs2::fn {
         using CPaintKitDefinitions_FindOrCreateByName_t = void(__fastcall*)(void*, ...);
         // char __fastcall sub_18102C760(__int64 a1, KeyValues *a2, _DWORD *a3)
         using CPaintKitDefinitions_LoadDefaultKit_t = void(__fastcall*)(void*, ...);
+        using CPlantedC4_Use_t = void(__fastcall*)(void*, ...);
         // __int64 sub_1802A3D60()
         using CPostProcessingVolume_t = void(__fastcall*)(void*, ...);
         // CKeyValues_Data *__fastcall sub_1813BCA50(__int64 a1, const char *a2)
@@ -625,6 +628,7 @@ namespace cs2::fn {
         using C_BaseEntity_RestoreData_t = void(__fastcall*)(void*, ...);
         // void __fastcall sub_180A71820(_QWORD *a1, const char *a2, __int64 a3, int a4, int a5, unsigned int a6, __int64 a7)
         using C_BaseEntity_SaveData_t = void(__fastcall*)(void*, ...);
+        using C_BaseEntity_StartParticleSystem_t = void(__fastcall*)(void*, ...);
         // __int64 __fastcall sub_180158010(int a1, _QWORD *a2)
         using C_BaseModelEntity_t = void(__fastcall*)(void*, ...);
         // __int64 (__fastcall *sub_18006DA20())()

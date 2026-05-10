@@ -1340,6 +1340,25 @@ pub static CS2_SIGNATURES: &[Signature] = &[
     Signature { name: "CHEGrenadeProjectile",                  module: "client.dll", needle: "CHEGrenadeProjectile",                   resolve: STRREF, extra_off: 0, prototype: "__int64 sub_180FE0490()" },
     Signature { name: "CDecoyProjectile",                      module: "client.dll", needle: "CDecoyProjectile",                       resolve: STRREF, extra_off: 0, prototype: "__int64 sub_18074E1E0()" },
     Signature { name: "C_PlantedC4",                           module: "client.dll", needle: "C_PlantedC4",                            resolve: STRREF, extra_off: 0, prototype: "__int64 (__fastcall *sub_1800F07A0())()" },
+
+    // CPlantedC4::Use â€” client!sub_1807B05B0. Per-tick `+use` handler on
+    // the planted bomb: validates defuser, kicks defuse-progress timers,
+    // emits the "start defusal" log line at +0x459. The single anchor
+    // every "auto-defuse / defuse-time predictor / bomb-timer ESP" wants;
+    // hooking lets you read the validated defuser handle, the time-left
+    // local, and intercept the "can defuse" gate in one place. Refs the
+    // unique "CPlantedC4::Use() start defusal" string. 1 hit on 14160.
+    Signature { name: "CPlantedC4_Use",                        module: "client.dll", needle: "40 55 53 56 48 8D AC 24 C0 FE FF FF 48 81 EC 40 02 00 00 48 8B DA 48 8B F1 BA FF FF FF FF", resolve: NONE, extra_off: 0, prototype: "" },
+
+    // C_BaseEntity::StartParticleSystem â€” client!sub_180DA3890. The
+    // public API CSGO entities use to attach a particle effect (smoke,
+    // tracer, blood, flashbang, deathcam, etc) and start it ticking.
+    // Refs the unique "StartParticleSystem" symbol-name string used by
+    // the schema-bound script binding. Hook for tracer / smoke control,
+    // forced flashbang particle suppress, or to swap the effect handle
+    // with a custom CParticleSystemDefinition. 1 hit on 14160.
+    Signature { name: "C_BaseEntity_StartParticleSystem",      module: "client.dll", needle: "48 89 5C 24 08 55 48 8B EC 48 83 EC 40 E8 ? ? ? ? 48 8D 05 ? ? ? ? 33 DB 48 8D 15", resolve: NONE, extra_off: 0, prototype: "" },
+
     Signature {
         // NOTE: DEAD on build 14160 (0 hits, dumper-verified). Pattern/string
         // is stale on current CS2 retail. Kept so the dumper diff still surfaces

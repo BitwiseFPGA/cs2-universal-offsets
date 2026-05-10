@@ -2,7 +2,7 @@
 
 _This file is regenerated on every successful run of `cs2-sdk`._
 
-**479/525 signatures resolved across 18 module(s).**
+**481/527 signatures resolved across 18 module(s).**
 
 ## `animationsystem.dll`
 
@@ -80,6 +80,7 @@ _This file is regenerated on every successful run of `cs2-sdk`._
 | `CMolotovProjectile` | `__int64 sub_18074E3C0()` | `stringref` | `0x7FFF293BE3F0` | `0x74E3F0` | `"CMolotovProjectile"` |
 | `CPaintKitDefinitions_FindOrCreateByName` | `char __fastcall sub_18105A690(__int64 a1, __int64 a2, char *a3, __int64 a4)` | `stringref` | `0x7FFF29CCABC0` | `0x105ABC0` | `"Kit "[%s]" specified, but doesn't exist!! You're probably missing an entry in items_paintkits.txt or items_stickerkits.txt or need to run with -use_local_item_data\n"` |
 | `CPaintKitDefinitions_LoadDefaultKit` | `char __fastcall sub_18102C760(__int64 a1, KeyValues *a2, _DWORD *a3)` | `stringref` | `0x7FFF29C9CC90` | `0x102CC90` | `"Unable to find "default" paint kit in "paint_kits_rarity""` |
+| `CPlantedC4_Use` | `` | `raw` | `0x7FFF294205B0` | `0x7B05B0` | `40 55 53 56 48 8D AC 24 C0 FE FF FF 48 81 EC 40 02 00 00 48 8B DA 48 8B F1 BA FF FF FF FF` |
 | `CPostProcessingVolume` | `__int64 sub_1802A3D60()` | `stringref` | `0x7FFF28F13D60` | `0x2A3D60` | `"CPostProcessingVolume"` |
 | `CS2ItemEditor_BuildTemplateMaterialFromFile` | `CKeyValues_Data *__fastcall sub_1813BCA50(__int64 a1, const char *a2)` | `raw` | `0x7FFF2A02D180` | `0x13BD180` | `48 89 54 24 10 55 53 41 55 41 57 48 8D AC 24 18 F9 FF FF 48 81 EC E8 07 00 00 4C 8B FA 48 85 D2` |
 | `CSBaseGunFireData_fn` | `void __fastcall sub_1814E8140(__int64 a1)` | `raw` | `0x7FFF2A158870` | `0x14E8870` | `48 8B C4 55 53 56 57 41 54 41 55 41 56 41 57 48 8D 68 A8 48 81 EC ? ? ? ? 4C 8B 69` |
@@ -102,6 +103,7 @@ _This file is regenerated on every successful run of `cs2-sdk`._
 | `C_BaseEntity_ProcessInterpolatedList` | `__int64 __fastcall sub_180A6BDD0(__int64 a1, unsigned int a2, int a3, unsigned int a4)` | `raw` | `0x7FFF296DBC10` | `0xA6BC10` | `4C 8B DC 49 89 5B 10 49 89 6B 18 49 89 73 20 57 41 54 41 57 48 83 EC 60 49 C7 43 B0 E1 07 00 00` |
 | `C_BaseEntity_RestoreData` | `void __fastcall sub_180A71610(__int64 a1, const char *a2, unsigned int a3, int a4)` | `raw` | `0x7FFF296E1450` | `0xA71450` | `40 55 53 56 41 54 41 57 48 8D AC 24 20 FF FF FF 48 81 EC E0 01 00 00 48 8B D9 45 8B E1 48 8B 89` |
 | `C_BaseEntity_SaveData` | `void __fastcall sub_180A71820(_QWORD *a1, const char *a2, __int64 a3, int a4, int a5, unsigned int a6, __int64 a7)` | `raw` | `0x7FFF296E1660` | `0xA71660` | `48 8B C4 55 56 57 41 56 41 57 48 8D A8 E8 FD FF FF 48 81 EC F0 02 00 00 48 83 B9 A0 05 00 00 00` |
+| `C_BaseEntity_StartParticleSystem` | `` | `raw` | `0x7FFF29A13890` | `0xDA3890` | `48 89 5C 24 08 55 48 8B EC 48 83 EC 40 E8 ? ? ? ? 48 8D 05 ? ? ? ? 33 DB 48 8D 15` |
 | `C_BaseModelEntity` | `__int64 __fastcall sub_180158010(int a1, _QWORD *a2)` | `stringref` | `0x7FFF28DC81E0` | `0x1581E0` | `"C_BaseModelEntity"` |
 | `C_BasePlayerPawn` | `__int64 (__fastcall *sub_18006DA20())()` | `stringref` | `0x7FFF28CDDA20` | `0x6DA20` | `"C_BasePlayerPawn"` |
 | `C_CSPlayerPawn` | `__int64 __fastcall sub_1806C2430(int a1, _QWORD *a2)` | `stringref` | `0x7FFF29332430` | `0x6C2430` | `"C_CSPlayerPawn"` |

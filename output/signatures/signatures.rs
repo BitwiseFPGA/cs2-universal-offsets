@@ -139,6 +139,7 @@ pub mod client {
     pub const CPaintKitDefinitions_FindOrCreateByName: &str = "48 89 5C 24 08 48 89 6C 24 18 56 57 41 56 48 81 EC 50 01 00";
     /// `char __fastcall sub_18102C760(__int64 a1, KeyValues *a2, _DWORD *a3)`
     pub const CPaintKitDefinitions_LoadDefaultKit: &str = "48 89 6C 24 20 56 57 41 54 41 55 41 57 48 81 EC";
+    pub const CPlantedC4_Use: &str = "40 55 53 56 48 8D AC 24 C0 FE FF FF 48 81 EC 40";
     /// `__int64 sub_1802A3D60()`
     pub const CPostProcessingVolume: &str = "48 83 EC 28 48 8D 15 ? ? ? ? 48 8D 4C 24 38 E8 7B 3F 54";
     /// `CKeyValues_Data *__fastcall sub_1813BCA50(__int64 a1, const char *a2)`
@@ -183,6 +184,7 @@ pub mod client {
     pub const C_BaseEntity_RestoreData: &str = "40 55 53 56 41 54 41 57 48 8D AC 24 20 FF FF FF";
     /// `void __fastcall sub_180A71820(_QWORD *a1, const char *a2, __int64 a3, int a4, int a5, unsigned int a6, __int64 a7)`
     pub const C_BaseEntity_SaveData: &str = "48 8B C4 55 56 57 41 56 41 57 48 8D A8 E8 FD FF";
+    pub const C_BaseEntity_StartParticleSystem: &str = "48 89 5C 24 08 55 48 8B EC 48 83 EC 40 E8 7E 5C";
     /// `__int64 __fastcall sub_180158010(int a1, _QWORD *a2)`
     pub const C_BaseModelEntity: &str = "40 55 41 56 48 83 EC 78 4C 8B F2 83 F9 06 0F 87 ? ? ? ? 48 63 C1 48 8D 15 02 7E";
     /// `__int64 (__fastcall *sub_18006DA20())()`
