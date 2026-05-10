@@ -1,14 +1,12 @@
-# Verified Working Features
+# Verified features
 
-Hand-curated catalogue of CS2 features that have been **confirmed working in a live internal cheat** against the current build. Cross-reference with the auto-generated `offsets.*`, `signatures.*` and `client_dll.*` files for canonical addresses; this document captures the *gotchas* — the kind of thing that took an evening of IDA work to figure out.
+Working CS2 cheat features. Each entry lists the schema fields, convars and hooks needed to wire it up. Addresses come from the neighbouring `offsets.*` and `signatures.*` files.
 
-**CS2 build:** `14160`
-
-**Feature count:** 27
+Features: 24
 
 ---
 
-## No Smoke — _working_
+## No Smoke
 
 Iterate the entity list, identify C_SmokeGrenadeProjectile via CEntityIdentity::m_designerName == "smokegrenade_projectile", zero m_nSmokeEffectTickBegin and clear m_bDidSmokeEffect. Engine re-evaluates every tick, so writes stick. Also zero m_flLastSmokeOverlayAlpha on the local pawn for the screen overlay.
 
@@ -22,7 +20,7 @@ Iterate the entity list, identify C_SmokeGrenadeProjectile via CEntityIdentity::
 
 ---
 
-## Smoke Color — _working_
+## Smoke Color
 
 Same entity walk as No Smoke; write a Vector (3 floats * 255) to m_vSmokeColor. Particle system reads this every frame.
 
@@ -34,7 +32,7 @@ Same entity walk as No Smoke; write a Vector (3 floats * 255) to m_vSmokeColor. 
 
 ---
 
-## No Flash — _working_
+## No Flash
 
 Zero m_flFlashDuration and m_flFlashMaxAlpha on the local pawn. Trip the write only when duration > 0 to avoid spamming the engine.
 
@@ -47,7 +45,7 @@ Zero m_flFlashDuration and m_flFlashMaxAlpha on the local pawn. Trip the write o
 
 ---
 
-## Skybox Tint — _working_
+## Skybox Tint
 
 Hook scenesystem.dll!DrawSkyboxArray, intercept the draw-primitive pointer (3rd arg). Build 14152 moved the tint vec3 from +0x100 to +0xE8 inside the skybox object — writing to the old +0x100 slot poisons the renderer with NaN and crashes after ~60s. Layout: +0xE8..+0xF0 RGB tint floats, +0xF4 mode int, +0xF8..+0x104 four sun-angle floats. Do NOT write to env_sky m_vTintColor — the renderer caches material params at level setup and ignores entity writes.
 
@@ -67,7 +65,7 @@ Hook scenesystem.dll!DrawSkyboxArray, intercept the draw-primitive pointer (3rd 
 
 ---
 
-## FOV Changer — _working_
+## FOV Changer
 
 Two-prong approach. (1) Hook GetWorldFov in client.dll (signature SetWorldFov, E8-CALL @ +1) and return the desired value when the local pawn is not scoped. (2) Every tick, write the desired FOV into m_iFOV and m_iFOVStart on the camera services AND into m_iDesiredFOV on the local controller (canonical source the renderer reads). The controller-level field is the one that gets reset back to default if you only fight the camera-services side.
 
@@ -88,7 +86,7 @@ Two-prong approach. (1) Hook GetWorldFov in client.dll (signature SetWorldFov, E
 
 ---
 
-## Chams (Material Override) — _working_
+## Chams (Material Override)
 
 Standard CS2 chams approach: override the material on CCSGOPlayerAnimGraphState::DrawObject path or material pointers on weapon/player render contexts. Use the cs2-dumper material signatures (FindParameter/UpdateParameter from materialsystem2) to swap shader params at draw time.
 
@@ -102,19 +100,7 @@ Standard CS2 chams approach: override the material on CCSGOPlayerAnimGraphState:
 
 ---
 
-## Fullbright — _broken — does not toggle in build 14153 even with both slots written; suspect engine reads a 3rd location or the cvar object pointer moved. Re-IDA scenesystem.dll for the new value-slot offset._
-
-ConVar mat_fullbright is registered FCVAR_CHEAT|FCVAR_DEVELOPMENTONLY. Source 2 ConVar layout (verified in scenesystem.dll sub_1804ACB70): cvar+0x30 flags DWORD, cvar+0x40 legacy value union, cvar+0x58 modern ConVar<T> value storage. The renderer's fullbright branch is gated on (flags & 0x400) == 0, so we MUST strip FCVAR_CHEAT (0x400) and FCVAR_DEVELOPMENTONLY (0x4000), then write the desired value to BOTH +0x40 (legacy) AND +0x58 (modern) slots — some code paths read each.
-
-### ConVars
-
-| Name | Strip Flags | Write Both Slots | Value |
-|---|---|---|---|
-| `mat_fullbright` | `0x4400` | true | 1 to enable / 0 to disable |
-
----
-
-## Third Person — _working_
+## Third Person
 
 Hook CCSGOViewAdviceService::OverrideView (signature OverrideView, client.dll). After calling the original (lets engine set up first-person camera), read the eye position out of CViewSetup, build forward from view angles, and rewrite CViewSetup origin to eye - forward*dist + (0,0,8). Leave angles untouched. Also flip the engine input flag at clientBase + dwCSGOInput + 0x229 to true so the local model renders. Restore to false on disable. CViewSetup field offsets (CS2 build 14152): origin=+0x490, angles=+0x4A0, fov=+0x230. Do NOT use c_thirdpersonshoulder ConVar — it's FCVAR_CHEAT and reads from cvar+0x58 (same gotchas as mat_fullbright); direct CViewSetup write is the canonical CS2 approach.
 
@@ -126,7 +112,7 @@ Hook CCSGOViewAdviceService::OverrideView (signature OverrideView, client.dll). 
 
 ---
 
-## Anti-Fog — _working_
+## Anti-Fog
 
 Disable every fog source per-entity. Cheap and total. env_fog_controller has fogparams_t embedded at +0x608: +0x14 colorPrimary, +0x18 colorSecondary, +0x24 start, +0x28 end, +0x30 maxDensity, +0x64 enable. env_cubemap_fog: +0x62C m_bActive, +0x630 m_flFogMaxOpacity, +0x60C/0x608 start/end distances. env_volumetric_fog_controller: +0x600 m_flScattering, +0x610 m_flDrawDistance, +0x64C m_bActive, +0x674 m_bStartDisabled. env_volumetric_fog_volume: +0x600 m_bActive, +0x620 m_flStrength.
 
@@ -144,7 +130,7 @@ Disable every fog source per-entity. Cheap and total. env_fog_controller has fog
 
 ---
 
-## No Color Correction — _working_
+## No Color Correction
 
 Color-correction LUT entities (color_correction designer name) ship on most maps and apply the mood grading (warm dust on Mirage, blue-grey on Anubis, etc). Disabling them is a free visibility upgrade. Zero m_flMaxWeight and m_flCurWeight, clear m_bEnabled and m_bEnabledOnClient[0], zero m_flCurWeightOnClient.
 
@@ -160,7 +146,7 @@ Color-correction LUT entities (color_correction designer name) ship on most maps
 
 ---
 
-## Night Mode / Asus Mode (Sky Tint via env_sky) — _working_
+## Night Mode / Asus Mode (Sky Tint via env_sky)
 
 For env_sky entities: m_vTintColor (Color32) at +0xFB9 and m_flBrightnessScale at +0xFC4 DO update live and are safe to poke per-tick. Use these for night/asus presets. The sky-tint hook (DrawSkyboxArray) handles dynamic per-frame color; this entity-write path handles the slower per-preset apply.
 
@@ -174,7 +160,7 @@ For env_sky entities: m_vTintColor (Color32) at +0xFB9 and m_flBrightnessScale a
 
 ---
 
-## ESP — Player Pawn Core — _working_
+## ESP — Player Pawn Core
 
 Iterate dwEntityList (client.dll global) — for each pawn read m_iHealth, m_lifeState (==ALIVE = 0), m_iTeamNum, m_pGameSceneNode → CGameSceneNode for world position, m_hActiveWeapon to look up the held weapon entity, m_iszPlayerName via m_hController → CCSPlayerController. m_vecAbsOrigin lives at +0xC8 on CGameSceneNode. World-to-screen uses dwViewMatrix (4x4 row-major).
 
@@ -199,7 +185,7 @@ Iterate dwEntityList (client.dll global) — for each pawn read m_iHealth, m_lif
 
 ---
 
-## ESP — Skeleton / Bones — _working_
+## ESP — Skeleton / Bones
 
 From the pawn → m_pGameSceneNode (+0x330) you reach a CSkeletonInstance (subclass of CGameSceneNode). Inside lives a CModelState at +0x150 whose m_modelSceneNode → CBoneState array is the source of truth for live bone positions. Each CBoneState is 32 bytes: position vec3 at +0x00, quat (4 floats) at +0x20 (engine layout). Bone count comes from the model resource. For ESP just read the chest/head bone indices from CSPlayer model: bone 6 = head, bone 5 = chest on the standard player skeleton.
 
@@ -212,7 +198,7 @@ From the pawn → m_pGameSceneNode (+0x330) you reach a CSkeletonInstance (subcl
 
 ---
 
-## Silent Aim / Aim Punch / No Recoil — _working_
+## Silent Aim / Aim Punch / No Recoil
 
 Recoil/spread is driven entirely by CCSPlayer_AimPunchServices on the pawn (+0x1490). View-angle correction for silent aim writes the desired angles into the engine's CSGOInput at clientBase + dwCSGOInput + 0x4F18 (m_angEyeAngles equivalent in CS2; double-check in your build's CSGOInput struct dump). No-recoil works by zero'ing the aim-punch cache vector before CalcViewModelView reads it, OR by patching the per-shot punch application in CCSPlayer_WeaponServices::FireBullet. The m_iShotsFired counter on CCSPlayerPawn (+0x1C5C) and m_flRecoilIndex on weapons (+0x17E0) drive the spread cone — silent-aim implementations usually compensate by reading both and applying the inverse aim-punch when computing the shot vector.
 
@@ -234,7 +220,7 @@ Recoil/spread is driven entirely by CCSPlayer_AimPunchServices on the pawn (+0x1
 
 ---
 
-## Money / Armor / Helmet / Score — _working_
+## Money / Armor / Helmet / Score
 
 Money lives on CCSPlayerController_InGameMoneyServices (m_iAccount @ +0x40). Armor + helmet on the pawn's CCSPlayer_ItemServices (m_ArmorValue +0x1C74 on pawn directly, m_bHasHelmet +0x49 / m_bHasDefuser +0x48 on the item-services block). Scoreboard kills/deaths/assists at CCSPlayerController_ActionTrackingServices +0x30..+0x38. Useful for ESP info panels and scoreboard reveal.
 
@@ -253,7 +239,7 @@ Money lives on CCSPlayerController_InGameMoneyServices (m_iAccount @ +0x40). Arm
 
 ---
 
-## Spotted / Glow (Radar Hack) — _working_
+## Spotted / Glow (Radar Hack)
 
 Force m_bSpotted = true on enemy CEntitySpottedState_t (lives at +0x8 inside the pawn's spotted-state block; m_bSpottedByMask at +0xC). Radar reads from this every frame, no engine hook needed. Also tweak the GlowProperty colour on the pawn for the chams-lite outline path.
 
@@ -266,7 +252,7 @@ Force m_bSpotted = true on enemy CEntitySpottedState_t (lives at +0x8 inside the
 
 ---
 
-## Rank Reveal (Premier MMR) — _working_
+## Rank Reveal (Premier MMR)
 
 Enemy competitive rank lives on CCSPlayerController +0x878 (m_iCompetitiveRanking). Predicted win/loss/tie at +0x884 / +0x888 / +0x88C. Available at warmup before the rank icons are censored.
 
@@ -281,13 +267,13 @@ Enemy competitive rank lives on CCSPlayerController +0x878 (m_iCompetitiveRankin
 
 ---
 
-## Globals — RVAs in client.dll — _working_
+## Globals — RVAs in client.dll
 
 These are the pointers/arrays the cheat reads first on every frame. They live in client.dll and shift on most updates — the rest of the catalogue is meaningless without these. dwLocalPlayerPawn + dwLocalPlayerController are pointer globals (deref once). dwEntityList is a CEntitySystem* (game scene → entity by handle). dwViewMatrix is a 4x4 float[16] used for world→screen. dwViewAngles is a Vector3 (pitch, yaw, roll). dwCSGOInput holds engine input flags + the +0x229 third-person bool and +0x4F18 view-angles slot.
 
 ---
 
-## Silent Aim — Anti-Detection Gate Stack (CS2 14152) — _working_
+## Silent Aim — Anti-Detection Gate Stack (CS2 14152)
 
 Full reverse-engineered server-trust gate set for hooked CSGOInputHistoryEntry::WriteSubtick (signature `48 89 5C 24 ? 55 57 41 56 48 8D 6C 24 ? 48 81 EC B0 00 00 00 8B 01 48 8B F9 81 4A 10 00 02`, unique match @ 0x180C53DB0 in build 14152). KEY DISCOVERY: the WriteSubtick entry is 12 floats in two halves — fe[4..6] is the REAL view-angle stream the server replays for spectators / GOTV / Overwatch, while fe[7..9] is the per-subtick shoot angles read ONLY on attack subticks (a3 != 0). Public internals overwrite both → flagged. Touching ONLY fe[7..9] AND ONLY when a3 != 0 keeps the demo identical to a legit player while still bending the bullet. 
 
@@ -325,7 +311,7 @@ On top of that, every gate below is a server-authoritative bool the engine itsel
 
 ---
 
-## Seeded Triggerbot — _working_
+## Seeded Triggerbot
 
 Per-tick seeded prediction. Reads the live spread seed (m_iShotsFired + m_aimPunchAngle) and re-runs Valve's spread RNG via the SpreadSeedGen + CalcSpread pair to compute exactly where the next bullet would fly, then traces from local eye to that point through the EngineTrace pipeline (TraceInitData/Info/Filter + TraceCreate + TraceGetInfo + TraceHandleBulletPen). Strict-window mode tests only ticks {0, +1} and ALL must hit before firing; wide-window mode accepts ANY hit in {0, +1, -1, +2}. Local eye position is projected by localVel * leadTime so test geometry matches engine fire-time eye pos. Predictor always tests REAL m_fAccuracyPenalty + m_flTurningInaccuracy — earlier 'perfect-shot' override that zeroed client spread caused server desync (kill sound but no damage); that path is OFF by default.
 
@@ -339,7 +325,7 @@ Per-tick seeded prediction. Reads the live spread seed (m_iShotsFired + m_aimPun
 
 ---
 
-## Aimbot / Trigger Cooperation — _working_
+## Aimbot / Trigger Cooperation
 
 Two-bug fix shipped this session. (1) Aimbot mid-snap caused angle desync between trigger predict and engine fire — trigger now defers whenever Aimbot::state.phase ∈ {REACTING, ATTACKING, CORRECTING} and only fires in PHASE_LOCKED or PHASE_IDLE. (2) Trigger's SendInput LBUTTON edges woke aimbot uninvited — aimbot's rawAim filter now rejects edges arriving inside the trigger's 80ms synth-click window via Triggerbot::g_synthClickUntilMs. 120ms debounce on rawAim release remains in place.
 
@@ -351,7 +337,7 @@ Two-bug fix shipped this session. (1) Aimbot mid-snap caused angle desync betwee
 
 ---
 
-## Kill Sound Override — _working_
+## Kill Sound Override
 
 Hooks the universal sound-emit dispatcher (EmitSoundByHandle) plus the soundsystem.dll convergence point (CSosOperatorSystem::StartSoundEvent) for name capture, and KillFeedbackEmitter for confirmed-kill detection. Plays a custom local sound on kill and (optionally) suppresses the Valve HS dink via DamageFeedbackEmitter + GetHitGroup. STABILITY: per-sound FlushFileBuffers was removed from the audio-thread log path (was stalling the engine audio thread and growing logs to 28MB/session); logging is OFF by default with a 5MB hard cap when re-enabled.
 
@@ -366,7 +352,7 @@ Hooks the universal sound-emit dispatcher (EmitSoundByHandle) plus the soundsyst
 
 ---
 
-## Skin Changer (paint kits) — _working_
+## Skin Changer (paint kits)
 
 Writes m_nFallbackPaintKit / m_nFallbackSeed / m_flFallbackWear / m_iEntityQuality on each weapon then forces the modern paint-apply path: ApplyEconCustomization(weapon, 1) → sub_181079790 → sub_18105AAF0 (which actually consumes the fallback fields and queues 'clientside_reload_custom_econ' to rebuild the composite material). RegenerateWeaponSkin alone is INSUFFICIENT — it only handles the legacy static paint table. GetCustomPaintKitIndex is polled to detect rejection and gate re-apply work instead of hammering ApplyEconCustomization every tick. Setting m_iItemIDLow/High to 0xFFFFFFFF forces the EconItemView lookup to fail → fallback path taken.
 
@@ -380,7 +366,7 @@ Writes m_nFallbackPaintKit / m_nFallbackSeed / m_flFallbackWear / m_iEntityQuali
 
 ---
 
-## Knife Model Swap — _working_
+## Knife Model Swap
 
 Spoofs m_nSubclassID on the knife entity, calls UpdateSubclass to re-bind the subclass-data ptr at weapon+0x388 (the per-knife sequence set), then AnimGraphRebuild(controller, 2) to tear down the existing CNmGraphInstance at controller+0x448 and let the manager re-bind from the (now-updated) vdata's animgraph. Without the rebuild the knife mesh swaps but inspect/deploy/swing animations stay on the OLD subclass's sequences (Emerald Butterfly mesh + default-knife inspect anim was the symptom).
 
@@ -394,19 +380,7 @@ Spoofs m_nSubclassID on the knife entity, calls UpdateSubclass to re-bind the su
 
 ---
 
-## Glove Changer — _broken_
-
-NOT WORKING in build 14158. Schema writes (m_nFallbackPaintKit on C_EconWearable, m_unMusicID etc.) propagate but the composite material fails to rebuild on the wearable's render slot. C_EconEntity::BuildLegacyGloveSkinMaterial sig is in the database but the call chain has not been wired end-to-end. Needs more research into CompositeMaterialPanoramaPanel_Init + the per-panel render-request path before this can be marked working.
-
----
-
-## Inventory Changer — _broken_
-
-WIP. Stub call sites and resolver scaffolding exist in features/skins/inventory_changer.h (CreateBaseTypeCache, CreateSOSubclassEconItem, GetInventoryManager, GetItemInLoadout, EquipItemInLoadout, GetEconItemSchema, GetAttributeDefinitionByName, SetDynamicAttributeValue) but the end-to-end inject-into-loadout flow is not yet functional. All sigs resolve cleanly — wiring is the blocker. Coming soon.
-
----
-
-## BHOP (Subtick) — _working_
+## BHOP (Subtick)
 
 Subtick-aware bunnyhop. Adds IN_JUMP to the buttons mask in CCSGOInput::CreateMove on the exact subtick the local pawn lands (m_fFlags & FL_ONGROUND transition). Avoids the tick-boundary miss that breaks naive +jump/-jump scripts on 64-tick servers with 128-Hz subticks.
 
