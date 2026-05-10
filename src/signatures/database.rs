@@ -1344,6 +1344,62 @@ pub static CS2_SIGNATURES: &[Signature] = &[
     // the engine ConVar layer reports back. 1 hit.
     Signature { name: "Engine::Host_FilterTime",              module: "engine2.dll", needle: "48 89 5C 24 10 48 89 74 24 18 48 89 4C 24 08 57 48 81 EC A0 00 00 00 48 8B BC 24 D0 00 00 00", resolve: NONE, extra_off: 0, prototype: "bool __fastcall sub_180210BF0(__int64 a1, float *a2)" },
 
+    // CClient::SendMovePacket — engine2!sub_180064F80 (~0x924). The
+    // per-tick client→server path: walks the queued usercmd ring,
+    // serializes them into a CCLCMsg_Move (logging
+    // `CL: SendMovePacket sending %d commands ...` and downgrading on
+    // overflow with `SendMovePacket overflowed trying to send %d
+    // commands, will try using %d!`), then appends a CNETMsg_Tick_t.
+    // Hooking here gives byte-level control over every outbound
+    // user-command packet — the canonical anchor for "rewrite
+    // outgoing CCLCMsg_Move", choked-packet exploits, and any tool
+    // that needs to inject / suppress / reorder usercmds AFTER the
+    // game DLL has produced them. 1 hit on 14160.
+    Signature { name: "Engine::CClient_SendMovePacket",       module: "engine2.dll", needle: "40 55 57 41 55 48 8D AC 24 90 E0 FF FF B8 70 20 00 00 E8 ? ? ? ? 48 2B E0 4C 8B E9 C7 44 24 20 FF FF FF FF", resolve: NONE, extra_off: 0, prototype: "char __fastcall sub_180064F80(__int64 a1)" },
+
+    // CGameEventSystem::PostEventAbstract — engine2!sub_180215830
+    // (~0x333). Every IGameEvent fired through the engine — server
+    // OR client — funnels through this single function (logs
+    // `GameEvent: Posting %s (id:%d group:'%s') from code`). Hook to
+    // intercept / log / drop / mutate any game event before it
+    // reaches its registered listeners (player_death, weapon_fire,
+    // round_start, …) — the universal "see every event" anchor that
+    // beats the per-listener vtable thunks. Also branches into
+    // CBidirMsg_RebroadcastGameEvent serialization so events on the
+    // server side can be diverted from the wire here. 1 hit.
+    Signature { name: "Engine::CGameEventSystem_PostEventAbstract", module: "engine2.dll", needle: "48 89 5C 24 10 48 89 74 24 18 48 89 7C 24 20 55 41 54 41 55 41 56 41 57 48 8D 6C 24 F1 48 81 EC A0 00 00 00 4C 8B 65 67 4C 8B F1", resolve: NONE, extra_off: 0, prototype: "__int64 __fastcall sub_180215830(_BYTE *a1, unsigned int a2, char a3, int a4, __int64 *a5, __int64 a6, __int64 a7, __int64 a8, char a9)" },
+
+    // CInputService::ProcessConVar — engine2!sub_1801C30B0 (~0x4B6).
+    // Engine-side handler that takes a CNETMsg_SetConVar tied to an
+    // input-service slot and applies it (player name, voice volume,
+    // network rate, etc.). The single dispatch point that bridges
+    // CCSGOInput convars from the protobuf layer into the live
+    // CCvar registry — useful for blocking server-pushed convar
+    // overrides (e.g. fps_max stomps, sv_cheats-tied feature flips)
+    // and for spoofing the client's reported input convars to the
+    // server. 1 hit.
+    Signature { name: "Engine::CInputService_ProcessConVar",  module: "engine2.dll", needle: "48 89 5C 24 08 48 89 74 24 10 48 89 7C 24 18 55 41 54 41 55 41 56 41 57 48 8D AC 24 40 F3 FF FF 48 81 EC C0 0D 00 00", resolve: NONE, extra_off: 0, prototype: "void __fastcall sub_1801C30B0(__int64 a1, __int64 a2)" },
+
+    // CHostStateMgr::HostStateRequest::Start — engine2!sub_180218DF0
+    // (~0x7A4). The state-transition kernel of the engine: every
+    // disconnect → main-menu → map-load → map-change → quit cycle is
+    // dispatched through this function (logs `HostStateRequest::Start(
+    // HSR_GAME / HSR_QUIT / HSR_SOURCETV_RELAY / HSR_IDLE )`). Hook
+    // to gate / intercept / log map changes (good for "auto-reconnect
+    // on kick", server-list bootstrap automation, demo session
+    // splitting, anti-disconnect features). 1 hit.
+    Signature { name: "Engine::CHostStateMgr_HostStateRequest_Start", module: "engine2.dll", needle: "40 53 48 83 EC 40 8B 01 48 8B D9 C6 41 18 01 83 F8 02 74 07 83 F8 04 75 21 EB 0D 8B 49 20 83 E9 06 74 17 83 F9 01 74 12", resolve: NONE, extra_off: 0, prototype: "void __fastcall sub_180218DF0(__int64 a1, __int64 a2)" },
+
+    // CHLTVClient::SendSnapshot — engine2!sub_180121FC0 (~0xAC2).
+    // The per-tick HLTV/SourceTV snapshot writer: builds the delta
+    // packet entities + string-table updates that get broadcast to
+    // every spectator client and recorded into the demo file (logs
+    // `CHLTVClient::SendSnapshot: Failed to serialize CNETMsg_Tick_t`).
+    // Hookable for SourceTV-side tooling (anti-leak / demo
+    // sanitization, per-spectator entity filtering, custom relay
+    // replay rewrites). 1 hit.
+    Signature { name: "Engine::CHLTVClient_SendSnapshot",     module: "engine2.dll", needle: "48 89 54 24 10 48 89 4C 24 08 55 53 56 57 41 56 41 57 48 8D 6C 24 88 48 81 EC 78 01 00 00 48 8D 05 ? ? ? ? 48 C7 45 18 7A 02 00 00", resolve: NONE, extra_off: 0, prototype: "char __fastcall sub_180121FC0(__int64 a1, __int64 a2)" },
+
     // ==================================================================
     // Additional string-ref anchors (enhanced_signatures.h) ------------
     // ==================================================================

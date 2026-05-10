@@ -5928,7 +5928,7 @@
         {
           "index": 16,
           "module": "engine2.dll",
-          "name": "method_16",
+          "name": "Engine::CGameEventSystem_PostEventAbstract",
           "rva": "0x215830"
         },
         {
@@ -6506,7 +6506,7 @@
         {
           "index": 16,
           "module": "engine2.dll",
-          "name": "method_16",
+          "name": "Engine::CGameEventSystem_PostEventAbstract",
           "rva": "0x215830"
         },
         {

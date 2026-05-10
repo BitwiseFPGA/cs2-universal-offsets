@@ -320,7 +320,12 @@ namespace cs2::signatures {
         inline constexpr std::string_view Cvar_RegisterConVar = "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 48 89 7C 24 20 41 54 41 56 41 57 48 81 EC D0 00 00";
         inline constexpr std::string_view Cvar_RevertFlaggedCvars_OnSvCheatsChange = "40 53 48 83 EC 20 48 8B 41 08 48 8B D9 8B 50 30";
         inline constexpr std::string_view DisablePvsAccessor = "48 8D 0D ? ? ? ? 33 D2 FF 50 30 48 8B CF C7";
+        inline constexpr std::string_view Engine__CClient_SendMovePacket = "40 55 57 41 55 48 8D AC 24 90 E0 FF FF B8 70 20";
+        inline constexpr std::string_view Engine__CGameEventSystem_PostEventAbstract = "48 89 5C 24 10 48 89 74 24 18 48 89 7C 24 20 55 41 54 41 55 41 56 41 57 48 8D 6C 24 F1 48 81 EC";
+        inline constexpr std::string_view Engine__CHLTVClient_SendSnapshot = "48 89 54 24 10 48 89 4C 24 08 55 53 56 57 41 56";
         inline constexpr std::string_view Engine__CHLTVClient_SetSignonState = "40 55 53 41 55 41 56 41 57 48 8D 6C 24 C9 48 81";
+        inline constexpr std::string_view Engine__CHostStateMgr_HostStateRequest_Start = "40 53 48 83 EC 40 8B 01 48 8B D9 C6 41 18 01 83";
+        inline constexpr std::string_view Engine__CInputService_ProcessConVar = "48 89 5C 24 08 48 89 74 24 10 48 89 7C 24 18 55 41 54 41 55 41 56 41 57 48 8D AC 24 40 F3 FF FF";
         inline constexpr std::string_view Engine__CNetworkGameClient_InternalProcessPacketEntities = "40 55 56 57 41 56 41 57 48 8D AC 24 40 FF FF FF";
         inline constexpr std::string_view Engine__CNetworkGameClient_ProcessServerInfo = "48 89 5C 24 08 57 48 83 EC 30 48 8B FA 48 8B D9";
         inline constexpr std::string_view Engine__CNetworkStringTableContainer_CreateStringTable = "40 53 41 56 48 83 EC 48 4C 8B F2 48 8B D9 48 8B";
@@ -1051,8 +1056,18 @@ namespace cs2::fn {
         using Cvar_RevertFlaggedCvars_OnSvCheatsChange_t = void(__fastcall*)(void*, ...);
         // __int64 __fastcall sub_18023D2A0(_DWORD *a1, __int64 a2, int a3, char a4)
         using DisablePvsAccessor_t = void(__fastcall*)(void*, ...);
+        // char __fastcall sub_180064F80(__int64 a1)
+        using Engine__CClient_SendMovePacket_t = void(__fastcall*)(void*, ...);
+        // __int64 __fastcall sub_180215830(_BYTE *a1, unsigned int a2, char a3, int a4, __int64 *a5, __int64 a6, __int64 a7, __int64 a8, char a9)
+        using Engine__CGameEventSystem_PostEventAbstract_t = void(__fastcall*)(void*, ...);
+        // char __fastcall sub_180121FC0(__int64 a1, __int64 a2)
+        using Engine__CHLTVClient_SendSnapshot_t = void(__fastcall*)(void*, ...);
         // char __fastcall sub_180123630(__int64 a1, int a2, __int64 a3, int a4)
         using Engine__CHLTVClient_SetSignonState_t = void(__fastcall*)(void*, ...);
+        // void __fastcall sub_180218DF0(__int64 a1, __int64 a2)
+        using Engine__CHostStateMgr_HostStateRequest_Start_t = void(__fastcall*)(void*, ...);
+        // void __fastcall sub_1801C30B0(__int64 a1, __int64 a2)
+        using Engine__CInputService_ProcessConVar_t = void(__fastcall*)(void*, ...);
         // void __fastcall sub_1800483A0(__int64 a1, __int64 a2)
         using Engine__CNetworkGameClient_InternalProcessPacketEntities_t = void(__fastcall*)(void*, ...);
         // char __fastcall sub_18006B120(__int64 a1, __int64 a2)

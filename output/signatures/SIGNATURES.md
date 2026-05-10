@@ -2,7 +2,7 @@
 
 _This file is regenerated on every successful run of `cs2-sdk`._
 
-**498/544 signatures resolved across 18 module(s).**
+**503/549 signatures resolved across 18 module(s).**
 
 ## `animationsystem.dll`
 
@@ -323,7 +323,12 @@ _This file is regenerated on every successful run of `cs2-sdk`._
 | `Cvar_RegisterConVar` | `__int128 *__fastcall sub_1803FC080(_QWORD *a1, __int64 a2, __int64 a3, __int64 a4, __int128 *a5)` | `raw` | `0x7FFF6182BBD0` | `0x3FBBD0` | `48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 48 89 7C 24 20 41 54 41 56 41 57 48 81 EC D0 00 00` |
 | `Cvar_RevertFlaggedCvars_OnSvCheatsChange` | `void __fastcall sub_18009C1F0(__int64 a1, __int64 a2, _BYTE *a3, char *a4)` | `raw` | `0x7FFF614CC1F0` | `0x9C1F0` | `40 53 48 83 EC 20 48 8B 41 08 48 8B D9 8B 50 30 48 C1 EA 0C F6 C2 01 0F 85` |
 | `DisablePvsAccessor` | `__int64 __fastcall sub_18023D2A0(_DWORD *a1, __int64 a2, int a3, char a4)` | `raw` | `0x7FFF6166D3D2` | `0x23D3D2` | `48 8D 0D ? ? ? ? 33 D2 FF 50` |
+| `Engine::CClient_SendMovePacket` | `char __fastcall sub_180064F80(__int64 a1)` | `raw` | `0x7FFF61494F80` | `0x64F80` | `40 55 57 41 55 48 8D AC 24 90 E0 FF FF B8 70 20 00 00 E8 ? ? ? ? 48 2B E0 4C 8B E9 C7 44 24 20 FF FF FF FF` |
+| `Engine::CGameEventSystem_PostEventAbstract` | `__int64 __fastcall sub_180215830(_BYTE *a1, unsigned int a2, char a3, int a4, __int64 *a5, __int64 a6, __int64 a7, __int64 a8, char a9)` | `raw` | `0x7FFF61645830` | `0x215830` | `48 89 5C 24 10 48 89 74 24 18 48 89 7C 24 20 55 41 54 41 55 41 56 41 57 48 8D 6C 24 F1 48 81 EC A0 00 00 00 4C 8B 65 67 4C 8B F1` |
+| `Engine::CHLTVClient_SendSnapshot` | `char __fastcall sub_180121FC0(__int64 a1, __int64 a2)` | `raw` | `0x7FFF61551FC0` | `0x121FC0` | `48 89 54 24 10 48 89 4C 24 08 55 53 56 57 41 56 41 57 48 8D 6C 24 88 48 81 EC 78 01 00 00 48 8D 05 ? ? ? ? 48 C7 45 18 7A 02 00 00` |
 | `Engine::CHLTVClient_SetSignonState` | `char __fastcall sub_180123630(__int64 a1, int a2, __int64 a3, int a4)` | `raw` | `0x7FFF61553630` | `0x123630` | `40 55 53 41 55 41 56 41 57 48 8D 6C 24 C9 48 81 EC E0 00 00 00 45 8B E8 8B DA 4C 8B F9 45 33 F6` |
+| `Engine::CHostStateMgr_HostStateRequest_Start` | `void __fastcall sub_180218DF0(__int64 a1, __int64 a2)` | `raw` | `0x7FFF61648DF0` | `0x218DF0` | `40 53 48 83 EC 40 8B 01 48 8B D9 C6 41 18 01 83 F8 02 74 07 83 F8 04 75 21 EB 0D 8B 49 20 83 E9 06 74 17 83 F9 01 74 12` |
+| `Engine::CInputService_ProcessConVar` | `void __fastcall sub_1801C30B0(__int64 a1, __int64 a2)` | `raw` | `0x7FFF615F30B0` | `0x1C30B0` | `48 89 5C 24 08 48 89 74 24 10 48 89 7C 24 18 55 41 54 41 55 41 56 41 57 48 8D AC 24 40 F3 FF FF 48 81 EC C0 0D 00 00` |
 | `Engine::CNetworkGameClient_InternalProcessPacketEntities` | `void __fastcall sub_1800483A0(__int64 a1, __int64 a2)` | `raw` | `0x7FFF614783A0` | `0x483A0` | `40 55 56 57 41 56 41 57 48 8D AC 24 40 FF FF FF 48 81 EC C0 01 00 00 65 48 8B 04 25 58 00 00 00` |
 | `Engine::CNetworkGameClient_ProcessServerInfo` | `char __fastcall sub_18006B120(__int64 a1, __int64 a2)` | `raw` | `0x7FFF6149B120` | `0x6B120` | `48 89 5C 24 08 57 48 83 EC 30 48 8B FA 48 8B D9 8B 0D ? ? ? ? BA 02 00 00 00 FF 15` |
 | `Engine::CNetworkStringTableContainer_CreateStringTable` | `__int64 __fastcall sub_18010C690(__int64 a1, const char *a2, __int64 a3)` | `raw` | `0x7FFF6153C690` | `0x10C690` | `40 53 41 56 48 83 EC 48 4C 8B F2 48 8B D9 48 8B 12 48 85 D2 0F 84 ? ? ? ? 80 79 34 00` |

@@ -1056,7 +1056,7 @@ namespace cs2::vtables {
             inline constexpr std::ptrdiff_t method_13                                        =   13; // engine2.dll + 0x2152E0
             inline constexpr std::ptrdiff_t method_14                                        =   14; // engine2.dll + 0x2153E0
             inline constexpr std::ptrdiff_t method_15                                        =   15; // engine2.dll + 0x215B70
-            inline constexpr std::ptrdiff_t method_16                                        =   16; // engine2.dll + 0x215830
+            inline constexpr std::ptrdiff_t Engine__CGameEventSystem_PostEventAbstract       =   16; // engine2.dll + 0x215830
             inline constexpr std::ptrdiff_t method_17                                        =   17; // engine2.dll + 0x215460
             inline constexpr std::ptrdiff_t method_18                                        =   18; // engine2.dll + 0x216200
             inline constexpr std::ptrdiff_t method_19                                        =   19; // engine2.dll + 0x2161F0
@@ -1155,7 +1155,7 @@ namespace cs2::vtables {
             inline constexpr std::ptrdiff_t method_13                                        =   13; // engine2.dll + 0x2152E0
             inline constexpr std::ptrdiff_t method_14                                        =   14; // engine2.dll + 0x2153E0
             inline constexpr std::ptrdiff_t method_15                                        =   15; // engine2.dll + 0x215B70
-            inline constexpr std::ptrdiff_t method_16                                        =   16; // engine2.dll + 0x215830
+            inline constexpr std::ptrdiff_t Engine__CGameEventSystem_PostEventAbstract       =   16; // engine2.dll + 0x215830
             inline constexpr std::ptrdiff_t method_17                                        =   17; // engine2.dll + 0x215460
             inline constexpr std::ptrdiff_t method_18                                        =   18; // engine2.dll + 0x216200
             inline constexpr std::ptrdiff_t method_19                                        =   19; // engine2.dll + 0x2161F0
