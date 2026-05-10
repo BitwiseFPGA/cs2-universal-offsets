@@ -3762,7 +3762,7 @@
         {
           "index": 11,
           "module": "client.dll",
-          "name": "method_11",
+          "name": "Client::CPrediction_Update",
           "rva": "0xB4DA50"
         },
         {

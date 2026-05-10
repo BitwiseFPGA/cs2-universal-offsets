@@ -1460,6 +1460,48 @@ pub static CS2_SIGNATURES: &[Signature] = &[
     // budget label and is referenced from exactly one function.
     Signature { name: "Client::C_BasePlayerPawn_PrePhysicsSimulate", module: "client.dll", needle: "C_BasePlayerPawn::PrePhysicsSimulate", resolve: STRREF, extra_off: 0, prototype: "bool __fastcall sub_1808CF580(__int64 pawn)" },
 
+    // -------- Batch 11: bomb damage prediction + forum-sourced engine prediction --------
+    //
+    // Client::CPrediction_Update -- client!sub_180B4DA50. The per-tick
+    // engine-prediction core. Source: yougame.biz/threads/379565 (post by
+    // user `Ozelotick`). Wraps `pPrediction->Update(PREDICTION_REASON_*)`
+    // and processes a single CUserCmd against the local pawn -- the exact
+    // function HVH/legit cheats hook to (a) detect predicted vs replayed
+    // ticks via `bInPrediction`, (b) read CNetworkGameClient timing
+    // (`iServerTick`, `iDeltaTick`), and (c) advance `iSequenceNumber`
+    // on the active CUserCmd. Decompile-vetted: confirmed VProf budget
+    // label + "prediction.cpp" string + "CPrediction::Update" inside
+    // the function. Pattern verified 1-hit (forum's IDA pattern):
+    //   48 8B C4 89 50 ?? 48 89 48 ?? 55 53 57
+    //                ^^             ^^ wildcards = stack frame disp.
+    Signature { name: "Client::CPrediction_Update",           module: "client.dll", needle: "48 8B C4 89 50 ? 48 89 48 ? 55 53 57", resolve: NONE, extra_off: 0, prototype: "__int64 __fastcall sub_180B4DA50(__int64 thisptr, int reason)" },
+
+    // Client::C_PlantedC4_ClientThink -- client!sub_180C09800. The
+    // per-tick handler on the planted C4 (timer beeps, LED flicker,
+    // detonation countdown). Anchor string is the VPK soundevent
+    // "C4.ExplodeTriggerTrip" (1 xref, exclusive to ClientThink).
+    // CRITICAL for bomb-damage prediction overlays: this fires every
+    // sub-tick on the planted bomb so a hook here sees the live
+    // `m_flC4Blow` countdown + `m_vecAbsOrigin` -- pair with the
+    // m_flBombRadius netvar and the local pawn's eye position to
+    // compute live "damage you'd take if it blew now" using the
+    // canonical CS damage falloff `dmg = 500 * (1 - dist/radius*1.6)`
+    // and subtract armor. Updates every frame as the player moves.
+    Signature { name: "Client::C_PlantedC4_ClientThink",      module: "client.dll", needle: "C4.ExplodeTriggerTrip",                 resolve: STRREF, extra_off: 0, prototype: "_DWORD *__fastcall sub_180C09800(__int64 plantedC4)" },
+
+    // Client::CCSPlayer_MovementServices_ProcessMovement -- client!sub_1808476D0.
+    // The per-tick movement sanity validator that emits the four
+    // canonical `CCSPlayer_MovementServices(%s):  %d/%s Got a NaN ...`
+    // / `Got a velocity too low/high` Warning() lines. All four format
+    // strings xref this single function (size 0x704). Hook this to:
+    //   * detect server velocity-clamp events (movement-desync trigger),
+    //   * gate fakelag/edge-bug heuristics (the function runs *after*
+    //     ProcessUsercmds so origin/velocity are already-applied),
+    //   * read post-physics velocity for predicted recoil compensation.
+    // String chosen contains a literal newline so we use the four-arg
+    // prefix as the unique needle.
+    Signature { name: "Client::CCSPlayer_MovementServices_ValidateVelocity", module: "client.dll", needle: "CCSPlayer_MovementServices(%s):  %d/%s Got a NaN velocity on %s\n", resolve: STRREF, extra_off: 0, prototype: "void __fastcall sub_1808476D0(__int64 movementServices)" },
+
     // ==================================================================
     // Additional string-ref anchors (enhanced_signatures.h) ------------
     // ==================================================================
