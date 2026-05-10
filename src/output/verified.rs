@@ -1,4 +1,4 @@
-//! Verified working features — hand-curated catalogue of offsets, hooks
+﻿//! Verified working features â€” hand-curated catalogue of offsets, hooks
 //! and ConVar tricks that have been **confirmed working in a live CS2
 //! internal cheat** against the current build.
 //!
@@ -9,7 +9,7 @@
 //! and here is the gotcha you need to know to make it work."*
 //!
 //! a2x's pelite-based pipeline gives us the canonical RVAs and schema
-//! offsets — that data is the source of truth and lives in the regular
+//! offsets â€” that data is the source of truth and lives in the regular
 //! `offsets.*` / `client_dll.*` / `signatures.*` files. This catalogue
 //! cross-references those values with verified live-engine notes so a
 //! cheat developer can copy-paste a feature and have it work first try.
@@ -34,14 +34,14 @@ pub struct VerifiedField {
 pub struct VerifiedFeature {
     /// e.g. "No Smoke"
     pub name: &'static str,
-    /// "working" / "broken" / "partial" — at-a-glance status from the
+    /// "working" / "broken" / "partial" â€” at-a-glance status from the
     /// last live confirmation of this feature in the internal cheat.
     pub status: &'static str,
     /// short paragraph explaining what we tested + where to write
     pub summary: &'static str,
     /// fields touched
     pub fields: &'static [VerifiedField],
-    /// ConVar tricks (name + flags-to-strip + value-slot offset) — empty if N/A
+    /// ConVar tricks (name + flags-to-strip + value-slot offset) â€” empty if N/A
     pub convars: &'static [VerifiedConVar],
     /// Hooks installed (function + module + signature key in database.rs)
     pub hooks: &'static [VerifiedHook],
@@ -53,7 +53,7 @@ pub struct VerifiedConVar {
     pub name: &'static str,
     /// flags to strip from cvar+0x30 (e.g. FCVAR_CHEAT=0x400)
     pub strip_flags: u32,
-    /// modern Source 2 ConVar<T> value lives at cvar+0x58 — set true
+    /// modern Source 2 ConVar<T> value lives at cvar+0x58 â€” set true
     /// if we have to write *both* the legacy +0x40 union AND the
     /// modern +0x58 slot
     pub write_both_slots: bool,
@@ -78,87 +78,76 @@ pub struct VerifiedHook {
 // Build target: CS2 14152+ (April 2026).
 // ----------------------------------------------------------------------
 pub static FEATURES: &[VerifiedFeature] = &[
+    // ------------------------------------------------------------------
+    // ESP â€” entity walking, world-to-screen, bones, info panel data.
+    // ------------------------------------------------------------------
     VerifiedFeature {
-        name: "No Smoke",
+        name: "ESP",
         status: "working",
-        summary: "Iterate the entity list, identify C_SmokeGrenadeProjectile via \
-                  CEntityIdentity::m_designerName == \"smokegrenade_projectile\", \
-                  zero m_nSmokeEffectTickBegin and clear m_bDidSmokeEffect. Engine \
-                  re-evaluates every tick, so writes stick. Also zero \
-                  m_flLastSmokeOverlayAlpha on the local pawn for the screen overlay.",
+        summary: "Iterate dwEntityList (CEntitySystem* in client.dll) every frame. \
+                  For each pawn read m_iHealth (0 = dead), m_lifeState (0 = ALIVE), \
+                  m_iTeamNum (2=T, 3=CT). Reach the world position through \
+                  m_pGameSceneNode â†’ CGameSceneNode::m_vecAbsOrigin (+0xC8). For \
+                  named ESP follow m_hController â†’ CCSPlayerController and read \
+                  m_iszPlayerName. Held weapon comes from m_hActiveWeapon â†’ \
+                  C_BasePlayerWeapon::m_iItemDefinitionIndex (CSWeaponID). Project \
+                  with the engine's view matrix (dwViewMatrix, 4Ã—4 row-major) for \
+                  world-to-screen. \n\nSkeleton: m_pGameSceneNode is actually a \
+                  CSkeletonInstance for animated entities. Inside lives a \
+                  CModelState at +0x150 whose m_modelSceneNode resolves to a \
+                  CBoneState array (32 B per bone â€” vec3 pos at +0x00, quat at \
+                  +0x20). Bone 6 = head, bone 5 = chest on the standard CSPlayer \
+                  skeleton. \n\nInfo-panel extras (money / armor / scoreboard / \
+                  rank) come from the controller-side service blocks listed below.",
         fields: &[
-            VerifiedField { class: "C_SmokeGrenadeProjectile", field: "m_nSmokeEffectTickBegin", offset: 0x1250, ty: "int32",   note: "set 0 to skip the puff" },
-            VerifiedField { class: "C_SmokeGrenadeProjectile", field: "m_bDidSmokeEffect",       offset: 0x1254, ty: "bool",    note: "set false" },
-            VerifiedField { class: "C_CSPlayerPawn",           field: "m_flLastSmokeOverlayAlpha", offset: 0x1420, ty: "float",   note: "local pawn's screen overlay alpha; set 0" },
+            // Core pawn fields
+            VerifiedField { class: "C_BaseEntity",            field: "m_pGameSceneNode",     offset: 0x330,  ty: "CSkeletonInstance*", note: "deref â†’ bone matrix + abs origin" },
+            VerifiedField { class: "C_BaseEntity",            field: "m_iHealth",            offset: 0x34C,  ty: "int32",              note: "0 == dead" },
+            VerifiedField { class: "C_BaseEntity",            field: "m_lifeState",          offset: 0x354,  ty: "uint8",              note: "0 == ALIVE" },
+            VerifiedField { class: "C_BaseEntity",            field: "m_iTeamNum",           offset: 0x3EB,  ty: "uint8",              note: "2 = T, 3 = CT" },
+            VerifiedField { class: "CGameSceneNode",          field: "m_vecAbsOrigin",       offset: 0xC8,   ty: "Vector3",            note: "world position (ESP root)" },
+            VerifiedField { class: "CSkeletonInstance",       field: "m_modelState",         offset: 0x150,  ty: "CModelState",        note: "embedded; live bone array lives inside" },
+            // Controller (named ESP, scoreboard, rank)
+            VerifiedField { class: "CCSPlayerController",     field: "m_iszPlayerName",      offset: 0x6F0,  ty: "char[128]",          note: "UTF-8 nickname" },
+            VerifiedField { class: "CCSPlayerController",     field: "m_hPawn",              offset: 0x6BC,  ty: "CHandle",            note: "controller â†’ pawn handle" },
+            VerifiedField { class: "CCSPlayerController",     field: "m_iCompetitiveRanking", offset: 0x878, ty: "int32",              note: "Premier rating (revealed pre-warmup)" },
+            // Weapon (held-item ESP)
+            VerifiedField { class: "C_CSPlayerPawnBase",      field: "m_pWeaponServices",    offset: 0x11E0, ty: "ptr",                note: "â†’ active weapon handle" },
+            VerifiedField { class: "C_BasePlayerWeapon",      field: "m_iItemDefinitionIndex", offset: 0x1BA, ty: "uint16",           note: "CSWeaponID for the held weapon" },
+            VerifiedField { class: "C_BasePlayerWeapon",      field: "m_iClip1",             offset: 0x16D8, ty: "int32",              note: "current magazine count" },
+            // Money / armor / scoreboard for the info panel
+            VerifiedField { class: "CCSPlayerController_InGameMoneyServices", field: "m_iAccount", offset: 0x40,  ty: "int32", note: "current cash" },
+            VerifiedField { class: "C_CSPlayerPawn",          field: "m_ArmorValue",         offset: 0x1C74, ty: "int32",              note: "armor 0..100" },
+            VerifiedField { class: "CCSPlayer_ItemServices",  field: "m_bHasHelmet",         offset: 0x49,   ty: "bool",               note: "kevlar+helmet flag" },
+            VerifiedField { class: "CCSPlayerController_ActionTrackingServices", field: "m_iKills",   offset: 0x30, ty: "int32", note: "scoreboard kills" },
+            VerifiedField { class: "CCSPlayerController_ActionTrackingServices", field: "m_iDeaths",  offset: 0x34, ty: "int32", note: "scoreboard deaths" },
+            // Radar / spotted force
+            VerifiedField { class: "EntitySpottedState_t",    field: "m_bSpotted",           offset: 0x8,    ty: "bool",               note: "force true to reveal on radar" },
+            VerifiedField { class: "EntitySpottedState_t",    field: "m_bSpottedByMask",     offset: 0xC,    ty: "uint32[2]",          note: "OR with 0xFFFFFFFF to spot for everyone" },
         ],
         convars: &[],
         hooks: &[],
     },
-    VerifiedFeature {
-        name: "Smoke Color",
-        status: "working",
-        summary: "Same entity walk as No Smoke; write a Vector (3 floats * 255) to \
-                  m_vSmokeColor. Particle system reads this every frame.",
-        fields: &[
-            VerifiedField { class: "C_SmokeGrenadeProjectile", field: "m_vSmokeColor", offset: 0x125C, ty: "Vector3 (RGB 0..255)", note: "3 floats, multiply RGB by 255" },
-        ],
-        convars: &[],
-        hooks: &[],
-    },
-    VerifiedFeature {
-        name: "No Flash",
-        status: "working",
-        summary: "Zero m_flFlashDuration and m_flFlashMaxAlpha on the local pawn. \
-                  Trip the write only when duration > 0 to avoid spamming the engine.",
-        fields: &[
-            VerifiedField { class: "C_CSPlayerPawn", field: "m_flFlashDuration", offset: 0x1400, ty: "float", note: "set 0 to clear flash" },
-            VerifiedField { class: "C_CSPlayerPawn", field: "m_flFlashMaxAlpha", offset: 0x13FC, ty: "float", note: "set 0 for full removal, 0..255 for partial" },
-        ],
-        convars: &[],
-        hooks: &[],
-    },
-    VerifiedFeature {
-        name: "Skybox Tint",
-        status: "working",
-        summary: "Hook scenesystem.dll!DrawSkyboxArray, intercept the draw-primitive \
-                  pointer (3rd arg). Build 14152 moved the tint vec3 from +0x100 \
-                  to +0xE8 inside the skybox object — writing to the old +0x100 slot \
-                  poisons the renderer with NaN and crashes after ~60s. \
-                  Layout: +0xE8..+0xF0 RGB tint floats, +0xF4 mode int, \
-                  +0xF8..+0x104 four sun-angle floats. \
-                  Do NOT write to env_sky m_vTintColor — the renderer caches \
-                  material params at level setup and ignores entity writes.",
-        fields: &[
-            VerifiedField { class: "env_sky", field: "m_vTintColor",              offset: 0xFB9, ty: "Color32", note: "DOES NOT WORK at runtime — use the DrawSkyboxArray hook instead" },
-            VerifiedField { class: "env_sky", field: "m_vTintColorLightingOnly",  offset: 0xFBD, ty: "Color32", note: "Same caveat" },
-            VerifiedField { class: "env_sky", field: "m_flBrightnessScale",       offset: 0xFC4, ty: "float",   note: "DOES update live (independent code path)" },
-        ],
-        convars: &[],
-        hooks: &[
-            VerifiedHook {
-                function: "DrawSkyboxArray",
-                module: "scenesystem.dll",
-                signature: "DrawSkyboxArray",
-                action: "Patch RGB at primitive_obj+0xE8 before passing through to the original.",
-            },
-        ],
-    },
+
+    // ------------------------------------------------------------------
+    // FOV Changer â€” hook + per-tick controller / camera-services write.
+    // ------------------------------------------------------------------
     VerifiedFeature {
         name: "FOV Changer",
         status: "working",
-        summary: "Two-prong approach. (1) Hook GetWorldFov in client.dll \
-                  (signature SetWorldFov, E8-CALL @ +1) and return the desired \
-                  value when the local pawn is not scoped. (2) Every tick, write \
-                  the desired FOV into m_iFOV and m_iFOVStart on the camera \
-                  services AND into m_iDesiredFOV on the local controller \
-                  (canonical source the renderer reads). The controller-level \
-                  field is the one that gets reset back to default if you only \
-                  fight the camera-services side.",
+        summary: "Two-prong approach. (1) Hook GetWorldFov in client.dll (signature \
+                  SetWorldFov, E8-CALL @ +1) and return the desired value when the \
+                  local pawn is not scoped â€” keeps the value sticky against engine \
+                  resets. (2) Every tick write the desired FOV into m_iFOV and \
+                  m_iFOVStart on the camera services AND into m_iDesiredFOV on the \
+                  local controller. The controller-level field is the canonical \
+                  source the renderer reads; without it the camera-services side \
+                  gets clobbered back to default.",
         fields: &[
-            VerifiedField { class: "CBasePlayerController", field: "m_iDesiredFOV", offset: 0x784, ty: "uint32", note: "a2x-named m_iDesiredFOV_OnController" },
-            VerifiedField { class: "CCSPlayer_CameraServices", field: "m_iFOV",      offset: 0x290, ty: "uint32", note: "current camera FOV" },
-            VerifiedField { class: "CCSPlayer_CameraServices", field: "m_iFOVStart", offset: 0x294, ty: "uint32", note: "target camera FOV" },
-            VerifiedField { class: "C_CSPlayerPawn",            field: "m_pCameraServices", offset: 0x1218, ty: "CCSPlayer_CameraServices*", note: "deref to reach m_iFOV/m_iFOVStart" },
+            VerifiedField { class: "CBasePlayerController",     field: "m_iDesiredFOV", offset: 0x784,  ty: "uint32",                       note: "a2x-named m_iDesiredFOV_OnController â€” the canonical write" },
+            VerifiedField { class: "CCSPlayer_CameraServices",  field: "m_iFOV",        offset: 0x290,  ty: "uint32",                       note: "current camera FOV" },
+            VerifiedField { class: "CCSPlayer_CameraServices",  field: "m_iFOVStart",   offset: 0x294,  ty: "uint32",                       note: "target camera FOV" },
+            VerifiedField { class: "C_CSPlayerPawn",            field: "m_pCameraServices", offset: 0x1218, ty: "CCSPlayer_CameraServices*", note: "deref to reach m_iFOV / m_iFOVStart" },
         ],
         convars: &[],
         hooks: &[
@@ -170,483 +159,180 @@ pub static FEATURES: &[VerifiedFeature] = &[
             },
         ],
     },
+
+    // ------------------------------------------------------------------
+    // Aimbot â€” phase machine + WriteSubtick anti-detection gate stack.
+    // ------------------------------------------------------------------
     VerifiedFeature {
-        name: "Chams (Material Override)",
+        name: "Aimbot",
         status: "working",
-        summary: "Standard CS2 chams approach: override the material on \
-                  CCSGOPlayerAnimGraphState::DrawObject path or material pointers \
-                  on weapon/player render contexts. Use the cs2-dumper material \
-                  signatures (FindParameter/UpdateParameter from materialsystem2) \
-                  to swap shader params at draw time.",
-        fields: &[],
-        convars: &[],
-        hooks: &[
-            VerifiedHook { function: "GeneratePrimitives",       module: "scenesystem.dll",      signature: "CSceneAnimatableObject::GeneratePrimitives", action: "Substitute material on player/weapon scene objects." },
-            VerifiedHook { function: "FindParameter",            module: "materialsystem2.dll",  signature: "FindParameter",                              action: "Look up the param slot." },
-            VerifiedHook { function: "UpdateParameter",          module: "materialsystem2.dll",  signature: "UpdateParameter",                            action: "Write the new value." },
-        ],
-    },
-    VerifiedFeature {
-        name: "Fullbright",
-        status: "broken — does not toggle in build 14153 even with both slots written; suspect engine reads a 3rd location or the cvar object pointer moved. Re-IDA scenesystem.dll for the new value-slot offset.",
-        summary: "ConVar mat_fullbright is registered FCVAR_CHEAT|FCVAR_DEVELOPMENTONLY. \
-                  Source 2 ConVar layout (verified in scenesystem.dll sub_1804ACB70): \
-                  cvar+0x30 flags DWORD, cvar+0x40 legacy value union, cvar+0x58 \
-                  modern ConVar<T> value storage. The renderer's fullbright branch \
-                  is gated on (flags & 0x400) == 0, so we MUST strip FCVAR_CHEAT \
-                  (0x400) and FCVAR_DEVELOPMENTONLY (0x4000), then write the \
-                  desired value to BOTH +0x40 (legacy) AND +0x58 (modern) slots — \
-                  some code paths read each.",
-        fields: &[],
-        convars: &[
-            VerifiedConVar { name: "mat_fullbright", strip_flags: 0x4400, write_both_slots: true, value: "1 to enable / 0 to disable" },
-        ],
-        hooks: &[],
-    },
-    VerifiedFeature {
-        name: "Third Person",
-        status: "working",
-        summary: "Hook CCSGOViewAdviceService::OverrideView (signature OverrideView, \
-                  client.dll). After calling the original (lets engine set up \
-                  first-person camera), read the eye position out of CViewSetup, \
-                  build forward from view angles, and rewrite CViewSetup origin to \
-                  eye - forward*dist + (0,0,8). Leave angles untouched. \
-                  Also flip the engine input flag at clientBase + dwCSGOInput + 0x229 \
-                  to true so the local model renders. Restore to false on disable. \
-                  CViewSetup field offsets (CS2 build 14152): origin=+0x490, \
-                  angles=+0x4A0, fov=+0x230. \
-                  Do NOT use c_thirdpersonshoulder ConVar — it's FCVAR_CHEAT and \
-                  reads from cvar+0x58 (same gotchas as mat_fullbright); direct \
-                  CViewSetup write is the canonical CS2 approach.",
-        fields: &[],
-        convars: &[],
-        hooks: &[
-            VerifiedHook {
-                function: "OverrideView",
-                module: "client.dll",
-                signature: "CCSGOViewAdvice::OverrideView",
-                action: "Rewrite CViewSetup origin (offset 0x490) to a third-person position derived from view angles.",
-            },
-        ],
-    },
-    VerifiedFeature {
-        name: "Anti-Fog",
-        status: "working",
-        summary: "Disable every fog source per-entity. Cheap and total. \
-                  env_fog_controller has fogparams_t embedded at +0x608: +0x14 \
-                  colorPrimary, +0x18 colorSecondary, +0x24 start, +0x28 end, \
-                  +0x30 maxDensity, +0x64 enable. env_cubemap_fog: +0x62C m_bActive, \
-                  +0x630 m_flFogMaxOpacity, +0x60C/0x608 start/end distances. \
-                  env_volumetric_fog_controller: +0x600 m_flScattering, +0x610 \
-                  m_flDrawDistance, +0x64C m_bActive, +0x674 m_bStartDisabled. \
-                  env_volumetric_fog_volume: +0x600 m_bActive, +0x620 m_flStrength.",
-        fields: &[
-            VerifiedField { class: "C_FogController",                 field: "m_fog (params)",   offset: 0x608, ty: "fogparams_t", note: "+0x14 RGB primary, +0x18 RGB secondary, +0x24 start, +0x28 end, +0x30 density, +0x64 enable bool" },
-            VerifiedField { class: "C_EnvCubemapFog",                 field: "m_bActive",        offset: 0x62C, ty: "bool",        note: "set false" },
-            VerifiedField { class: "C_EnvCubemapFog",                 field: "m_flFogMaxOpacity",offset: 0x630, ty: "float",       note: "set 0" },
-            VerifiedField { class: "C_EnvVolumetricFogController",    field: "m_bActive",        offset: 0x64C, ty: "bool",        note: "set false" },
-            VerifiedField { class: "C_EnvVolumetricFogController",    field: "m_bStartDisabled", offset: 0x674, ty: "bool",        note: "set true" },
-            VerifiedField { class: "C_EnvVolumetricFogVolume",        field: "m_bActive",        offset: 0x600, ty: "bool",        note: "set false" },
-            VerifiedField { class: "C_EnvVolumetricFogVolume",        field: "m_flStrength",     offset: 0x620, ty: "float",       note: "set 0" },
-        ],
-        convars: &[],
-        hooks: &[],
-    },
-    VerifiedFeature {
-        name: "No Color Correction",
-        status: "working",
-        summary: "Color-correction LUT entities (color_correction designer name) ship \
-                  on most maps and apply the mood grading (warm dust on Mirage, \
-                  blue-grey on Anubis, etc). Disabling them is a free visibility \
-                  upgrade. Zero m_flMaxWeight and m_flCurWeight, clear m_bEnabled \
-                  and m_bEnabledOnClient[0], zero m_flCurWeightOnClient.",
-        fields: &[
-            VerifiedField { class: "C_ColorCorrection", field: "m_flMaxWeight",         offset: 0x61C, ty: "float", note: "set 0" },
-            VerifiedField { class: "C_ColorCorrection", field: "m_flCurWeight",         offset: 0x620, ty: "float", note: "set 0" },
-            VerifiedField { class: "C_ColorCorrection", field: "m_bEnabled",            offset: 0x824, ty: "bool",  note: "set false" },
-            VerifiedField { class: "C_ColorCorrection", field: "m_bEnabledOnClient[0]", offset: 0x828, ty: "bool",  note: "set false" },
-            VerifiedField { class: "C_ColorCorrection", field: "m_flCurWeightOnClient", offset: 0x82C, ty: "float", note: "set 0" },
-        ],
-        convars: &[],
-        hooks: &[],
-    },
-    VerifiedFeature {
-        name: "Night Mode / Asus Mode (Sky Tint via env_sky)",
-        status: "working",
-        summary: "For env_sky entities: m_vTintColor (Color32) at +0xFB9 and \
-                  m_flBrightnessScale at +0xFC4 DO update live and are safe to \
-                  poke per-tick. Use these for night/asus presets. The sky-tint \
-                  hook (DrawSkyboxArray) handles dynamic per-frame color; this \
-                  entity-write path handles the slower per-preset apply.",
-        fields: &[
-            VerifiedField { class: "env_sky", field: "m_vTintColor",             offset: 0xFB9, ty: "Color32", note: "RGBA 0..255 packed" },
-            VerifiedField { class: "env_sky", field: "m_vTintColorLightingOnly", offset: 0xFBD, ty: "Color32", note: "match m_vTintColor for consistency" },
-            VerifiedField { class: "env_sky", field: "m_flBrightnessScale",      offset: 0xFC4, ty: "float",   note: "1.0 = default" },
-        ],
-        convars: &[],
-        hooks: &[],
-    },
-    VerifiedFeature {
-        name: "ESP — Player Pawn Core",
-        status: "working",
-        summary: "Iterate dwEntityList (client.dll global) — for each pawn read \
-                  m_iHealth, m_lifeState (==ALIVE = 0), m_iTeamNum, m_pGameSceneNode \
-                  → CGameSceneNode for world position, m_hActiveWeapon to look up \
-                  the held weapon entity, m_iszPlayerName via m_hController → \
-                  CCSPlayerController. m_vecAbsOrigin lives at +0xC8 on \
-                  CGameSceneNode. World-to-screen uses dwViewMatrix (4x4 row-major).",
-        fields: &[
-            VerifiedField { class: "C_BaseEntity",            field: "m_pGameSceneNode", offset: 0x330, ty: "CGameSceneNode*", note: "deref → bone matrix + abs origin" },
-            VerifiedField { class: "C_BaseEntity",            field: "m_iHealth",        offset: 0x34C, ty: "int32",           note: "0 == dead" },
-            VerifiedField { class: "C_BaseEntity",            field: "m_lifeState",      offset: 0x354, ty: "uint8",           note: "0 == ALIVE" },
-            VerifiedField { class: "C_BaseEntity",            field: "m_iTeamNum",       offset: 0x3EB, ty: "uint8",           note: "2=T, 3=CT" },
-            VerifiedField { class: "CGameSceneNode",          field: "m_vecAbsOrigin",   offset: 0xC8,  ty: "Vector3",         note: "world position (read for ESP root)" },
-            VerifiedField { class: "C_CSPlayerPawnBase",      field: "m_pWeaponServices",offset: 0x11E0,ty: "ptr",             note: "pawn-side weapon services" },
-            VerifiedField { class: "C_CSPlayerPawnBase",      field: "m_pObserverServices", offset: 0x11F8, ty: "ptr",        note: "spectator target via +0x4C m_hObserverTarget" },
-            VerifiedField { class: "CCSPlayerController",     field: "m_iszPlayerName",  offset: 0x6F0, ty: "char[128]",       note: "UTF-8 nickname" },
-            VerifiedField { class: "CCSPlayerController",     field: "m_hPawn",          offset: 0x6BC, ty: "CHandle",         note: "handle → pawn entity" },
-            VerifiedField { class: "C_BasePlayerWeapon",      field: "m_iItemDefinitionIndex", offset: 0x1BA, ty: "uint16",    note: "weapon definition index (CSWeaponID)" },
-            VerifiedField { class: "C_BasePlayerWeapon",      field: "m_iClip1",         offset: 0x16D8,ty: "int32",           note: "current magazine count" },
-            VerifiedField { class: "C_CSPlayerPawn",          field: "m_iIDEntIndex",    offset: 0x33DC,ty: "CEntityIndex",    note: "entity the local pawn is looking at (handy for triggerbot)" },
-            VerifiedField { class: "C_CSObserverPawn",        field: "m_hObserverTarget",offset: 0x4C,  ty: "CHandle",         note: "current spectated entity (use when local is spectating)" },
-            VerifiedField { class: "C_CSPlayerPawn",          field: "m_vOldOrigin",     offset: 0x1390,ty: "Vector",          note: "previous-tick origin — useful for prediction / extrapolation" },
-        ],
-        convars: &[],
-        hooks: &[],
-    },
-    VerifiedFeature {
-        name: "ESP — Skeleton / Bones",
-        status: "working",
-        summary: "From the pawn → m_pGameSceneNode (+0x330) you reach a \
-                  CSkeletonInstance (subclass of CGameSceneNode). Inside lives a \
-                  CModelState at +0x150 whose m_modelSceneNode → CBoneState array \
-                  is the source of truth for live bone positions. Each CBoneState \
-                  is 32 bytes: position vec3 at +0x00, quat (4 floats) at +0x20 \
-                  (engine layout). Bone count comes from the model resource. For \
-                  ESP just read the chest/head bone indices from CSPlayer model: \
-                  bone 6 = head, bone 5 = chest on the standard player skeleton.",
-        fields: &[
-            VerifiedField { class: "C_BaseEntity",      field: "m_pGameSceneNode", offset: 0x330, ty: "CSkeletonInstance*", note: "actually CSkeletonInstance for animated entities" },
-            VerifiedField { class: "CSkeletonInstance", field: "m_modelState",     offset: 0x150, ty: "CModelState",        note: "embedded; bone array pointer is inside" },
-        ],
-        convars: &[],
-        hooks: &[],
-    },
-    VerifiedFeature {
-        name: "Silent Aim / Aim Punch / No Recoil",
-        status: "working",
-        summary: "Recoil/spread is driven entirely by CCSPlayer_AimPunchServices on \
-                  the pawn (+0x1490). View-angle correction for silent aim writes \
-                  the desired angles into the engine's CSGOInput at \
-                  clientBase + dwCSGOInput + 0x4F18 (m_angEyeAngles equivalent in \
-                  CS2; double-check in your build's CSGOInput struct dump). \
-                  No-recoil works by zero'ing the aim-punch cache vector before \
-                  CalcViewModelView reads it, OR by patching the per-shot punch \
-                  application in CCSPlayer_WeaponServices::FireBullet. The \
-                  m_iShotsFired counter on CCSPlayerPawn (+0x1C5C) and \
-                  m_flRecoilIndex on weapons (+0x17E0) drive the spread cone — \
-                  silent-aim implementations usually compensate by reading both \
-                  and applying the inverse aim-punch when computing the shot vector.",
-        fields: &[
-            VerifiedField { class: "C_CSPlayerPawn",       field: "m_pAimPunchServices",          offset: 0x1490, ty: "CCSPlayer_AimPunchServices*", note: "deref for punch arrays" },
-            VerifiedField { class: "C_CSPlayerPawn",       field: "m_iShotsFired",                offset: 0x1C5C, ty: "int32", note: "consecutive shots fired this trigger pull (drives spread)" },
-            VerifiedField { class: "C_CSWeaponBase",       field: "m_flRecoilIndex",              offset: 0x17E0, ty: "float", note: "recoil pattern index" },
-            VerifiedField { class: "C_CSWeaponBase",       field: "m_flNextPrimaryAttackTickRatio", offset: 0x16CC, ty: "float", note: "rate-of-fire gate" },
-            VerifiedField { class: "C_CSPlayerPawn",       field: "m_pWeaponServices",            offset: 0x11E0, ty: "ptr",  note: "owns FireBullet (recoil applied here)" },
-        ],
-        convars: &[],
-        hooks: &[
-            VerifiedHook {
-                function: "ConvarGet (engine FCVAR helper)",
-                module: "client.dll",
-                signature: "ConvarGet",
-                action: "Use during init to fetch sv_cheats / weapon_recoil_scale style cvars when bypassing recoil via cvar route.",
-            },
-        ],
-    },
-    VerifiedFeature {
-        name: "Money / Armor / Helmet / Score",
-        status: "working",
-        summary: "Money lives on CCSPlayerController_InGameMoneyServices \
-                  (m_iAccount @ +0x40). Armor + helmet on the pawn's \
-                  CCSPlayer_ItemServices (m_ArmorValue +0x1C74 on pawn directly, \
-                  m_bHasHelmet +0x49 / m_bHasDefuser +0x48 on the item-services \
-                  block). Scoreboard kills/deaths/assists at \
-                  CCSPlayerController_ActionTrackingServices +0x30..+0x38. Useful \
-                  for ESP info panels and scoreboard reveal.",
-        fields: &[
-            VerifiedField { class: "CCSPlayerController_InGameMoneyServices", field: "m_iAccount",  offset: 0x40,   ty: "int32", note: "current cash" },
-            VerifiedField { class: "C_CSPlayerPawn",                          field: "m_ArmorValue",offset: 0x1C74, ty: "int32", note: "armor 0..100" },
-            VerifiedField { class: "CCSPlayer_ItemServices",                  field: "m_bHasDefuser", offset: 0x48, ty: "bool",  note: "CT defuser flag" },
-            VerifiedField { class: "CCSPlayer_ItemServices",                  field: "m_bHasHelmet",  offset: 0x49, ty: "bool",  note: "kevlar+helmet flag" },
-            VerifiedField { class: "CCSPlayerController_ActionTrackingServices", field: "m_iKills",   offset: 0x30, ty: "int32", note: "scoreboard kills" },
-            VerifiedField { class: "CCSPlayerController_ActionTrackingServices", field: "m_iDeaths",  offset: 0x34, ty: "int32", note: "scoreboard deaths" },
-            VerifiedField { class: "CCSPlayerController_ActionTrackingServices", field: "m_iAssists", offset: 0x38, ty: "int32", note: "scoreboard assists" },
-            VerifiedField { class: "C_CSPlayerPawn",                          field: "m_unCurrentEquipmentValue", offset: 0x1C78, ty: "uint16", note: "rounded loadout $$" },
-        ],
-        convars: &[],
-        hooks: &[],
-    },
-    VerifiedFeature {
-        name: "Spotted / Glow (Radar Hack)",
-        status: "working",
-        summary: "Force m_bSpotted = true on enemy CEntitySpottedState_t (lives at \
-                  +0x8 inside the pawn's spotted-state block; m_bSpottedByMask at \
-                  +0xC). Radar reads from this every frame, no engine hook needed. \
-                  Also tweak the GlowProperty colour on the pawn for the chams-lite \
-                  outline path.",
-        fields: &[
-            VerifiedField { class: "EntitySpottedState_t", field: "m_bSpotted",       offset: 0x8, ty: "bool",     note: "force true to reveal on radar" },
-            VerifiedField { class: "EntitySpottedState_t", field: "m_bSpottedByMask", offset: 0xC, ty: "uint32[2]", note: "bit per spotter; OR with 0xFFFFFFFF" },
-        ],
-        convars: &[],
-        hooks: &[],
-    },
-    VerifiedFeature {
-        name: "Rank Reveal (Premier MMR)",
-        status: "working",
-        summary: "Enemy competitive rank lives on CCSPlayerController +0x878 \
-                  (m_iCompetitiveRanking). Predicted win/loss/tie at +0x884 / \
-                  +0x888 / +0x88C. Available at warmup before the rank icons are \
-                  censored.",
-        fields: &[
-            VerifiedField { class: "CCSPlayerController", field: "m_iCompetitiveRanking",                offset: 0x878, ty: "int32", note: "Premier rating" },
-            VerifiedField { class: "CCSPlayerController", field: "m_iCompetitiveRankingPredicted_Win",   offset: 0x884, ty: "int32", note: "+rating on win" },
-            VerifiedField { class: "CCSPlayerController", field: "m_iCompetitiveRankingPredicted_Loss",  offset: 0x888, ty: "int32", note: "-rating on loss" },
-            VerifiedField { class: "CCSPlayerController", field: "m_iCompetitiveRankingPredicted_Tie",   offset: 0x88C, ty: "int32", note: "+/- rating on draw" },
-        ],
-        convars: &[],
-        hooks: &[],
-    },
-    VerifiedFeature {
-        name: "Globals — RVAs in client.dll",
-        status: "working",
-        summary: "These are the pointers/arrays the cheat reads first on every \
-                  frame. They live in client.dll and shift on most updates — the \
-                  rest of the catalogue is meaningless without these. \
-                  dwLocalPlayerPawn + dwLocalPlayerController are pointer \
-                  globals (deref once). dwEntityList is a CEntitySystem* (game \
-                  scene → entity by handle). dwViewMatrix is a 4x4 float[16] \
-                  used for world→screen. dwViewAngles is a Vector3 (pitch, yaw, \
-                  roll). dwCSGOInput holds engine input flags + the +0x229 \
-                  third-person bool and +0x4F18 view-angles slot.",
-        fields: &[],
-        convars: &[],
-        hooks: &[],
-    },
-    VerifiedFeature {
-        name: "Silent Aim — Anti-Detection Gate Stack (CS2 14152)",
-        status: "working",
-        summary: "Full reverse-engineered server-trust gate set for hooked \
+        summary: "Per-tick phase machine driven from CCSGOInput::CreateMove (IDLE â†’ \
+                  REACTING â†’ ATTACKING â†’ CORRECTING â†’ LOCKED). Target selection \
+                  scores enemies on FOV delta, distance, visibility (engine trace) \
+                  and weighting flags. Final angle delivery happens via a hooked \
                   CSGOInputHistoryEntry::WriteSubtick (signature \
-                  `48 89 5C 24 ? 55 57 41 56 48 8D 6C 24 ? 48 81 EC B0 00 00 00 \
-                  8B 01 48 8B F9 81 4A 10 00 02`, unique match @ 0x180C53DB0 in \
-                  build 14152). KEY DISCOVERY: the WriteSubtick entry is 12 \
-                  floats in two halves — fe[4..6] is the REAL view-angle stream \
-                  the server replays for spectators / GOTV / Overwatch, while \
-                  fe[7..9] is the per-subtick shoot angles read ONLY on attack \
-                  subticks (a3 != 0). Public internals overwrite both → flagged. \
-                  Touching ONLY fe[7..9] AND ONLY when a3 != 0 keeps the demo \
-                  identical to a legit player while still bending the bullet. \
-                  \n\nOn top of that, every gate below is a server-authoritative \
-                  bool the engine itself reads to decide whether the attack \
-                  produces a bullet. If we still write the angle while any of \
-                  these are tripped, we get the desync in the demo with NO \
-                  matching shot — pure liability. The full hard-suppress set: \
-                  freeze/warmup, m_bWaitForNoAttack (post-respawn / weapon-switch \
-                  attack-release lockout), no-scope sniper, m_bNeedsBoltAction \
-                  (AWP/SSG bolt cycle), m_bInReload, m_iClip1==0, \
-                  m_nNextPrimaryAttackTick > tickBase+1, m_bIsDefusing, \
-                  m_bIsGrabbingHostage, MoveType not WALK/FLYGRAVITY. Soft \
-                  throttle (multiplicative scale of the 28°/subtick flick cap): \
-                  m_bIsValveDS * 0.55, observerCount * 0.55, m_bSpotted+observers \
-                  * 0.65, horiz-speed > 80u/s linear-ramps to 0.5 (>180u/s caps), \
-                  ±0.10° LCG jitter. Crosshair-aligned bypass: when local \
-                  m_iIDEntIndex resolves (via slot→controller→m_hPlayerPawn) to \
-                  the same pawn as the silent-aim target, the throttle is \
-                  bypassed (the player legitimately had the crosshair on them).",
+                  `48 89 5C 24 ? 55 57 41 56 48 8D 6C 24 ? 48 81 EC B0 00 00 00 8B \
+                  01 48 8B F9 81 4A 10 00 02`, unique match @ 0x180C53DB0 in build \
+                  14152) so the override only touches per-subtick shoot angles \
+                  (fe[7..9]) on attack subticks (a3 != 0). The real view-angle \
+                  stream replayed for spectators / GOTV / Overwatch (fe[4..6]) is \
+                  NEVER touched â€” public internals overwrite both and trip every \
+                  demo-review heuristic. \n\nHard-suppress gates (any true â‡’ skip \
+                  the angle write entirely): freeze / warmup, m_bWaitForNoAttack \
+                  (post-respawn / weapon-switch lockout), no-scope sniper, \
+                  m_bNeedsBoltAction (AWP/SSG bolt cycle), m_bInReload, \
+                  m_iClip1 == 0, m_nNextPrimaryAttackTick > tickBase + 1, \
+                  m_bIsDefusing, m_bIsGrabbingHostage, MoveType not WALK / \
+                  FLYGRAVITY. Soft throttle scales the 28Â°/subtick flick cap: \
+                  m_bIsValveDS Ã— 0.55, observerCount Ã— 0.55, m_bSpotted+observers \
+                  Ã— 0.65, horizontal speed > 80 u/s linearly ramps to 0.5 (caps at \
+                  180 u/s), Â±0.10Â° LCG jitter. Crosshair-aligned bypass: when \
+                  local m_iIDEntIndex resolves (slot â†’ controller â†’ m_hPlayerPawn) \
+                  to the silent-aim target, the throttle is bypassed (the player \
+                  legitimately had the crosshair on them).",
         fields: &[
-            // Hard-suppress gates (any true ⇒ skip the angle write).
-            VerifiedField { class: "C_CSGameRules",            field: "m_bFreezePeriod",          offset: 0x40,   ty: "bool",     note: "round freeze — no attacks possible; suppress" },
-            VerifiedField { class: "C_CSGameRules",            field: "m_bWarmupPeriod",          offset: 0x41,   ty: "bool",     note: "warmup — no attacks possible; suppress" },
-            VerifiedField { class: "C_CSGameRules",            field: "m_bIsValveDS",             offset: 0xA4,   ty: "bool",     note: "TRUE on Valve official MM (where Overwatch + VAC Live actually run) — soft-throttle to 0.55x" },
-            VerifiedField { class: "C_CSGameRules",            field: "m_bHasMatchStarted",       offset: 0xB0,   ty: "bool",     note: "match-state gate; useful for warmup-only conservative profile" },
-            VerifiedField { class: "C_CSPlayerPawn",           field: "m_bWaitForNoAttack",       offset: 0x1C68, ty: "bool",     note: "TRUE after respawn / weapon switch / round-restart until attack is RELEASED then re-pressed; suppress (firing through this is a textbook bot tell)" },
-            VerifiedField { class: "C_CSPlayerPawn",           field: "m_bIsDefusing",            offset: 0x1C4A, ty: "bool",     note: "server forbids attack while defusing; angle flick is worst possible signature" },
-            VerifiedField { class: "C_CSPlayerPawn",           field: "m_bIsGrabbingHostage",     offset: 0x1C4B, ty: "bool",     note: "server forbids attack while grabbing hostage; suppress" },
-            VerifiedField { class: "C_BaseEntity",             field: "m_MoveType",               offset: 0x525,  ty: "uint8 (MoveType_t)", note: "only 2 (WALK) and 4 (FLYGRAVITY) are normal play; LADDER=9 / NOCLIP=7 / OBSERVER=8 / NONE=0 ⇒ suppress" },
-            VerifiedField { class: "C_CSWeaponBaseGun",        field: "m_zoomLevel",              offset: 0x1CB0, ty: "int32",    note: "0=unscoped, 1/2=scoped — refuse silent-fire on AWP/SSG/G3SG1/SCAR-20 when zoom == 0 (no-scope detection signal)" },
-            VerifiedField { class: "C_CSWeaponBaseGun",        field: "m_bNeedsBoltAction",       offset: 0x1CCD, ty: "bool",     note: "AWP/SSG/Scout post-shot bolt-cycle lockout — server discards attacks until false" },
-            VerifiedField { class: "C_CSWeaponBase",           field: "m_bInReload",              offset: 0x17F4, ty: "bool",     note: "weapon mid-reload — no bullet possible; suppress" },
-            VerifiedField { class: "C_BasePlayerWeapon",       field: "m_iClip1",                 offset: 0x16D8, ty: "int32",    note: "clip count — silent fire with clip == 0 is server-discarded but angle still serialises; suppress" },
-            VerifiedField { class: "C_BasePlayerWeapon",       field: "m_nNextPrimaryAttackTick", offset: 0x16C8, ty: "int32",    note: "absolute server tick when next attack allowed; suppress when (nextTick - tickBase) > 1" },
-            VerifiedField { class: "C_BasePlayerWeapon",       field: "m_flNextPrimaryAttackTickRatio", offset: 0x16CC, ty: "float", note: "fractional component of next-attack tick" },
-            VerifiedField { class: "CBasePlayerController",    field: "m_nTickBase",              offset: 0x6B8,  ty: "int32",    note: "local tick counter the server uses for weapon timers (compare against m_nNextPrimaryAttackTick)" },
-            // Soft-throttle inputs (scale the per-subtick max-flick cap).
-            VerifiedField { class: "EntitySpottedState_t",     field: "m_bSpottedByMask",         offset: 0xC,    ty: "uint32[2]", note: "bit per spotter slot — when a real enemy has us in PVS, throttle silent flick to 0.65x (their POV demo will replay our suspicious aim snap)" },
-            VerifiedField { class: "C_CSPlayerPawn",           field: "m_iIDEntIndex",            offset: 0x33DC, ty: "int32",    note: "entity index local crosshair currently rests on — resolve via slot→controller→m_hPlayerPawn for slots 1..64; if it matches silent-aim target pawn, BYPASS the throttle (player legitimately aimed there)" },
-            VerifiedField { class: "C_BaseEntity",             field: "m_vecVelocity",            offset: 0x430,  ty: "Vector3",  note: "soft throttle scales (1.0 → 0.5 linear from 80u/s → 180u/s horizontal speed)" },
-            // Weapon classification for sniper-specific gates (no-scope, bolt-action).
-            VerifiedField { class: "C_EconEntity",             field: "m_iItemDefinitionIndex (abs)", offset: 0x15C2, ty: "uint16", note: "absolute on weapon entity = m_AttributeManager (0x13B8) + m_Item (0x50) + 0x1BA. Sniper IDs: AWP=9, SSG08=40, G3SG1=11, SCAR20=38" },
+            // Hard-suppress
+            VerifiedField { class: "C_CSGameRules",         field: "m_bFreezePeriod",          offset: 0x40,   ty: "bool",            note: "freeze â€” no attacks possible" },
+            VerifiedField { class: "C_CSGameRules",         field: "m_bWarmupPeriod",          offset: 0x41,   ty: "bool",            note: "warmup â€” no attacks possible" },
+            VerifiedField { class: "C_CSGameRules",         field: "m_bIsValveDS",             offset: 0xA4,   ty: "bool",            note: "TRUE on Valve official MM (Overwatch + VAC Live live here) â€” soft 0.55Ã—" },
+            VerifiedField { class: "C_CSGameRules",         field: "m_bHasMatchStarted",       offset: 0xB0,   ty: "bool",            note: "match-state gate" },
+            VerifiedField { class: "C_CSPlayerPawn",        field: "m_bWaitForNoAttack",       offset: 0x1C68, ty: "bool",            note: "post-respawn / weapon-switch attack-release lockout" },
+            VerifiedField { class: "C_CSPlayerPawn",        field: "m_bIsDefusing",            offset: 0x1C4A, ty: "bool",            note: "server forbids attack while defusing" },
+            VerifiedField { class: "C_CSPlayerPawn",        field: "m_bIsGrabbingHostage",     offset: 0x1C4B, ty: "bool",            note: "server forbids attack while grabbing hostage" },
+            VerifiedField { class: "C_BaseEntity",          field: "m_MoveType",               offset: 0x525,  ty: "MoveType_t",      note: "only WALK(2) / FLYGRAVITY(4) are normal play" },
+            VerifiedField { class: "C_CSWeaponBaseGun",     field: "m_zoomLevel",              offset: 0x1CB0, ty: "int32",           note: "0 = unscoped â€” refuse silent fire on snipers when zoom == 0" },
+            VerifiedField { class: "C_CSWeaponBaseGun",     field: "m_bNeedsBoltAction",       offset: 0x1CCD, ty: "bool",            note: "AWP/SSG/Scout bolt-cycle lockout" },
+            VerifiedField { class: "C_CSWeaponBase",        field: "m_bInReload",              offset: 0x17F4, ty: "bool",            note: "weapon mid-reload" },
+            VerifiedField { class: "C_BasePlayerWeapon",    field: "m_iClip1",                 offset: 0x16D8, ty: "int32",           note: "0 â‡’ no bullet possible" },
+            VerifiedField { class: "C_BasePlayerWeapon",    field: "m_nNextPrimaryAttackTick", offset: 0x16C8, ty: "int32",           note: "absolute server tick when next attack allowed" },
+            VerifiedField { class: "CBasePlayerController", field: "m_nTickBase",              offset: 0x6B8,  ty: "int32",           note: "local tick counter; compare against m_nNextPrimaryAttackTick" },
+            // Soft-throttle inputs
+            VerifiedField { class: "EntitySpottedState_t",  field: "m_bSpottedByMask",         offset: 0xC,    ty: "uint32[2]",       note: "bit per spotter â€” when a real enemy has us in PVS, throttle 0.65Ã—" },
+            VerifiedField { class: "C_CSPlayerPawn",        field: "m_iIDEntIndex",            offset: 0x33DC, ty: "int32",           note: "entity local crosshair rests on â€” bypass throttle when matches target" },
+            VerifiedField { class: "C_BaseEntity",          field: "m_vecVelocity",            offset: 0x430,  ty: "Vector3",         note: "soft throttle 1.0 â†’ 0.5 linear from 80 â†’ 180 u/s horizontal speed" },
+            // Spread / aim-punch services
+            VerifiedField { class: "C_CSPlayerPawn",        field: "m_pAimPunchServices",      offset: 0x1490, ty: "CCSPlayer_AimPunchServices*", note: "owns aim-punch cache vector" },
+            VerifiedField { class: "C_CSPlayerPawn",        field: "m_iShotsFired",            offset: 0x1C5C, ty: "int32",           note: "consecutive shots this trigger pull (drives spread)" },
+            VerifiedField { class: "C_CSWeaponBase",        field: "m_flRecoilIndex",          offset: 0x17E0, ty: "float",           note: "recoil pattern index" },
+            // Weapon ID for sniper-specific gates
+            VerifiedField { class: "C_EconEntity",          field: "m_iItemDefinitionIndex (abs)", offset: 0x15C2, ty: "uint16",      note: "abs on weapon = m_AttributeManager(0x13B8) + m_Item(0x50) + 0x1BA. Snipers: AWP=9, SSG08=40, G3SG1=11, SCAR20=38" },
         ],
         convars: &[],
         hooks: &[
+            VerifiedHook {
+                function: "CCSGOInput::CreateMove",
+                module: "client.dll",
+                signature: "CreateMove",
+                action: "Aimbot's primary tick â€” runs phase machine, performs target select + angle snap, sets fire latch.",
+            },
             VerifiedHook {
                 function: "CSGOInputHistoryEntry::WriteSubtick",
                 module: "client.dll",
                 signature: "48 89 5C 24 ? 55 57 41 56 48 8D 6C 24 ? 48 81 EC B0 00 00 00 8B 01 48 8B F9 81 4A 10 00 02",
-                action: "Per-subtick angle override. (1) BAIL if a3 (attack-flag arg) == 0 — non-attack subticks must NOT touch angles. (2) NEVER touch fe[4..6] (real view-angle stream replayed in demos). (3) Save fe[7..9], evaluate hard-suppress set; if any gate true call original unmodified, otherwise apply target-angles + soft-throttle scale + ±0.10° LCG jitter to fe[7..9] only, call original, restore fe[7..9].",
+                action: "Per-subtick angle override. (1) BAIL if a3 == 0. (2) NEVER touch fe[4..6]. (3) Save fe[7..9], evaluate hard-suppress; if any gate true call original unmodified, else apply target angle + soft-throttle + Â±0.10Â° LCG jitter to fe[7..9] only, call original, restore.",
             },
         ],
     },
 
     // ------------------------------------------------------------------
-    // Combat / sound additions verified live in the internal cheat
-    // through May 2026 (build 14158).
+    // Triggerbot â€” seeded predictor + cooperation with aimbot.
     // ------------------------------------------------------------------
     VerifiedFeature {
-        name: "Seeded Triggerbot",
+        name: "Triggerbot (Seeded)",
         status: "working",
-        summary: "Per-tick seeded prediction. Reads the live spread seed (m_iShotsFired \
-                  + m_aimPunchAngle) and re-runs Valve's spread RNG via \
-                  the SpreadSeedGen + CalcSpread pair to compute exactly where the \
-                  next bullet would fly, then traces from local eye to that point \
-                  through the EngineTrace pipeline (TraceInitData/Info/Filter + \
+        summary: "Per-tick seeded prediction. Reads the live spread seed \
+                  (m_iShotsFired + m_aimPunchAngle) and re-runs Valve's spread RNG \
+                  via SpreadSeedGen + CalcSpread to compute exactly where the next \
+                  bullet would fly, then traces from local eye to that point through \
+                  the EngineTrace pipeline (TraceInitData / Info / Filter + \
                   TraceCreate + TraceGetInfo + TraceHandleBulletPen). Strict-window \
                   mode tests only ticks {0, +1} and ALL must hit before firing; \
                   wide-window mode accepts ANY hit in {0, +1, -1, +2}. Local eye \
-                  position is projected by localVel * leadTime so test geometry \
-                  matches engine fire-time eye pos. Predictor always tests REAL \
-                  m_fAccuracyPenalty + m_flTurningInaccuracy — earlier 'perfect-shot' \
-                  override that zeroed client spread caused server desync (kill sound \
-                  but no damage); that path is OFF by default.",
-        fields: &[],
+                  position is projected by localVel Ã— leadTime so the test geometry \
+                  matches engine fire-time eye pos. \n\nUses the REAL \
+                  m_fAccuracyPenalty + m_flTurningInaccuracy in the predictor â€” \
+                  the earlier 'perfect-shot' override that zeroed client spread \
+                  caused server desync (kill sound but no damage); that path is \
+                  OFF by default. \n\nCooperates with aimbot: trigger defers \
+                  whenever Aimbot::state.phase âˆˆ {REACTING, ATTACKING, CORRECTING} \
+                  and only fires in PHASE_LOCKED or PHASE_IDLE. Trigger's \
+                  SendInput LBUTTON edges are masked out of aimbot's rawAim \
+                  filter via Triggerbot::g_synthClickUntilMs (80 ms window) so the \
+                  synthetic click can't wake aimbot uninvited. 120 ms debounce on \
+                  rawAim release.",
+        fields: &[
+            VerifiedField { class: "C_CSPlayerPawn",        field: "m_iIDEntIndex",       offset: 0x33DC, ty: "int32", note: "entity local crosshair currently rests on â€” primary target signal" },
+            VerifiedField { class: "C_CSPlayerPawn",        field: "m_iShotsFired",       offset: 0x1C5C, ty: "int32", note: "drives spread seed" },
+            VerifiedField { class: "C_CSPlayerPawn",        field: "m_pAimPunchServices", offset: 0x1490, ty: "CCSPlayer_AimPunchServices*", note: "deref for live aim-punch vec used in the seed" },
+        ],
         convars: &[],
         hooks: &[
-            VerifiedHook { function: "CCSPlayerAnimGraphState::CalcSpread", module: "client.dll", signature: "CalcSpread",     action: "Cache (mode, baseSpread, inaccuracy) per itemDef so the predictor can re-run the same math against the live seed." },
-            VerifiedHook { function: "NoSpread1",                            module: "client.dll", signature: "NoSpread1",      action: "Optional client-spread suppress for the perfect-shot path. Disabled by default — server desync risk." },
-            VerifiedHook { function: "TraceCreate",                          module: "client.dll", signature: "TraceCreate",    action: "Pass-through; used as the trace-pipeline entry point for predicted-shot vischecks." },
+            VerifiedHook { function: "CCSPlayerAnimGraphState::CalcSpread", module: "client.dll", signature: "CalcSpread",  action: "Cache (mode, baseSpread, inaccuracy) per itemDef so the predictor can re-run the same math against the live seed." },
+            VerifiedHook { function: "TraceCreate",                          module: "client.dll", signature: "TraceCreate", action: "Pass-through; entry point for predicted-shot vischecks." },
+            VerifiedHook { function: "NoSpread1",                            module: "client.dll", signature: "NoSpread1",   action: "Optional client-spread suppress for the perfect-shot path. DISABLED by default â€” server desync risk." },
         ],
     },
+
+    // ------------------------------------------------------------------
+    // Skin Changer â€” paint kits + composite material rebuild.
+    // ------------------------------------------------------------------
     VerifiedFeature {
-        name: "Aimbot / Trigger Cooperation",
-        status: "working",
-        summary: "Two-bug fix shipped this session. (1) Aimbot mid-snap caused angle \
-                  desync between trigger predict and engine fire — trigger now defers \
-                  whenever Aimbot::state.phase ∈ {REACTING, ATTACKING, CORRECTING} \
-                  and only fires in PHASE_LOCKED or PHASE_IDLE. (2) Trigger's SendInput \
-                  LBUTTON edges woke aimbot uninvited — aimbot's rawAim filter now \
-                  rejects edges arriving inside the trigger's 80ms synth-click window \
-                  via Triggerbot::g_synthClickUntilMs. 120ms debounce on rawAim release \
-                  remains in place.",
-        fields: &[],
-        convars: &[],
-        hooks: &[
-            VerifiedHook { function: "CCSGOInput::CreateMove", module: "client.dll", signature: "CreateMove", action: "Aimbot's primary tick — runs phase machine, performs angle snap, sets fire latch." },
-        ],
-    },
-    VerifiedFeature {
-        name: "Kill Sound Override",
-        status: "working",
-        summary: "Hooks the universal sound-emit dispatcher (EmitSoundByHandle) plus \
-                  the soundsystem.dll convergence point (CSosOperatorSystem::StartSoundEvent) \
-                  for name capture, and KillFeedbackEmitter for confirmed-kill detection. \
-                  Plays a custom local sound on kill and (optionally) suppresses the \
-                  Valve HS dink via DamageFeedbackEmitter + GetHitGroup. \
-                  STABILITY: per-sound FlushFileBuffers was removed from the audio-thread \
-                  log path (was stalling the engine audio thread and growing logs to \
-                  28MB/session); logging is OFF by default with a 5MB hard cap when \
-                  re-enabled.",
-        fields: &[],
-        convars: &[],
-        hooks: &[
-            VerifiedHook { function: "KillFeedbackEmitter",     module: "client.dll",      signature: "KillFeedbackEmitter",                action: "Detect confirmed kills (fires from engine damage flow, not aimbot lock state)." },
-            VerifiedHook { function: "DamageFeedbackEmitter",   module: "client.dll",      signature: "DamageFeedbackEmitter",              action: "Selectively skip the HS chirp via GetHitGroup branch (head=1)." },
-            VerifiedHook { function: "EmitSoundByHandle",       module: "client.dll",      signature: "EmitSoundByHandle",                  action: "Universal sound-name capture for filter/log." },
-            VerifiedHook { function: "StartSoundEvent",         module: "soundsystem.dll", signature: "CSosOperatorSystem_StartSoundEvent", action: "Convergence point that catches by-handle/by-hash variants the by-name path misses (HS dink)." },
-        ],
-    },
-    VerifiedFeature {
-        name: "Skin Changer (paint kits)",
+        name: "Skin Changer",
         status: "working",
         summary: "Writes m_nFallbackPaintKit / m_nFallbackSeed / m_flFallbackWear / \
                   m_iEntityQuality on each weapon then forces the modern paint-apply \
-                  path: ApplyEconCustomization(weapon, 1) → sub_181079790 → \
-                  sub_18105AAF0 (which actually consumes the fallback fields and queues \
-                  'clientside_reload_custom_econ' to rebuild the composite material). \
-                  RegenerateWeaponSkin alone is INSUFFICIENT — it only handles the \
-                  legacy static paint table. GetCustomPaintKitIndex is polled to \
-                  detect rejection and gate re-apply work instead of hammering \
-                  ApplyEconCustomization every tick. Setting m_iItemIDLow/High to \
-                  0xFFFFFFFF forces the EconItemView lookup to fail → fallback path \
-                  taken.",
-        fields: &[],
+                  path: ApplyEconCustomization(weapon, 1) â†’ sub_181079790 â†’ \
+                  sub_18105AAF0 (which actually consumes the fallback fields and \
+                  queues 'clientside_reload_custom_econ' to rebuild the composite \
+                  material). RegenerateWeaponSkin alone is INSUFFICIENT â€” it only \
+                  handles the legacy static paint table. GetCustomPaintKitIndex is \
+                  polled to detect rejection and gate re-apply work instead of \
+                  hammering ApplyEconCustomization every tick. Setting \
+                  m_iItemIDLow/High to 0xFFFFFFFF forces the EconItemView lookup \
+                  to fail â†’ fallback path taken.",
+        fields: &[
+            VerifiedField { class: "C_EconItemView", field: "m_iItemDefinitionIndex", offset: 0x1BA, ty: "uint16",  note: "weapon definition (CSWeaponID)" },
+            VerifiedField { class: "C_EconItemView", field: "m_iItemIDLow",           offset: 0x1C4, ty: "uint32",  note: "set 0xFFFFFFFF to force EconItemView lookup miss â†’ fallback path" },
+            VerifiedField { class: "C_EconItemView", field: "m_iItemIDHigh",          offset: 0x1C8, ty: "uint32",  note: "set 0xFFFFFFFF (paired with m_iItemIDLow)" },
+            VerifiedField { class: "C_EconItemView", field: "m_iEntityQuality",       offset: 0x1C0, ty: "int32",   note: "quality slot used by the composite shader" },
+            VerifiedField { class: "C_EconItemView", field: "m_nFallbackPaintKit",    offset: 0x1D0, ty: "uint32",  note: "paint kit ID (the actual 'skin')" },
+            VerifiedField { class: "C_EconItemView", field: "m_nFallbackSeed",        offset: 0x1D4, ty: "int32",   note: "pattern seed" },
+            VerifiedField { class: "C_EconItemView", field: "m_flFallbackWear",       offset: 0x1D8, ty: "float",   note: "0.0 = factory new, 1.0 = battle-scarred" },
+            VerifiedField { class: "C_EconItemView", field: "m_nFallbackStatTrak",    offset: 0x1DC, ty: "int32",   note: "StatTrak counter (-1 disables)" },
+        ],
         convars: &[],
         hooks: &[
-            VerifiedHook { function: "ApplyEconCustomization",          module: "client.dll", signature: "ApplyEconCustomization",          action: "Modern paint-apply entry; consumes m_nFallback* fields and queues composite rebuild." },
-            VerifiedHook { function: "RegenerateWeaponSkin",            module: "client.dll", signature: "RegenerateWeaponSkin",            action: "Legacy static-paint pass; called for completeness, NOT what makes modern skins visible." },
-            VerifiedHook { function: "GetCustomPaintKitIndex",          module: "client.dll", signature: "CEconItemView::GetCustomPaintKitIndex", action: "Read live paint kit to detect rejection." },
+            VerifiedHook { function: "ApplyEconCustomization",   module: "client.dll", signature: "ApplyEconCustomization",                action: "Modern paint-apply entry; consumes m_nFallback* and queues composite rebuild." },
+            VerifiedHook { function: "RegenerateWeaponSkin",     module: "client.dll", signature: "RegenerateWeaponSkin",                  action: "Legacy static-paint pass; called for completeness." },
+            VerifiedHook { function: "GetCustomPaintKitIndex",   module: "client.dll", signature: "CEconItemView::GetCustomPaintKitIndex", action: "Read live paint kit to detect rejection and gate re-apply." },
         ],
     },
+
+    // ------------------------------------------------------------------
+    // Knife Changer â€” model swap with full subclass + animgraph rebuild.
+    // ------------------------------------------------------------------
     VerifiedFeature {
-        name: "Knife Model Swap",
+        name: "Knife Changer",
         status: "working",
         summary: "Spoofs m_nSubclassID on the knife entity, calls UpdateSubclass to \
-                  re-bind the subclass-data ptr at weapon+0x388 (the per-knife sequence \
-                  set), then AnimGraphRebuild(controller, 2) to tear down the existing \
-                  CNmGraphInstance at controller+0x448 and let the manager re-bind \
-                  from the (now-updated) vdata's animgraph. Without the rebuild the \
-                  knife mesh swaps but inspect/deploy/swing animations stay on the \
-                  OLD subclass's sequences (Emerald Butterfly mesh + default-knife \
-                  inspect anim was the symptom).",
-        fields: &[],
-        convars: &[],
-        hooks: &[
-            VerifiedHook { function: "UpdateSubclass",   module: "client.dll", signature: "48 8B 41 10 48 8B D9 8B 50 30",                              action: "Re-bind subclass-data ptr at weapon+0x388." },
-            VerifiedHook { function: "AnimGraphRebuild", module: "client.dll", signature: "AnimGraphRebuild",                                            action: "Mode=2: destroy CNmGraphInstance and let CAnimGraphControllerManager re-bind from new vdata." },
-            VerifiedHook { function: "SetMeshGroupMask", module: "client.dll", signature: "SetMeshGroupMask",                                            action: "Refresh visible mesh after subclass change." },
+                  re-bind the subclass-data ptr at weapon+0x388 (the per-knife \
+                  sequence set), then AnimGraphRebuild(controller, 2) to tear \
+                  down the existing CNmGraphInstance at controller+0x448 and let \
+                  the manager re-bind from the (now-updated) vdata's animgraph. \
+                  Without the rebuild the knife mesh swaps but inspect / deploy / \
+                  swing animations stay on the OLD subclass's sequences (Emerald \
+                  Butterfly mesh + default-knife inspect anim was the symptom). \
+                  SetMeshGroupMask refreshes the visible mesh after the subclass \
+                  change.",
+        fields: &[
+            VerifiedField { class: "C_BasePlayerWeapon", field: "m_nSubclassID",        offset: 0x36C, ty: "uint32", note: "knife subclass key (drives mesh + sequences + animgraph)" },
+            VerifiedField { class: "C_BasePlayerWeapon", field: "m_iItemDefinitionIndex", offset: 0x1BA, ty: "uint16", note: "must match the knife type for the chosen subclass" },
         ],
-    },
-    VerifiedFeature {
-        name: "Glove Changer",
-        status: "broken",
-        summary: "NOT WORKING in build 14158. Schema writes (m_nFallbackPaintKit on \
-                  C_EconWearable, m_unMusicID etc.) propagate but the composite \
-                  material fails to rebuild on the wearable's render slot. C_EconEntity::\
-                  BuildLegacyGloveSkinMaterial sig is in the database but the call \
-                  chain has not been wired end-to-end. Needs more research into \
-                  CompositeMaterialPanoramaPanel_Init + the per-panel render-request \
-                  path before this can be marked working.",
-        fields: &[],
-        convars: &[],
-        hooks: &[],
-    },
-    VerifiedFeature {
-        name: "Inventory Changer",
-        status: "broken",
-        summary: "WIP. Stub call sites and resolver scaffolding exist in \
-                  features/skins/inventory_changer.h (CreateBaseTypeCache, \
-                  CreateSOSubclassEconItem, GetInventoryManager, GetItemInLoadout, \
-                  EquipItemInLoadout, GetEconItemSchema, GetAttributeDefinitionByName, \
-                  SetDynamicAttributeValue) but the end-to-end inject-into-loadout \
-                  flow is not yet functional. All sigs resolve cleanly — wiring is \
-                  the blocker. Coming soon.",
-        fields: &[],
-        convars: &[],
-        hooks: &[],
-    },
-    VerifiedFeature {
-        name: "BHOP (Subtick)",
-        status: "working",
-        summary: "Subtick-aware bunnyhop. Adds IN_JUMP to the buttons mask in \
-                  CCSGOInput::CreateMove on the exact subtick the local pawn lands \
-                  (m_fFlags & FL_ONGROUND transition). Avoids the tick-boundary \
-                  miss that breaks naive +jump/-jump scripts on 64-tick servers \
-                  with 128-Hz subticks.",
-        fields: &[],
         convars: &[],
         hooks: &[
-            VerifiedHook { function: "CCSGOInput::CreateMove", module: "client.dll", signature: "CreateMove", action: "Inject IN_JUMP on landing subtick when bhop enabled and m_iJump latch armed." },
+            VerifiedHook { function: "UpdateSubclass",   module: "client.dll", signature: "48 8B 41 10 48 8B D9 8B 50 30", action: "Re-bind subclass-data ptr at weapon+0x388 after writing m_nSubclassID." },
+            VerifiedHook { function: "AnimGraphRebuild", module: "client.dll", signature: "AnimGraphRebuild",              action: "Mode = 2: destroy CNmGraphInstance and re-bind from new vdata's animgraph." },
+            VerifiedHook { function: "SetMeshGroupMask", module: "client.dll", signature: "SetMeshGroupMask",              action: "Refresh visible mesh after subclass change." },
         ],
     },
 ];
@@ -763,7 +449,7 @@ pub fn render_md(build_number: Option<u32>) -> String {
 pub fn render_hpp(build_number: Option<u32>) -> String {
     let mut out = String::new();
     out.push_str("// =====================================================================\n");
-    out.push_str("// verified_features.hpp — hand-curated working CS2 cheat features\n");
+    out.push_str("// verified_features.hpp â€” hand-curated working CS2 cheat features\n");
     out.push_str("// =====================================================================\n");
     out.push_str("//\n");
     out.push_str("// Each entry is a known-good offset / hook / ConVar trick that has been\n");
@@ -787,7 +473,7 @@ pub fn render_hpp(build_number: Option<u32>) -> String {
             let cls = sanitize_ident(fld.class);
             let fname = sanitize_ident(fld.field);
             out.push_str(&format!(
-                "        constexpr std::ptrdiff_t {}__{} = 0x{:X}; // {} — {}\n",
+                "        constexpr std::ptrdiff_t {}__{} = 0x{:X}; // {} â€” {}\n",
                 cls, fname, fld.offset, fld.ty, fld.note,
             ));
         }
