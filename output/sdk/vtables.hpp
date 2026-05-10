@@ -319,7 +319,7 @@ namespace cs2::vtables {
             inline constexpr std::ptrdiff_t method_0                                         =    0; // client.dll + 0xCA5770
             inline constexpr std::ptrdiff_t method_1                                         =    1; // client.dll + 0xCA64D0
             inline constexpr std::ptrdiff_t method_2                                         =    2; // client.dll + 0xCA9290
-            inline constexpr std::ptrdiff_t method_3                                         =    3; // client.dll + 0xCA6A40
+            inline constexpr std::ptrdiff_t Client__CLegacyGameUI_Initialize                 =    3; // client.dll + 0xCA6A40
             inline constexpr std::ptrdiff_t method_4                                         =    4; // client.dll + 0xCAA2B0
             inline constexpr std::ptrdiff_t method_5                                         =    5; // client.dll + 0xCA9280
             inline constexpr std::ptrdiff_t method_6                                         =    6; // client.dll + 0xCA6880

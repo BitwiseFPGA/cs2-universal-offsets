@@ -2,7 +2,7 @@
 
 _This file is regenerated on every successful run of `cs2-sdk`._
 
-**505/551 signatures resolved across 18 module(s).**
+**509/555 signatures resolved across 18 module(s).**
 
 ## `animationsystem.dll`
 
@@ -136,6 +136,10 @@ _This file is regenerated on every successful run of `cs2-sdk`._
 | `ClearHUDWeaponIcon` | `__int64 __fastcall sub_180DEDDD0(__int64 a1, int a2, __int64 a3)` | `rel32` | `0x7FFF29A5E300` | `0xDEE300` | `E8 ? ? ? ? 8B F8 C6 84 24 ? ? ? ? ?` |
 | `Client::CCSGOHudVote_OnVoteResult` | `void __fastcall sub_180E14250(__int64 a1, int a2, const char *a3, int a4, __int64 a5)` | `raw` | `0x7FFF29A84250` | `0xE14250` | `48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 57 41 56 41 57 48 81 EC 90 01 00 00 65 48 8B 04 25 58 00 00 00 49 8B E8 44 8B 15 ? ? ? ? 8B FA` |
 | `Client::CCSGO_HudChat_OnSayText2` | `void __fastcall sub_1810C3D50(int a1, __int64 a2)` | `raw` | `0x7FFF29D33D50` | `0x10C3D50` | `48 89 5C 24 08 55 56 57 41 54 41 55 41 56 41 57 48 8D AC 24 70 F3 FF FF 48 81 EC 90 0D 00 00 81 A5 DC 0C 00 00 FF FF 0F FF 33 F6 8B 5A 6C 48 8B` |
+| `Client::CLegacyGameUI_Initialize` | `__int64 __fastcall sub_180CA6A40(__int64 thisptr)` | `stringref` | `0x7FFF29916A40` | `0xCA6A40` | `"CLegacyGameUI::Initialize() failed to get necessary interfaces\n"` |
+| `Client::C_BasePlayerPawn_PrePhysicsSimulate` | `bool __fastcall sub_1808CF580(__int64 pawn)` | `stringref` | `0x7FFF2953F580` | `0x8CF580` | `"C_BasePlayerPawn::PrePhysicsSimulate"` |
+| `Client::C_DispatchEffect` | `__int64 __fastcall sub_180ACDB70(const char *name, __int64 data)` | `stringref` | `0x7FFF2973DB70` | `0xACDB70` | `"DispatchEffect: effect "%s" not found on client\n"` |
+| `Client::C_GameRules_ctor` | `__int64 __fastcall sub_180B03BD0(__int64 thisptr)` | `stringref` | `0x7FFF29773BD0` | `0xB03BD0` | `"%s:  CGameRules::CGameRules constructed\n"` |
 | `ClientModeCSNormal_OnEvent` | `void __fastcall sub_180C5C660(__int64 a1, KeyValues *a2)` | `raw` | `0x7FFF298CCAB0` | `0xC5CAB0` | `40 53 57 48 81 EC 78 02 00 00 48 8B CA 48 8B FA` |
 | `Client_DispatchSpawn` | `__int64 __fastcall sub_1814D5B10(_QWORD *a1, __int64 a2, __int64 a3, __int64 a4)` | `raw` | `0x7FFF2A146240` | `0x14D6240` | `4C 8B DC 55 56 48 83 EC 78 49 8B 68 08 48 8B F1 48 85 ED 0F 84 72 01 00 00 49 89 5B 08 49 8D 4B` |
 | `CompositeMaterialPanoramaPanel_Init` | `__int64 __fastcall sub_180B91260(__int64 a1, __int64 a2, __int64 a3)` | `stringref` | `0x7FFF298010A0` | `0xB910A0` | `"CompositeMaterialPanoramaPanel_t::Init"` |

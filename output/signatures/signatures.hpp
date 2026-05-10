@@ -136,6 +136,10 @@ namespace cs2::signatures {
         inline constexpr std::string_view ClearHUDWeaponIcon = "4C 8B DC 55 57 48 83 EC 48 48 63 41 68 48 8B F9";
         inline constexpr std::string_view Client__CCSGOHudVote_OnVoteResult = "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 57 41 56 41 57 48 81 EC 90";
         inline constexpr std::string_view Client__CCSGO_HudChat_OnSayText2 = "48 89 5C 24 08 55 56 57 41 54 41 55 41 56 41 57 48 8D AC 24 70 F3 FF FF";
+        inline constexpr std::string_view Client__CLegacyGameUI_Initialize = "48 89 5C 24 18 55 56 41 56 48 8B EC 48 83 EC 50";
+        inline constexpr std::string_view Client__C_BasePlayerPawn_PrePhysicsSimulate = "4C 8B DC 49 89 5B 08 49 89 6B 10 49 89 73 18 57 48 83 EC 60 49 C7 43 C0 A8 01 00 00";
+        inline constexpr std::string_view Client__C_DispatchEffect = "40 55 56 48 83 EC 28 44 8B 05 ? ? ? ? 48 8B";
+        inline constexpr std::string_view Client__C_GameRules_ctor = "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 20 8B 15 6B F9 A3";
         inline constexpr std::string_view ClientModeCSNormal_OnEvent = "40 53 57 48 81 EC 78 02 00 00 48 8B CA 48 8B FA";
         inline constexpr std::string_view Client_DispatchSpawn = "4C 8B DC 55 56 48 83 EC 78 49 8B 68 08 48 8B F1";
         inline constexpr std::string_view CompositeMaterialPanoramaPanel_Init = "48 8B C4 4C 89 40 18 55 56 41 56 48 8D 68 A1 48";
@@ -709,6 +713,14 @@ namespace cs2::fn {
         using Client__CCSGOHudVote_OnVoteResult_t = void(__fastcall*)(void*, ...);
         // void __fastcall sub_1810C3D50(int a1, __int64 a2)
         using Client__CCSGO_HudChat_OnSayText2_t = void(__fastcall*)(void*, ...);
+        // __int64 __fastcall sub_180CA6A40(__int64 thisptr)
+        using Client__CLegacyGameUI_Initialize_t = void(__fastcall*)(void*, ...);
+        // bool __fastcall sub_1808CF580(__int64 pawn)
+        using Client__C_BasePlayerPawn_PrePhysicsSimulate_t = void(__fastcall*)(void*, ...);
+        // __int64 __fastcall sub_180ACDB70(const char *name, __int64 data)
+        using Client__C_DispatchEffect_t = void(__fastcall*)(void*, ...);
+        // __int64 __fastcall sub_180B03BD0(__int64 thisptr)
+        using Client__C_GameRules_ctor_t = void(__fastcall*)(void*, ...);
         // void __fastcall sub_180C5C660(__int64 a1, KeyValues *a2)
         using ClientModeCSNormal_OnEvent_t = void(__fastcall*)(void*, ...);
         // __int64 __fastcall sub_1814D5B10(_QWORD *a1, __int64 a2, __int64 a3, __int64 a4)

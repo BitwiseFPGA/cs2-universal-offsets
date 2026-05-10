@@ -1431,6 +1431,35 @@ pub static CS2_SIGNATURES: &[Signature] = &[
     // string, sanitized name) before formatting. 1 hit.
     Signature { name: "Client::CCSGO_HudChat_OnSayText2",     module: "client.dll",  needle: "48 89 5C 24 08 55 56 57 41 54 41 55 41 56 41 57 48 8D AC 24 70 F3 FF FF 48 81 EC 90 0D 00 00 81 A5 DC 0C 00 00 FF FF 0F FF 33 F6 8B 5A 6C 48 8B", resolve: NONE, extra_off: 0, prototype: "void __fastcall sub_1810C3D50(int a1, __int64 a2)" },
 
+    // -------- More high-value client.dll anchors (string-ref) --------
+    // Universal client-side particle / effect dispatcher. Looks up an
+    // effect by name in a global symbol table and invokes its callback.
+    // Hookable to log every dispatched FX, suppress unwanted ones
+    // (smoke / flashbang / impact effects), or inject custom effects.
+    // The unique log line is only emitted from this function.
+    Signature { name: "Client::C_DispatchEffect",             module: "client.dll",  needle: "DispatchEffect: effect \"%s\" not found on client\n", resolve: STRREF, extra_off: 0, prototype: "__int64 __fastcall sub_180ACDB70(const char *name, __int64 data)" },
+
+    // C_GameRules constructor. Stores the singleton into the global
+    // qword_18232AF48 (`g_pGameRules`) and writes the unique
+    // `CGameRules::CGameRules constructed` log line on init. Hooking
+    // (or just sigging) gives a deterministic anchor for finding the
+    // C_GameRules pointer at module-init time, plus the dtor sibling.
+    Signature { name: "Client::C_GameRules_ctor",             module: "client.dll",  needle: "%s:  CGameRules::CGameRules constructed\n", resolve: STRREF, extra_off: 0, prototype: "__int64 __fastcall sub_180B03BD0(__int64 thisptr)" },
+
+    // CLegacyGameUI::Initialize -- the legacy GameUI bootstrap. Single
+    // function that emits the `failed to get necessary interfaces`
+    // line; useful as a reliable anchor inside the GameUI plumbing and
+    // as a hook point for swapping GameUI vtables before they are
+    // wired up.
+    Signature { name: "Client::CLegacyGameUI_Initialize",     module: "client.dll",  needle: "CLegacyGameUI::Initialize() failed to get necessary interfaces\n", resolve: STRREF, extra_off: 0, prototype: "__int64 __fastcall sub_180CA6A40(__int64 thisptr)" },
+
+    // C_BasePlayerPawn::PrePhysicsSimulate -- the per-tick pre-physics
+    // hook called before predicted movement runs. Drives the predicted
+    // weapon-services + view-model interpolation each command. Anchor
+    // string `"C_BasePlayerPawn::PrePhysicsSimulate"` is the VProf
+    // budget label and is referenced from exactly one function.
+    Signature { name: "Client::C_BasePlayerPawn_PrePhysicsSimulate", module: "client.dll", needle: "C_BasePlayerPawn::PrePhysicsSimulate", resolve: STRREF, extra_off: 0, prototype: "bool __fastcall sub_1808CF580(__int64 pawn)" },
+
     // ==================================================================
     // Additional string-ref anchors (enhanced_signatures.h) ------------
     // ==================================================================
