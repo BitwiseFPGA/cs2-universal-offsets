@@ -4,7 +4,7 @@
 // classes:       14
 // enums:         5
 // build_number:  14160
-// generated_at:  2026-05-10T14:14:02.034277600+00:00
+// generated_at:  2026-05-10T14:17:37.506991100+00:00
 //
 // Use:
 //   auto* pawn = reinterpret_cast<C_CSPlayerPawn*>(addr);
@@ -64,24 +64,22 @@ namespace cs2::sdk::materialsystem2 {
         HORIZ_JUSTIFICATION_NONE = 0x3,
     };
 
-    // MaterialResourceData_t
-    //   fields: 14
-    class MaterialResourceData_t {
+    // PostProcessingFogScatteringParameters_t
+    //   fields: 5
+    class PostProcessingFogScatteringParameters_t {
     public:
-        SCHEMA_FIELD(::CUtlString                    , m_materialName                                  , 0x0) // CUtlString
-        SCHEMA_FIELD(::CUtlString                    , m_shaderName                                    , 0x8) // CUtlString
-        SCHEMA_FIELD(CUtlVector<MaterialParamInt_t>  , m_intParams                                     , 0x10) // CUtlVector<MaterialParamInt_t>
-        SCHEMA_FIELD(CUtlVector<MaterialParamFloat_t>, m_floatParams                                   , 0x28) // CUtlVector<MaterialParamFloat_t>
-        SCHEMA_FIELD(CUtlVector<MaterialParamVector_t>, m_vectorParams                                  , 0x40) // CUtlVector<MaterialParamVector_t>
-        SCHEMA_FIELD(CUtlVector<MaterialParamTexture_t>, m_textureParams                                 , 0x58) // CUtlVector<MaterialParamTexture_t>
-        SCHEMA_FIELD(CUtlVector<MaterialParamBuffer_t>, m_dynamicParams                                 , 0x70) // CUtlVector<MaterialParamBuffer_t>
-        SCHEMA_FIELD(CUtlVector<MaterialParamBuffer_t>, m_dynamicTextureParams                          , 0x88) // CUtlVector<MaterialParamBuffer_t>
-        SCHEMA_FIELD(CUtlVector<MaterialParamInt_t>  , m_intAttributes                                 , 0xA0) // CUtlVector<MaterialParamInt_t>
-        SCHEMA_FIELD(CUtlVector<MaterialParamFloat_t>, m_floatAttributes                               , 0xB8) // CUtlVector<MaterialParamFloat_t>
-        SCHEMA_FIELD(CUtlVector<MaterialParamVector_t>, m_vectorAttributes                              , 0xD0) // CUtlVector<MaterialParamVector_t>
-        SCHEMA_FIELD(CUtlVector<MaterialParamTexture_t>, m_textureAttributes                             , 0xE8) // CUtlVector<MaterialParamTexture_t>
-        SCHEMA_FIELD(CUtlVector<MaterialParamString_t>, m_stringAttributes                              , 0x100) // CUtlVector<MaterialParamString_t>
-        SCHEMA_FIELD(CUtlVector<CUtlString>          , m_renderAttributesUsed                          , 0x118) // CUtlVector<CUtlString>
+        SCHEMA_FIELD(float                           , m_fRadius                                       , 0x0) // float32
+        SCHEMA_FIELD(float                           , m_fScale                                        , 0x4) // float32
+        SCHEMA_FIELD(float                           , m_fCubemapScale                                 , 0x8) // float32
+        SCHEMA_FIELD(float                           , m_fVolumetricScale                              , 0xC) // float32
+        SCHEMA_FIELD(float                           , m_fGradientScale                                , 0x10) // float32
+    };
+
+    // MaterialParamInt_t
+    //   fields: 1
+    class MaterialParamInt_t {
+    public:
+        SCHEMA_FIELD(std::int32_t                    , m_nValue                                        , 0x8) // int32
     };
 
     // MaterialParamString_t
@@ -89,6 +87,13 @@ namespace cs2::sdk::materialsystem2 {
     class MaterialParamString_t {
     public:
         SCHEMA_FIELD(::CUtlString                    , m_value                                         , 0x8) // CUtlString
+    };
+
+    // MaterialParamFloat_t
+    //   fields: 1
+    class MaterialParamFloat_t {
+    public:
+        SCHEMA_FIELD(float                           , m_flValue                                       , 0x8) // float32
     };
 
     // PostProcessingBloomParameters_t
@@ -113,40 +118,11 @@ namespace cs2::sdk::materialsystem2 {
         SCHEMA_FIELD(::Vector                        , m_vBlurTint                                     , 0x4C) // Vector[5]
     };
 
-    // PostProcessingLocalContrastParameters_t
-    //   fields: 5
-    class PostProcessingLocalContrastParameters_t {
-    public:
-        SCHEMA_FIELD(float                           , m_flLocalContrastStrength                       , 0x0) // float32
-        SCHEMA_FIELD(float                           , m_flLocalContrastEdgeStrength                   , 0x4) // float32
-        SCHEMA_FIELD(float                           , m_flLocalContrastVignetteStart                  , 0x8) // float32
-        SCHEMA_FIELD(float                           , m_flLocalContrastVignetteEnd                    , 0xC) // float32
-        SCHEMA_FIELD(float                           , m_flLocalContrastVignetteBlur                   , 0x10) // float32
-    };
-
-    // PostProcessingFogScatteringParameters_t
-    //   fields: 5
-    class PostProcessingFogScatteringParameters_t {
-    public:
-        SCHEMA_FIELD(float                           , m_fRadius                                       , 0x0) // float32
-        SCHEMA_FIELD(float                           , m_fScale                                        , 0x4) // float32
-        SCHEMA_FIELD(float                           , m_fCubemapScale                                 , 0x8) // float32
-        SCHEMA_FIELD(float                           , m_fVolumetricScale                              , 0xC) // float32
-        SCHEMA_FIELD(float                           , m_fGradientScale                                , 0x10) // float32
-    };
-
     // MaterialParamTexture_t
     //   fields: 1
     class MaterialParamTexture_t {
     public:
         SCHEMA_FIELD(CStrongHandle<InfoForResourceTypeCTextureBase>, m_pValue                                        , 0x8) // CStrongHandle<InfoForResourceTypeCTextureBase>
-    };
-
-    // MaterialParamInt_t
-    //   fields: 1
-    class MaterialParamInt_t {
-    public:
-        SCHEMA_FIELD(std::int32_t                    , m_nValue                                        , 0x8) // int32
     };
 
     // PostProcessingTonemapParameters_t
@@ -170,6 +146,33 @@ namespace cs2::sdk::materialsystem2 {
         SCHEMA_FIELD(float                           , m_flMaxHighlightLum                             , 0x38) // float32
     };
 
+    // MaterialParamBuffer_t
+    //   fields: 1
+    class MaterialParamBuffer_t {
+    public:
+        SCHEMA_FIELD(::CUtlBinaryBlock               , m_value                                         , 0x8) // CUtlBinaryBlock
+    };
+
+    // MaterialResourceData_t
+    //   fields: 14
+    class MaterialResourceData_t {
+    public:
+        SCHEMA_FIELD(::CUtlString                    , m_materialName                                  , 0x0) // CUtlString
+        SCHEMA_FIELD(::CUtlString                    , m_shaderName                                    , 0x8) // CUtlString
+        SCHEMA_FIELD(CUtlVector<MaterialParamInt_t>  , m_intParams                                     , 0x10) // CUtlVector<MaterialParamInt_t>
+        SCHEMA_FIELD(CUtlVector<MaterialParamFloat_t>, m_floatParams                                   , 0x28) // CUtlVector<MaterialParamFloat_t>
+        SCHEMA_FIELD(CUtlVector<MaterialParamVector_t>, m_vectorParams                                  , 0x40) // CUtlVector<MaterialParamVector_t>
+        SCHEMA_FIELD(CUtlVector<MaterialParamTexture_t>, m_textureParams                                 , 0x58) // CUtlVector<MaterialParamTexture_t>
+        SCHEMA_FIELD(CUtlVector<MaterialParamBuffer_t>, m_dynamicParams                                 , 0x70) // CUtlVector<MaterialParamBuffer_t>
+        SCHEMA_FIELD(CUtlVector<MaterialParamBuffer_t>, m_dynamicTextureParams                          , 0x88) // CUtlVector<MaterialParamBuffer_t>
+        SCHEMA_FIELD(CUtlVector<MaterialParamInt_t>  , m_intAttributes                                 , 0xA0) // CUtlVector<MaterialParamInt_t>
+        SCHEMA_FIELD(CUtlVector<MaterialParamFloat_t>, m_floatAttributes                               , 0xB8) // CUtlVector<MaterialParamFloat_t>
+        SCHEMA_FIELD(CUtlVector<MaterialParamVector_t>, m_vectorAttributes                              , 0xD0) // CUtlVector<MaterialParamVector_t>
+        SCHEMA_FIELD(CUtlVector<MaterialParamTexture_t>, m_textureAttributes                             , 0xE8) // CUtlVector<MaterialParamTexture_t>
+        SCHEMA_FIELD(CUtlVector<MaterialParamString_t>, m_stringAttributes                              , 0x100) // CUtlVector<MaterialParamString_t>
+        SCHEMA_FIELD(CUtlVector<CUtlString>          , m_renderAttributesUsed                          , 0x118) // CUtlVector<CUtlString>
+    };
+
     // PostProcessingResource_t
     //   fields: 13
     class PostProcessingResource_t {
@@ -189,6 +192,13 @@ namespace cs2::sdk::materialsystem2 {
         SCHEMA_FIELD(PostProcessingFogScatteringParameters_t, m_fogScatteringParams                           , 0x124) // PostProcessingFogScatteringParameters_t
     };
 
+    // MaterialParam_t
+    //   fields: 1
+    class MaterialParam_t {
+    public:
+        SCHEMA_FIELD(::CUtlString                    , m_name                                          , 0x0) // CUtlString
+    };
+
     // PostProcessingVignetteParameters_t
     //   fields: 6
     class PostProcessingVignetteParameters_t {
@@ -201,13 +211,6 @@ namespace cs2::sdk::materialsystem2 {
         SCHEMA_FIELD(::Vector                        , m_vColorTint                                    , 0x18) // Vector
     };
 
-    // MaterialParam_t
-    //   fields: 1
-    class MaterialParam_t {
-    public:
-        SCHEMA_FIELD(::CUtlString                    , m_name                                          , 0x0) // CUtlString
-    };
-
     // MaterialParamVector_t
     //   fields: 1
     class MaterialParamVector_t {
@@ -215,18 +218,15 @@ namespace cs2::sdk::materialsystem2 {
         SCHEMA_FIELD(::Vector4D                      , m_value                                         , 0x8) // Vector4D
     };
 
-    // MaterialParamFloat_t
-    //   fields: 1
-    class MaterialParamFloat_t {
+    // PostProcessingLocalContrastParameters_t
+    //   fields: 5
+    class PostProcessingLocalContrastParameters_t {
     public:
-        SCHEMA_FIELD(float                           , m_flValue                                       , 0x8) // float32
-    };
-
-    // MaterialParamBuffer_t
-    //   fields: 1
-    class MaterialParamBuffer_t {
-    public:
-        SCHEMA_FIELD(::CUtlBinaryBlock               , m_value                                         , 0x8) // CUtlBinaryBlock
+        SCHEMA_FIELD(float                           , m_flLocalContrastStrength                       , 0x0) // float32
+        SCHEMA_FIELD(float                           , m_flLocalContrastEdgeStrength                   , 0x4) // float32
+        SCHEMA_FIELD(float                           , m_flLocalContrastVignetteStart                  , 0x8) // float32
+        SCHEMA_FIELD(float                           , m_flLocalContrastVignetteEnd                    , 0xC) // float32
+        SCHEMA_FIELD(float                           , m_flLocalContrastVignetteBlur                   , 0x10) // float32
     };
 
 } // namespace cs2::sdk::materialsystem2

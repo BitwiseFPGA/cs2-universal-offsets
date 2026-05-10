@@ -2586,6 +2586,25 @@ pub static CS2_SIGNATURES: &[Signature] = &[
         prototype: "char __fastcall sub_180A264B0(__int64 a1, __int64 a2, __int64 a3)",
     },
 
+    // CLoopModeGame::OnPostDataUpdate â€” client!sub_1809AB920. Top-of-frame
+    // dispatcher invoked once per net-snapshot, after every entity has
+    // finished its individual PostDataUpdate. Single chokepoint to react
+    // to "all entities for this tick are now in their final networked
+    // state" â€” ideal for prediction-aware caches, lag-comp record
+    // sampling, and post-snapshot ESP rebuilds without hooking N
+    // per-entity PostDataUpdates. Refs unique "CLoopModeGame::
+    // OnPostDataUpdate" string. 1 hit on 14160.
+    Signature { name: "CLoopModeGame_OnPostDataUpdate",       module: "client.dll", needle: "48 89 5C 24 08 48 89 74 24 18 55 57 41 56 48 8B EC 48 83 EC 50 45 8B F1 48 8B FA 48 8B F1 45 85", resolve: NONE, extra_off: 0, prototype: "" },
+
+    // CEntitySystem::QueuePostDataUpdates â€” client!sub_1814AE590. The
+    // engine-side queuer that batches per-entity PostDataUpdate calls
+    // (only enqueued for entities that flipped state this tick). Hook
+    // here to learn exactly which entities the engine deems "changed"
+    // for the upcoming frame â€” cheap dirty-set anchor for incremental
+    // ESP / prediction caches. Refs unique "CEntitySystem::
+    // QueuePostDataUpdates" string. 1 hit on 14160.
+    Signature { name: "CEntitySystem_QueuePostDataUpdates",   module: "client.dll", needle: "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 40 80 B9 DA 0B 00 00 00 49 8B D8 8B FA 48 8B F1 74 61", resolve: NONE, extra_off: 0, prototype: "" },
+
     // CSkeletonInstance::GetTransformsForHitboxList â€” client!
     // sub_180A18F60. Refs the unique "CSkeletonInstance::
     // GetTransformsForHitboxList" string. Per-hitbox bone

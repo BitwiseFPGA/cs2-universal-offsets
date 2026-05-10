@@ -2,7 +2,7 @@
 
 _This file is regenerated on every successful run of `cs2-sdk`._
 
-**481/527 signatures resolved across 18 module(s).**
+**483/529 signatures resolved across 18 module(s).**
 
 ## `animationsystem.dll`
 
@@ -65,6 +65,7 @@ _This file is regenerated on every successful run of `cs2-sdk`._
 | `CEconItemCreateInstance` | `uintptr_t __cdecl CEconItemCreateInstance()` | `raw` | `0x7FFF29C67CA0` | `0xFF7CA0` | `48 83 EC 28 B9 48 00 00 00 E8` |
 | `CEconItemSchema::GetAttributeDefinitionByName` | `__int64 __fastcall sub_18104CEA0(__int64 a1, unsigned __int8 *a2)` | `raw` | `0x7FFF29CBD3D0` | `0x104D3D0` | `48 89 5C 24 10 48 89 6C 24 18 57 41 56 41 57 48 83 EC 60 48 8D 05` |
 | `CEconItemView::GetCustomPaintKitIndex` | `__int64 __fastcall sub_1810A8A60(__int64 *a1)` | `raw` | `0x7FFF29D18F90` | `0x10A8F90` | `48 89 5C 24 ? 57 48 83 EC ? 8B 15 ? ? ? ? 48 8B F9 65 48 8B 04 25 ? ? ? ? B9 ? ? ? ? 48 8B 04 D0 8B 04 01 39 05 ? ? ? ? 0F 8F ? ? ? ? E8 ? ? ? ? 8B 58 ? 39 1D ? ? ? ? 74 ? E8 ? ? ? ? 48 8B 15 ? ? ? ? 48 8B C8 E8 ? ? ? ? 48 89 05 ? ? ? ? 89 1D ? ? ? ? EB ? 48 8B 05 ? ? ? ? 48 85 C0 74` |
+| `CEntitySystem_QueuePostDataUpdates` | `` | `raw` | `0x7FFF2A11E590` | `0x14AE590` | `48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 40 80 B9 DA 0B 00 00 00 49 8B D8 8B FA 48 8B F1 74 61` |
 | `CFlashbangProjectile` | `__int64 sub_180FE03F0()` | `stringref` | `0x7FFF29C50971` | `0xFE0971` | `"CFlashbangProjectile"` |
 | `CFogController` | `__int64 sub_18027EFD0()` | `stringref` | `0x7FFF28EEEFD0` | `0x27EFD0` | `"CFogController"` |
 | `CGameEntitySystem::OnAddEntity` | `__int64 __fastcall sub_180968640(__int64 a1, __int64 a2, int a3)` | `raw` | `0x7FFF295D8460` | `0x968460` | `48 89 74 24 ? 57 48 83 EC ? 41 B9 ? ? ? ? 41 8B C0 41 23 C1 48 8B F2 41 83 F8 ? 48 8B F9 44 0F 45 C8 41 81 F9 ? ? ? ? 73 ? FF 81` |
@@ -77,6 +78,7 @@ _This file is regenerated on every successful run of `cs2-sdk`._
 | `CGlowProperty` | `__int64 __fastcall sub_1802E11A0(int a1, __int64 a2, __int64 a3, __int64 a4)` | `stringref` | `0x7FFF28F511A0` | `0x2E11A0` | `"CGlowProperty"` |
 | `CGlowProperty_OnGlowTypeChanged` | `__int64 __fastcall sub_180B0CD90(__int64 a1)` | `raw` | `0x7FFF2977CBD0` | `0xB0CBD0` | `48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 20 48 8B 05 ? ? ? ? 48 8B D9 F3 0F 10 41 4C` |
 | `CHEGrenadeProjectile` | `__int64 sub_180FE0490()` | `stringref` | `0x7FFF29C509D0` | `0xFE09D0` | `"CHEGrenadeProjectile"` |
+| `CLoopModeGame_OnPostDataUpdate` | `` | `raw` | `0x7FFF2961B920` | `0x9AB920` | `48 89 5C 24 08 48 89 74 24 18 55 57 41 56 48 8B EC 48 83 EC 50 45 8B F1 48 8B FA 48 8B F1 45 85` |
 | `CMolotovProjectile` | `__int64 sub_18074E3C0()` | `stringref` | `0x7FFF293BE3F0` | `0x74E3F0` | `"CMolotovProjectile"` |
 | `CPaintKitDefinitions_FindOrCreateByName` | `char __fastcall sub_18105A690(__int64 a1, __int64 a2, char *a3, __int64 a4)` | `stringref` | `0x7FFF29CCABC0` | `0x105ABC0` | `"Kit "[%s]" specified, but doesn't exist!! You're probably missing an entry in items_paintkits.txt or items_stickerkits.txt or need to run with -use_local_item_data\n"` |
 | `CPaintKitDefinitions_LoadDefaultKit` | `char __fastcall sub_18102C760(__int64 a1, KeyValues *a2, _DWORD *a3)` | `stringref` | `0x7FFF29C9CC90` | `0x102CC90` | `"Unable to find "default" paint kit in "paint_kits_rarity""` |

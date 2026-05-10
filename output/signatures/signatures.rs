@@ -109,6 +109,7 @@ pub mod client {
     pub const CEconItemSchema__GetAttributeDefinitionByName: &str = "48 89 5C 24 10 48 89 6C 24 18 57 41 56 41 57 48 83 EC 60 48";
     /// `__int64 __fastcall sub_1810A8A60(__int64 *a1)`
     pub const CEconItemView__GetCustomPaintKitIndex: &str = "48 89 5C 24 08 57 48 83 EC 40 8B 15 ? ? ? ? 48 8B F9 65 48 8B 04 25 58 00 00 00 B9 98 00 00 00 48 8B 04 D0 8B 04 01 39 05 B2 05 31 01 0F 8F";
+    pub const CEntitySystem_QueuePostDataUpdates: &str = "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 40 80";
     /// `__int64 sub_180FE03F0()`
     pub const CFlashbangProjectile: &str = "56 3D 01 E8 ? ? ? ? 83 3D C0 56 3D 01 FF 75";
     /// `__int64 sub_18027EFD0()`
@@ -133,6 +134,7 @@ pub mod client {
     pub const CGlowProperty_OnGlowTypeChanged: &str = "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 20 48 8B 05 F2 E9";
     /// `__int64 sub_180FE0490()`
     pub const CHEGrenadeProjectile: &str = "48 83 EC 28 48 8D 15 ? ? ? ? 48 8D 4C 24 38 E8 0B 73 80";
+    pub const CLoopModeGame_OnPostDataUpdate: &str = "48 89 5C 24 08 48 89 74 24 18 55 57 41 56 48 8B EC 48 83 EC 50 45 8B F1";
     /// `__int64 sub_18074E3C0()`
     pub const CMolotovProjectile: &str = "48 83 EC 28 48 8D 15 ? ? ? ? 48 8D 4C 24 38 E8 EB 98 09";
     /// `char __fastcall sub_18105A690(__int64 a1, __int64 a2, char *a3, __int64 a4)`

@@ -65,6 +65,7 @@ namespace cs2::signatures {
         inline constexpr std::string_view CEconItemCreateInstance = "48 83 EC 28 B9 48 00 00 00 E8 ? ? ? ? 48 85";
         inline constexpr std::string_view CEconItemSchema__GetAttributeDefinitionByName = "48 89 5C 24 10 48 89 6C 24 18 57 41 56 41 57 48 83 EC 60 48";
         inline constexpr std::string_view CEconItemView__GetCustomPaintKitIndex = "48 89 5C 24 08 57 48 83 EC 40 8B 15 ? ? ? ? 48 8B F9 65 48 8B 04 25 58 00 00 00 B9 98 00 00 00 48 8B 04 D0 8B 04 01 39 05 B2 05 31 01 0F 8F";
+        inline constexpr std::string_view CEntitySystem_QueuePostDataUpdates = "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 40 80";
         inline constexpr std::string_view CFlashbangProjectile = "56 3D 01 E8 ? ? ? ? 83 3D C0 56 3D 01 FF 75";
         inline constexpr std::string_view CFogController = "48 83 EC 28 48 8D 15 ? ? ? ? 48 8D 4C 24 38 E8 0B 8D 56";
         inline constexpr std::string_view CGameEntitySystem__OnAddEntity = "48 89 74 24 10 57 48 83 EC 20 41 B9 FF 7F 00 00 41 8B C0 41 23 C1 48 8B F2 41 83 F8 FF 48 8B F9 44 0F 45 C8 41 81 F9 00 40 00 00 73 0D FF 81 90";
@@ -77,6 +78,7 @@ namespace cs2::signatures {
         inline constexpr std::string_view CGlowProperty = "48 83 EC 58 83 F9 01 0F 85 ? ? ? ? 48 8D 05 ? ? ? ? C7 44 24 30 00 00 00 80 89 4C 24 28 4C 8D 05 ? ? ? ? 48 89 44 24 48 48 8D 4C 24";
         inline constexpr std::string_view CGlowProperty_OnGlowTypeChanged = "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 20 48 8B 05 F2 E9";
         inline constexpr std::string_view CHEGrenadeProjectile = "48 83 EC 28 48 8D 15 ? ? ? ? 48 8D 4C 24 38 E8 0B 73 80";
+        inline constexpr std::string_view CLoopModeGame_OnPostDataUpdate = "48 89 5C 24 08 48 89 74 24 18 55 57 41 56 48 8B EC 48 83 EC 50 45 8B F1";
         inline constexpr std::string_view CMolotovProjectile = "48 83 EC 28 48 8D 15 ? ? ? ? 48 8D 4C 24 38 E8 EB 98 09";
         inline constexpr std::string_view CPaintKitDefinitions_FindOrCreateByName = "48 89 5C 24 08 48 89 6C 24 18 56 57 41 56 48 81 EC 50 01 00";
         inline constexpr std::string_view CPaintKitDefinitions_LoadDefaultKit = "48 89 6C 24 20 56 57 41 54 41 55 41 57 48 81 EC";
@@ -553,6 +555,7 @@ namespace cs2::fn {
         using CEconItemSchema__GetAttributeDefinitionByName_t = void(__fastcall*)(void*, ...);
         // __int64 __fastcall sub_1810A8A60(__int64 *a1)
         using CEconItemView__GetCustomPaintKitIndex_t = void(__fastcall*)(void*, ...);
+        using CEntitySystem_QueuePostDataUpdates_t = void(__fastcall*)(void*, ...);
         // __int64 sub_180FE03F0()
         using CFlashbangProjectile_t = void(__fastcall*)(void*, ...);
         // __int64 sub_18027EFD0()
@@ -577,6 +580,7 @@ namespace cs2::fn {
         using CGlowProperty_OnGlowTypeChanged_t = void(__fastcall*)(void*, ...);
         // __int64 sub_180FE0490()
         using CHEGrenadeProjectile_t = void(__fastcall*)(void*, ...);
+        using CLoopModeGame_OnPostDataUpdate_t = void(__fastcall*)(void*, ...);
         // __int64 sub_18074E3C0()
         using CMolotovProjectile_t = void(__fastcall*)(void*, ...);
         // char __fastcall sub_18105A690(__int64 a1, __int64 a2, char *a3, __int64 a4)
