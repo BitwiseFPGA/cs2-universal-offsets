@@ -83,6 +83,8 @@ pub mod client {
     pub const CCSPlayer_MovementServices_CheckJumpButton: &str = "4C 89 44 24 18 55 56 41 56 48 8D AC 24 70 EC FF";
     /// `void *__fastcall sub_180850ED0(__int64 a1)`
     pub const CCSPlayer_PingServices: &str = "40 53 48 83 EC 50 8B 15 ? ? ? ? 48 8B D9 65 48 8B 04 25 58 00 00 00 B9 98 00 00 00 48 8B 04 D0 8B 04 01 39 05 46 11";
+    pub const CCSPlayer_ProcessForceSubtickMoves: &str = "40 55 53 48 8D AC 24 68 FF FF FF 48 81 EC 98 01 00 00 8B 15 ? ? ? ? 48 8B D9 65 48 8B 04 25 58 00 00 00 B9 98 00 00 00 48 8B 04 D0 8B 04 01";
+    pub const CCSPlayer_QueueForceSubtickMove: &str = "48 83 EC 28 8B 0D ? ? ? ? 65 48 8B 04 25 58 00 00 00 BA 98 00 00 00 48 8B 04 C8 8B 04 02 39 05 1B 14 95 01 0F 8F F4";
     /// `void __fastcall sub_1809DBAF0(__int64 a1, __int64 a2)`
     pub const CCSPlayer_RunCommand_Context: &str = "48 8B C4 48 81 EC C8 00 00 00 48 89 58 10 48 89";
     /// `__int64 sub_1808821D0()`
@@ -172,6 +174,8 @@ pub mod client {
     pub const CSource2Client_Shutdown: &str = "48 89 5C 24 08 55 56 57 41 54 41 55 41 56 41 57 48 81 EC 40";
     /// `__int64 sub_180257C90()`
     pub const CTonemapController2: &str = "48 83 EC 28 48 8D 15 ? ? ? ? 48 8D 4C 24 38 E8 4B 00 59";
+    pub const CUserCmd_ParseSubtickDuration: &str = "40 55 48 8D AC 24 70 FD FF FF 48 81 EC 90 03 00";
+    pub const CUserCmd_ParseSubtickFraction: &str = "40 55 48 8D AC 24 40 FE FF FF 48 81 EC C0 02 00";
     /// `__int64 __fastcall sub_180789C50(int *a1, __int64 a2)`
     pub const CUtlVector_CompositeMaterialInput_AddToTail: &str = "41 B9 88 02 00 00 8B 57 14 81 E2 FF FF FF 3F 8D 71 01 44 8B";
     /// `__int64 __fastcall sub_180C18BB0(int a1, _QWORD *a2)`

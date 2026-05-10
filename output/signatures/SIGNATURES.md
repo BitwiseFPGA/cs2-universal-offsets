@@ -2,7 +2,7 @@
 
 _This file is regenerated on every successful run of `cs2-sdk`._
 
-**483/529 signatures resolved across 18 module(s).**
+**487/533 signatures resolved across 18 module(s).**
 
 ## `animationsystem.dll`
 
@@ -52,6 +52,8 @@ _This file is regenerated on every successful run of `cs2-sdk`._
 | `CCSPlayer_MovementServices` | `__int64 *sub_18083DE80()` | `stringref` | `0x7FFF294AD880` | `0x83D880` | `"CCSPlayer_MovementServices"` |
 | `CCSPlayer_MovementServices_CheckJumpButton` | `void __fastcall sub_180ACF410(__int64 a1, __int64 a2, __int64 a3)` | `raw` | `0x7FFF2973F250` | `0xACF250` | `4C 89 44 24 18 55 56 41 56 48 8D AC 24 70 EC FF FF B8 90 14 00 00` |
 | `CCSPlayer_PingServices` | `void *__fastcall sub_180850ED0(__int64 a1)` | `stringref` | `0x7FFF294C17B0` | `0x8517B0` | `"CCSPlayer_PingServices"` |
+| `CCSPlayer_ProcessForceSubtickMoves` | `` | `raw` | `0x7FFF29645D40` | `0x9D5D40` | `40 55 53 48 8D AC 24 68 FF FF FF 48 81 EC 98 01 00 00 8B 15 ? ? ? ? 48 8B D9 65 48 8B 04 25 58 00 00 00 B9 98 00 00 00 48 8B 04 D0 8B 04 01 39 05 ? ? ? ? 0F 8F B6 07 00 00` |
+| `CCSPlayer_QueueForceSubtickMove` | `` | `raw` | `0x7FFF296376E0` | `0x9C76E0` | `48 83 EC 28 8B 0D ? ? ? ? 65 48 8B 04 25 58 00 00 00 BA 98 00 00 00 48 8B 04 C8 8B 04 02 39 05 ? ? ? ? 0F 8F F4 11 00 00` |
 | `CCSPlayer_RunCommand_Context` | `void __fastcall sub_1809DBAF0(__int64 a1, __int64 a2)` | `raw` | `0x7FFF2964B940` | `0x9DB940` | `48 8B C4 48 81 EC C8 00 00 00 48 89 58 10 48 89 68 18 48 8B EA 48 89 70 20 48 8B F1 48 89 78 F8` |
 | `CCSPlayer_UseServices` | `__int64 sub_1808821D0()` | `stringref` | `0x7FFF294F1BC0` | `0x881BC0` | `"CCSPlayer_UseServices"` |
 | `CCSPlayer_WaterServices` | `__int64 *sub_180877460()` | `stringref` | `0x7FFF294E6E50` | `0x876E50` | `"CCSPlayer_WaterServices"` |
@@ -98,6 +100,8 @@ _This file is regenerated on every successful run of `cs2-sdk`._
 | `CSmokeGrenadeProjectile` | `__int64 sub_18074E460()` | `stringref` | `0x7FFF293BE490` | `0x74E490` | `"CSmokeGrenadeProjectile"` |
 | `CSource2Client_Shutdown` | `__int64 sub_180AE5B90()` | `raw` | `0x7FFF297559D0` | `0xAE59D0` | `48 89 5C 24 08 55 56 57 41 54 41 55 41 56 41 57 48 81 EC 40 02 00 00 8B 0D ? ? ? ? BA 02 00 00` |
 | `CTonemapController2` | `__int64 sub_180257C90()` | `stringref` | `0x7FFF28EC7C90` | `0x257C90` | `"CTonemapController2"` |
+| `CUserCmd_ParseSubtickDuration` | `` | `raw` | `0x7FFF28D1D420` | `0xAD420` | `40 55 48 8D AC 24 70 FD FF FF 48 81 EC 90 03 00 00 F2 0F 10 05 ? ? ? ? 48 8D 05` |
+| `CUserCmd_ParseSubtickFraction` | `` | `raw` | `0x7FFF28D1D760` | `0xAD760` | `40 55 48 8D AC 24 40 FE FF FF 48 81 EC C0 02 00 00 F2 0F 10 05 ? ? ? ? 48 8D 05` |
 | `CUtlVector_CompositeMaterialInput_AddToTail` | `__int64 __fastcall sub_180789C50(int *a1, __int64 a2)` | `raw` | `0x7FFF293F9C80` | `0x789CD2` | `41 B9 88 02 00 00 8B 57 14 81 E2 FF FF FF 3F 8D 71 01 44 8B C6 FF 15` |
 | `C_AttributeContainer` | `__int64 __fastcall sub_180C18BB0(int a1, _QWORD *a2)` | `stringref` | `0x7FFF29889010` | `0xC19010` | `"C_AttributeContainer"` |
 | `C_BaseEntity` | `__int64 (__fastcall *sub_18004E260())()` | `stringref` | `0x7FFF28CBE260` | `0x4E260` | `"C_BaseEntity"` |

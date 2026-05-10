@@ -52,6 +52,8 @@ namespace cs2::signatures {
         inline constexpr std::string_view CCSPlayer_MovementServices = "48 83 EC 28 8B 0D ? ? ? ? 65 48 8B 04 25 58 00 00 00 BA 98 00 00 00 48 8B 04 C8 8B 04 02 39 05 93 39 AC 01 0F 8F D3";
         inline constexpr std::string_view CCSPlayer_MovementServices_CheckJumpButton = "4C 89 44 24 18 55 56 41 56 48 8D AC 24 70 EC FF";
         inline constexpr std::string_view CCSPlayer_PingServices = "40 53 48 83 EC 50 8B 15 ? ? ? ? 48 8B D9 65 48 8B 04 25 58 00 00 00 B9 98 00 00 00 48 8B 04 D0 8B 04 01 39 05 46 11";
+        inline constexpr std::string_view CCSPlayer_ProcessForceSubtickMoves = "40 55 53 48 8D AC 24 68 FF FF FF 48 81 EC 98 01 00 00 8B 15 ? ? ? ? 48 8B D9 65 48 8B 04 25 58 00 00 00 B9 98 00 00 00 48 8B 04 D0 8B 04 01";
+        inline constexpr std::string_view CCSPlayer_QueueForceSubtickMove = "48 83 EC 28 8B 0D ? ? ? ? 65 48 8B 04 25 58 00 00 00 BA 98 00 00 00 48 8B 04 C8 8B 04 02 39 05 1B 14 95 01 0F 8F F4";
         inline constexpr std::string_view CCSPlayer_RunCommand_Context = "48 8B C4 48 81 EC C8 00 00 00 48 89 58 10 48 89";
         inline constexpr std::string_view CCSPlayer_UseServices = "48 89 5C 24 08 57 48 83 EC 30 E8 ? ? ? ? 8B 15 7B 19 CC";
         inline constexpr std::string_view CCSPlayer_WaterServices = "48 83 EC 28 8B 0D ? ? ? ? 65 48 8B 04 25 58 00 00 00 BA 98 00 00 00 48 8B 04 C8 8B 04 02 39 05 8B C9 A8 01 0F 8F 43";
@@ -98,6 +100,8 @@ namespace cs2::signatures {
         inline constexpr std::string_view CSmokeGrenadeProjectile = "48 83 EC 28 48 8D 15 ? ? ? ? 48 8D 4C 24 38 E8 4B 98 09";
         inline constexpr std::string_view CSource2Client_Shutdown = "48 89 5C 24 08 55 56 57 41 54 41 55 41 56 41 57 48 81 EC 40";
         inline constexpr std::string_view CTonemapController2 = "48 83 EC 28 48 8D 15 ? ? ? ? 48 8D 4C 24 38 E8 4B 00 59";
+        inline constexpr std::string_view CUserCmd_ParseSubtickDuration = "40 55 48 8D AC 24 70 FD FF FF 48 81 EC 90 03 00";
+        inline constexpr std::string_view CUserCmd_ParseSubtickFraction = "40 55 48 8D AC 24 40 FE FF FF 48 81 EC C0 02 00";
         inline constexpr std::string_view CUtlVector_CompositeMaterialInput_AddToTail = "41 B9 88 02 00 00 8B 57 14 81 E2 FF FF FF 3F 8D 71 01 44 8B";
         inline constexpr std::string_view C_AttributeContainer = "41 56 48 83 EC 40 4C 8B F2 83 F9 06 0F 87 C7 02";
         inline constexpr std::string_view C_BaseEntity = "48 89 5C 24 10 48 89 74 24 18 57 48 83 EC 20 65 48 8B 04 25 58 00 00 00 48 8D 35 ? ? ? ? 8B 0D ? ? ? ? 33 FF BA 98 00 00 00 48 8B 1C C8";
@@ -529,6 +533,8 @@ namespace cs2::fn {
         using CCSPlayer_MovementServices_CheckJumpButton_t = void(__fastcall*)(void*, ...);
         // void *__fastcall sub_180850ED0(__int64 a1)
         using CCSPlayer_PingServices_t = void(__fastcall*)(void*, ...);
+        using CCSPlayer_ProcessForceSubtickMoves_t = void(__fastcall*)(void*, ...);
+        using CCSPlayer_QueueForceSubtickMove_t = void(__fastcall*)(void*, ...);
         // void __fastcall sub_1809DBAF0(__int64 a1, __int64 a2)
         using CCSPlayer_RunCommand_Context_t = void(__fastcall*)(void*, ...);
         // __int64 sub_1808821D0()
@@ -618,6 +624,8 @@ namespace cs2::fn {
         using CSource2Client_Shutdown_t = void(__fastcall*)(void*, ...);
         // __int64 sub_180257C90()
         using CTonemapController2_t = void(__fastcall*)(void*, ...);
+        using CUserCmd_ParseSubtickDuration_t = void(__fastcall*)(void*, ...);
+        using CUserCmd_ParseSubtickFraction_t = void(__fastcall*)(void*, ...);
         // __int64 __fastcall sub_180789C50(int *a1, __int64 a2)
         using CUtlVector_CompositeMaterialInput_AddToTail_t = void(__fastcall*)(void*, ...);
         // __int64 __fastcall sub_180C18BB0(int a1, _QWORD *a2)

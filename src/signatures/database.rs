@@ -1049,6 +1049,48 @@ pub static CS2_SIGNATURES: &[Signature] = &[
     Signature { name: "LoadFileForMe",                        module: "client.dll", needle: "40 55 57 41 56 48 83 EC 20 4C", resolve: NONE, extra_off: 0, prototype: "void __fastcall sub_18091BF40(__int64 a1)" },
     Signature { name: "UpdateSubClass",                       module: "client.dll", needle: "4C 8B DC 53 48 81 EC ? ? ? ? 48 8B 41 10 48 8B D9 8B 50 30 C1 EA 04", resolve: NONE, extra_off: 0, prototype: "void __fastcall sub_1801FA930(_QWORD *a1)" },
     Signature { name: "CreateNewSubtickMoveStep",             module: "client.dll", needle: "E8 ? ? ? ? 48 8B D0 48 8B CE E8 ? ? ? ? 48 8B C8", resolve: REL32_1, extra_off: 0, prototype: "__int64 __fastcall sub_1804B1D80(__int64 a1)" },
+
+    // -----------------------------------------------------------------
+    // Subtick move pipeline / bhop primitives â€” scarce in public dumpers.
+    // These four anchors give read+write access to every input-side
+    // subtick the engine produces / consumes per CUserCmd.
+    // -----------------------------------------------------------------
+
+    // CUserCmd::ParseSubtickDuration â€” client!sub_1800AD420. Reads the
+    // wire field "subtick_duration_fraction" off the network message and
+    // populates the per-subtick `duration` slot. Hooking lets you
+    // legally rewrite the fractional duration (basis of "subtick aim
+    // smoothing" / shoot-on-the-frame-the-bullet-actually-fires hacks).
+    // 1 hit on 14160.
+    Signature { name: "CUserCmd_ParseSubtickDuration",        module: "client.dll", needle: "40 55 48 8D AC 24 70 FD FF FF 48 81 EC 90 03 00 00 F2 0F 10 05 ? ? ? ? 48 8D 05", resolve: NONE, extra_off: 0, prototype: "" },
+
+    // CUserCmd::ParseSubtickFraction â€” client!sub_1800AD760. Reads the
+    // wire fields "start_subtick_fraction" / "end_subtick_fraction" and
+    // writes them into the CSubtickMoveStep. The exact pre-engine spot
+    // to inject a custom subtick fraction (e.g. force-fire @ frac=0.0
+    // for "perfect-tick" shoot timing without touching CCSGOInput).
+    // 1 hit on 14160.
+    Signature { name: "CUserCmd_ParseSubtickFraction",        module: "client.dll", needle: "40 55 48 8D AC 24 40 FE FF FF 48 81 EC C0 02 00 00 F2 0F 10 05 ? ? ? ? 48 8D 05", resolve: NONE, extra_off: 0, prototype: "" },
+
+    // CCSPlayer_MovementServices::ProcessForceSubtickMoves â€” client!
+    // sub_1809D5D40 (~0x85F). Per-tick consumer of the
+    // `m_arrForceSubtickMoveWhen[MAX_FUTURE_FORCED_SUBTICKS]` queue.
+    // This is THE jump-bug / forced-subtick-jump anchor: the engine
+    // walks the queue here and inserts synthetic subtick edge events
+    // (jump press / release / land) into the move pipeline. Hooking
+    // lets you force a jump on an arbitrary subtick fraction
+    // (sub-tick perfect bhop, jump-bug land-cancel). 1 hit on 14160.
+    Signature { name: "CCSPlayer_ProcessForceSubtickMoves",   module: "client.dll", needle: "40 55 53 48 8D AC 24 68 FF FF FF 48 81 EC 98 01 00 00 8B 15 ? ? ? ? 48 8B D9 65 48 8B 04 25 58 00 00 00 B9 98 00 00 00 48 8B 04 D0 8B 04 01 39 05 ? ? ? ? 0F 8F B6 07 00 00", resolve: NONE, extra_off: 0, prototype: "" },
+
+    // CCSPlayer_MovementServices::QueueForceSubtickMove â€” client!
+    // sub_1809C76E0 (~0x1255). Producer side of the same
+    // `m_arrForceSubtickMoveWhen` ring. Called when the input layer
+    // decides a button-edge needs to fire on a future subtick (jump
+    // released between ticks, etc). Hook to *enqueue* arbitrary
+    // forced subtick moves â€” the canonical primitive for the
+    // "release-on-land subtick" half of jump-bug. 1 hit on 14160.
+    Signature { name: "CCSPlayer_QueueForceSubtickMove",      module: "client.dll", needle: "48 83 EC 28 8B 0D ? ? ? ? 65 48 8B 04 25 58 00 00 00 BA 98 00 00 00 48 8B 04 C8 8B 04 02 39 05 ? ? ? ? 0F 8F F4 11 00 00", resolve: NONE, extra_off: 0, prototype: "" },
+
     Signature { name: "SetCollisionBounds",                   module: "client.dll", needle: "48 83 EC ? F2 0F 10 02 8B 42 08", resolve: NONE, extra_off: 0, prototype: "__int64 __fastcall sub_180803980(__int64 a1, __int64 *a2)" },
     Signature { name: "CalculateInterpolation",               module: "client.dll", needle: "E8 ? ? ? ? 8B 45 ? 3B 45 60 75 04 32 D2 EB 09 BA 01 00 00 00 41 0F 4C D5 C0 EA 07 84 D2 0F 85 87", resolve: REL32_1, extra_off: 0, prototype: "int *__fastcall sub_1814C7E70(__int64 a1, int *a2)" },
     Signature {
