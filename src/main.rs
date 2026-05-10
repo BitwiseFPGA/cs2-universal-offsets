@@ -65,14 +65,15 @@ struct Args {
     #[arg(short = 'a', long)]
     connector_args: Option<String>,
 
-    #[arg(short, long, value_delimiter = ',', default_values = ["hpp", "json", "rs", "zig"])]
+    #[arg(short, long, value_delimiter = ',', default_values = ["hpp", "json"])]
     file_types: Vec<String>,
 
     #[arg(short, long, default_value_t = 4)]
     indent_size: usize,
 
-    /// Output directory for SDK files (no dated subfolders).
-    #[arg(short, long, default_value = "output")]
+    /// Output directory — the SDK is laid out as an `include/` tree
+    /// so the repo can be consumed as a git submodule.
+    #[arg(short, long, default_value = "include")]
     output: PathBuf,
 
     #[arg(short, long, default_value = "cs2.exe")]
@@ -271,13 +272,12 @@ fn main() -> Result<()> {
                 fs::write(&json_path, format_found_signatures(&report))?;
                 ui::ok(&format!("wrote {}", json_path.display()));
 
-                // Multi-language fan-out.
+                // Multi-language fan-out (C++ only — Rust output dropped).
                 fs::write(sigs_dir.join("signatures.hpp"), signatures::writers::render_hpp(&report.hits))?;
-                fs::write(sigs_dir.join("signatures.rs"), signatures::writers::render_rs(&report.hits))?;
                 fs::write(sigs_dir.join("SIGNATURES.md"), signatures::writers::render_markdown(&report.hits))?;
 
                 // Write RIPREL signatures + a2x-style dwXxx aliases to
-                // sdk/offsets.{hpp,json,rs}. The `analysis` block is what
+                // sdk/offsets.{hpp,json}. The `analysis` block is what
                 // cs2-sdk.com / public CS2 cheats actually consume — it
                 // matches a2x/cs2-dumper byte-for-byte.
                 let empty_offsets = analysis::OffsetMap::new();
@@ -292,10 +292,6 @@ fn main() -> Result<()> {
                 fs::write(
                     sdk_dir.join("offsets.json"),
                     signatures::offsets_writer::render_offsets_json(offset_map),
-                )?;
-                fs::write(
-                    sdk_dir.join("offsets.rs"),
-                    signatures::offsets_writer::render_offsets_rs(offset_map),
                 )?;
 
                 // Stand-alone buttons.{hpp,json,rs,zig} — every kbutton

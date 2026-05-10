@@ -656,12 +656,12 @@ pub static FEATURES: &[VerifiedFeature] = &[
 // ----------------------------------------------------------------------
 
 pub fn render_json(build_number: Option<u32>) -> String {
-    let features: Vec<_> = FEATURES
+    let working: Vec<&VerifiedFeature> = FEATURES.iter().filter(|f| f.status == "working").collect();
+    let features: Vec<_> = working
         .iter()
         .map(|f| {
             json!({
                 "name":    f.name,
-                "status":  f.status,
                 "summary": f.summary,
                 "fields":  f.fields.iter().map(|fld| json!({
                     "class":  fld.class,
@@ -687,10 +687,8 @@ pub fn render_json(build_number: Option<u32>) -> String {
         .collect();
 
     let doc = json!({
-        "_doc":           "Hand-curated catalogue of CS2 features verified working in a live internal cheat. \
-                          Cross-reference with offsets.*, signatures.* and client_dll.* for canonical addresses.",
         "cs2_build":      build_number,
-        "feature_count":  FEATURES.len(),
+        "feature_count":  working.len(),
         "features":       features,
     });
 
@@ -699,21 +697,21 @@ pub fn render_json(build_number: Option<u32>) -> String {
 
 pub fn render_md(build_number: Option<u32>) -> String {
     let mut out = String::new();
-    out.push_str("# Verified Working Features\n\n");
+    out.push_str("# Verified features\n\n");
     out.push_str(
-        "Hand-curated catalogue of CS2 features that have been **confirmed working \
-         in a live internal cheat** against the current build. Cross-reference with \
-         the auto-generated `offsets.*`, `signatures.*` and `client_dll.*` files for \
-         canonical addresses; this document captures the *gotchas* — the kind of \
-         thing that took an evening of IDA work to figure out.\n\n",
+        "Working CS2 cheat features. Each entry lists the schema fields, \
+         convars and hooks needed to wire it up. Addresses come from the \
+         neighbouring `offsets.*` and `signatures.*` files.\n\n",
     );
     if let Some(b) = build_number {
-        out.push_str(&format!("**CS2 build:** `{}`\n\n", b));
+        out.push_str(&format!("Build: `{}`\n\n", b));
     }
-    out.push_str(&format!("**Feature count:** {}\n\n---\n\n", FEATURES.len()));
 
-    for f in FEATURES.iter() {
-        out.push_str(&format!("## {} — _{}_\n\n", f.name, f.status));
+    let working: Vec<&VerifiedFeature> = FEATURES.iter().filter(|f| f.status == "working").collect();
+    out.push_str(&format!("Features: {}\n\n---\n\n", working.len()));
+
+    for f in working {
+        out.push_str(&format!("## {}\n\n", f.name));
         out.push_str(f.summary);
         out.push_str("\n\n");
 
