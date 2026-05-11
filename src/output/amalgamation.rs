@@ -47,7 +47,48 @@ pub fn render_hpp(sdk_modules: &[String], build_number: Option<u32>) -> String {
     s.push_str("// SDK macros (SCHEMA_FIELD, field_ref<T>, ...)\n");
     s.push_str("#include \"cs2sdk_macros.hpp\"\n\n");
     s.push_str("// Per-module schema classes\n");
-    for m in sdk_modules {
+    // Attempt to read a module ordering file emitted by the SDK class
+    // emitter so the single-include amalgamation preserves the same
+    // include ordering. Fallback to the input order if not present.
+    let mut ordered_modules: Vec<String> = sdk_modules.to_vec();
+    let order_path_candidates = ["include/sdk/module_order.txt", "module_order.txt"];
+    for p in &order_path_candidates {
+        if let Ok(txt) = std::fs::read_to_string(p) {
+            let mut order_map: std::collections::BTreeMap<usize, String> = std::collections::BTreeMap::new();
+            for line in txt.lines() {
+                if let Some((idxs, name)) = line.split_once(':') {
+                    if let Ok(idx) = idxs.parse::<usize>() {
+                        order_map.insert(idx, name.to_string());
+                    }
+                }
+            }
+            if !order_map.is_empty() {
+                // Build mapping from module stem -> index for sorting
+                let mut idx_map: std::collections::BTreeMap<String, usize> = std::collections::BTreeMap::new();
+                for (i, name) in order_map.into_iter() {
+                    // strip any .dll suffixes and _dll variants
+                    let stem = name.trim().trim_end_matches(".dll").to_string();
+                    idx_map.insert(stem, i);
+                }
+                ordered_modules.sort_by_key(|m| idx_map.get(m).cloned().unwrap_or(usize::MAX));
+                break;
+            }
+        }
+    }
+
+    // Ensure client comes before server in the amalgamation to avoid
+    // base-class undefined errors for client-owned bases used by server.
+    if ordered_modules.contains(&"server_dll".to_string()) && ordered_modules.contains(&"client_dll".to_string()) {
+        ordered_modules.retain(|m| m != "client_dll");
+        // place client_dll just before server_dll
+        if let Some(pos) = ordered_modules.iter().position(|m| m == "server_dll") {
+            ordered_modules.insert(pos, "client_dll".to_string());
+        } else {
+            ordered_modules.insert(0, "client_dll".to_string());
+        }
+    }
+
+    for m in ordered_modules {
         s.push_str(&format!("#include \"{}.hpp\"\n", m));
     }
     s.push('\n');

@@ -72,6 +72,7 @@ pub fn render_module_headers(
     let mut out = Vec::with_capacity(schemas.len());
     let mut module_data: Vec<(String, String, Vec<Class>, Vec<Enum>)> = Vec::with_capacity(schemas.len());
     let mut type_namespace_map: BTreeMap<String, String> = BTreeMap::new();
+    let canonical_type_namespace_map = get_type_namespace_map();
     // Cross-module dedup: a schema class registered in two modules
     // (common for shared bases like CBaseEntity in both client.dll and
     // server.dll) is only emitted in the FIRST module that contained it.
@@ -79,37 +80,84 @@ pub fn render_module_headers(
     // `sdk::server::` for what is logically the same class.
     let mut seen_classes: BTreeSet<String> = BTreeSet::new();
     let mut seen_enums: BTreeSet<String> = BTreeSet::new();
+
+    // First pass: build type_namespace_map and apply dedup
     for (module, (classes, enums)) in schemas {
-        let filtered_classes: Vec<Class> = classes
-            .iter()
-            .filter(|c| seen_classes.insert(sanitize_class_name(&c.name)))
-            .cloned()
-            .collect();
-        let filtered_enums: Vec<Enum> = enums
-            .iter()
-            .filter(|e| seen_enums.insert(type_ident(&e.name)))
-            .cloned()
-            .collect();
         let ns = slugify(module.trim_end_matches(".dll"));
-        for c in &filtered_classes {
-            type_namespace_map
-                .entry(sanitize_class_name(&c.name))
-                .or_insert_with(|| ns.clone());
+
+        // Build filtered classes honoring canonical ownership: if a class has a
+        // canonical owner (from get_type_namespace_map) we only emit it in that
+        // owner module. Otherwise, the first module encountered claims it.
+        let mut filtered_classes: Vec<Class> = Vec::new();
+        for c in classes {
+            let class_name = sanitize_class_name(&c.name);
+            if let Some(&owner) = canonical_type_namespace_map.get(class_name.as_str()) {
+                // Known canonical owner: only emit when current ns matches owner
+                if owner == ns {
+                    if seen_classes.insert(class_name.clone()) {
+                        filtered_classes.push(c.clone());
+                    }
+                } else {
+                    // Skip emitting here; owner module will emit
+                    // but ensure we record the namespace mapping below
+                    type_namespace_map.insert(class_name.clone(), owner.to_string());
+                }
+            } else {
+                // No canonical owner: first occurrence wins
+                if seen_classes.insert(class_name.clone()) {
+                    filtered_classes.push(c.clone());
+                    type_namespace_map.entry(class_name.clone()).or_insert_with(|| ns.clone());
+                }
+            }
         }
-        for e in &filtered_enums {
+
+        let mut filtered_enums: Vec<Enum> = Vec::new();
+        for e in enums {
             let enum_name = type_ident(&e.name);
-            type_namespace_map
-                .entry(enum_name)
-                .or_insert_with(|| ns.clone());
-            type_namespace_map
-                .entry(sanitize_class_name(&e.name))
-                .or_insert_with(|| ns.clone());
+            if let Some(&owner) = canonical_type_namespace_map.get(enum_name.as_str()) {
+                type_namespace_map.insert(enum_name.clone(), owner.to_string());
+            } else {
+                if seen_enums.insert(enum_name.clone()) {
+                    filtered_enums.push(e.clone());
+                    type_namespace_map.entry(enum_name.clone()).or_insert_with(|| ns.clone());
+                }
+            }
+
+            let alias_name = sanitize_class_name(&e.name);
+            if let Some(&owner) = canonical_type_namespace_map.get(alias_name.as_str()) {
+                type_namespace_map.insert(alias_name, owner.to_string());
+            } else {
+                type_namespace_map.entry(alias_name).or_insert_with(|| ns.clone());
+            }
         }
 
         let file_name = format!("{}.hpp", slugify(module));
         module_data.push((file_name, module.clone(), filtered_classes, filtered_enums));
     }
 
+    // Compute module include ordering once so it's deterministic and
+    // we can inspect it while debugging header cycles.
+    let module_index_map = module_include_index_map(&type_namespace_map, schemas);
+
+    // Write a small debug file listing the module order so we can inspect
+    // why mutual includes may still be generated.
+    // Try to persist ordering to a couple of locations so it's easy to inspect.
+    let pairs: Vec<(_, _)> = module_index_map.iter().map(|(k, v)| (v, k)).collect();
+    let mut pairs_sorted = pairs.clone();
+    pairs_sorted.sort_by_key(|(v, _)| *v);
+    use std::io::Write as _;
+    if let Ok(mut buf) = std::fs::File::create("module_order.txt") {
+        for (idx, name) in &pairs_sorted {
+            let _ = writeln!(buf, "{}:{}", idx, name);
+        }
+    }
+    if let Ok(_) = std::fs::create_dir_all("include/sdk") {
+        if let Ok(mut buf) = std::fs::File::create("include/sdk/module_order.txt") {
+            for (idx, name) in &pairs_sorted {
+                let _ = writeln!(buf, "{}:{}", idx, name);
+            }
+        }
+    }
     for (file_name, module, filtered_classes, filtered_enums) in module_data {
         let body = render_one_module(
             &module,
@@ -119,10 +167,326 @@ pub fn render_module_headers(
             build_number,
             timestamp,
             &type_namespace_map,
+            &module_index_map,
         );
         out.push((file_name, body));
     }
     out
+}
+
+fn render_module_namespace_body(
+    module: &str,
+    classes: &[Class],
+    enums: &[Enum],
+    buttons: &BTreeMap<String, u64>,
+    type_namespace_map: &BTreeMap<String, String>,
+) -> String {
+    let ns = slugify(module.trim_end_matches(".dll"));
+    let mut s = String::with_capacity(64 * 1024);
+
+    writeln!(s, "namespace sdk::{} {{", ns).ok();
+    writeln!(s).ok();
+
+    // Add buttons enum for client.dll
+    if module == "client.dll" && !buttons.is_empty() {
+        writeln!(s, "    enum class InputButton : std::uint64_t {{").ok();
+        for (name, value) in buttons {
+            writeln!(s, "        {} = 0x{:X},", name, value).ok();
+        }
+        writeln!(s, "    }};\n").ok();
+    }
+
+    let class_names: BTreeSet<String> = classes.iter().map(|c| sanitize_class_name(&c.name)).collect();
+    let mut emitted_enums: BTreeSet<String> = BTreeSet::new();
+
+    for e in enums {
+        let has_negative = e.members.iter().any(|m| (m.value as i64) < 0);
+        let underlying = match e.alignment {
+            1 => if has_negative { "std::int8_t" } else { "std::uint8_t" },
+            2 => if has_negative { "std::int16_t" } else { "std::uint16_t" },
+            4 => if has_negative { "std::int32_t" } else { "std::uint32_t" },
+            8 => if has_negative { "std::int64_t" } else { "std::uint64_t" },
+            _ => continue,
+        };
+
+        let enum_name = type_ident(&e.name);
+        let mut final_enum_name = if class_names.contains(&enum_name) {
+            format!("{}_e", enum_name)
+        } else {
+            enum_name.clone()
+        };
+
+        let mut counter = 2;
+        while emitted_enums.contains(&final_enum_name) {
+            final_enum_name = if class_names.contains(&enum_name) {
+                format!("{}_e{}", enum_name, counter)
+            } else {
+                format!("{}_{}", enum_name, counter)
+            };
+            counter += 1;
+        }
+
+        emitted_enums.insert(final_enum_name.clone());
+        writeln!(s, "    enum class {} : {} {{", final_enum_name, underlying).ok();
+        for m in &e.members {
+            let value = m.value as i64;
+            if value < 0 {
+                writeln!(s, "        {} = {},", sanitize_enum_member(&m.name), value).ok();
+            } else {
+                writeln!(s, "        {} = {:#X},", sanitize_enum_member(&m.name), m.value as u64).ok();
+            }
+        }
+        writeln!(s, "    }};\n").ok();
+    }
+
+    let sorted_classes = topological_sort_classes(classes);
+    for c in &sorted_classes {
+        let sanitized_name = sanitize_class_name(&c.name);
+
+        // Avoid re-emitting a small set of canonical server-owned base
+        // types here — we emit minimal complete definitions for them in
+        // `cs2sdk_macros.hpp` to break cross-module ordering problems.
+        // If this is the server module and the class name is in the
+        // predefined set, skip full emission here to prevent
+        // duplicate-definition diagnostics.
+        if ns == "server" {
+            let predefined = [
+                "CBaseAnimGraph",
+                "CBaseFilter",
+                "CEntityComponent",
+                "CLogicalEntity",
+                "CBaseProp",
+                "CAttributeManager",
+                "CSkeletonAnimationController",
+                "CBaseAnimGraphVariationUserData",
+                "CBaseAnimGraphDestructibleParts_GraphController",
+            ];
+            if predefined.iter().any(|p| p == &sanitized_name) {
+                // Still emit documentation comment so the header is readable
+                write_class_doc(&mut s, c);
+                continue;
+            }
+        }
+
+        write_class_doc(&mut s, c);
+
+        let parent = match &c.parent_name {
+            Some(raw_parent) => {
+                let sanitized_parent = sanitize_class_name(raw_parent);
+                if let Some(owner_ns) = type_namespace_map.get(&sanitized_parent) {
+                    if owner_ns != &ns {
+                        format!(" : public ::sdk::{}::{}", owner_ns, sanitized_parent)
+                    } else {
+                        format!(" : public {}", sanitized_parent)
+                    }
+                } else {
+                    format!(" : public {}", sanitized_parent)
+                }
+            }
+            None => String::new(),
+        };
+
+        writeln!(s, "    class {}{} {{", sanitized_name, parent).ok();
+        writeln!(s, "    public:").ok();
+
+        let mut alias_counter = 0;
+        let mut field_aliases: Vec<(usize, String)> = Vec::new();
+        for (idx, f) in c.fields.iter().enumerate() {
+            let cpp_ty = map_schema_type(&f.type_name, &ns, type_namespace_map);
+            if cpp_ty.contains(',') {
+                let alias_name = format!("_Type{}", alias_counter);
+                writeln!(s, "        using {} = {};", alias_name, cpp_ty).ok();
+                field_aliases.push((idx, alias_name));
+                alias_counter += 1;
+            }
+        }
+
+        for (idx, f) in c.fields.iter().enumerate() {
+            let cpp_ty = map_schema_type(&f.type_name, &ns, type_namespace_map);
+            if f.type_name.starts_with("bitfield:") {
+                writeln!(s, "        // SKIPPED: {} (bitfield type not supported)", f.name).ok();
+                continue;
+            }
+            let safe_ty = field_aliases.iter().find(|(i, _)| *i == idx).map(|(_, alias)| alias.clone()).unwrap_or(cpp_ty.clone());
+            writeln!(s, "        SCHEMA_FIELD({:<32}, {:<48}, {:#X}) // {}", safe_ty, f.name, f.offset, f.type_name).ok();
+        }
+        writeln!(s, "    }};\n").ok();
+    }
+
+    // Add manual CEconItem class for server.dll (not in schema)
+    if slugify(module.trim_end_matches(".dll")) == "server" {
+        writeln!(s, "    // CEconItem").ok();
+        writeln!(s, "    //   Manual addition - server-side inventory item").ok();
+        writeln!(s, "    //   fields: 11").ok();
+        writeln!(s, "    class CEconItem {{").ok();
+        writeln!(s, "    public:").ok();
+        writeln!(s, "        SCHEMA_FIELD(std::uint64_t                   , m_ulID                                          , 0x10) // uint64").ok();
+        writeln!(s, "        SCHEMA_FIELD(std::uint64_t                   , m_ulOriginalID                                  , 0x18) // uint64").ok();
+        writeln!(s, "        SCHEMA_FIELD(void*                           , m_pCustomData                                   , 0x20) // void*").ok();
+        writeln!(s, "        SCHEMA_FIELD(std::uint32_t                   , m_unAccountID                                   , 0x28) // uint32").ok();
+        writeln!(s, "        SCHEMA_FIELD(std::uint32_t                   , m_unInventory                                   , 0x2C) // uint32").ok();
+        writeln!(s, "        SCHEMA_FIELD(std::uint16_t                   , m_unDefIndex                                    , 0x30) // uint16").ok();
+        writeln!(s, "        SCHEMA_FIELD(std::uint16_t                   , m_nQuality                                      , 0x32) // uint16").ok();
+        writeln!(s, "        SCHEMA_FIELD(std::uint16_t                   , m_nRarity                                       , 0x32) // uint16").ok();
+        writeln!(s, "        SCHEMA_FIELD(std::uint16_t                   , m_iItemSet                                      , 0x34) // uint16").ok();
+        writeln!(s, "        SCHEMA_FIELD(bool                            , m_bSOUpdateFrame                                , 0x38) // bool").ok();
+        writeln!(s, "        SCHEMA_FIELD(std::uint32_t                   , m_unFlags                                       , 0x3C) // uint32").ok();
+        writeln!(s, "    }};\n").ok();
+    }
+
+    writeln!(s, "}} // namespace sdk::{}", ns).ok();
+    s
+}
+
+/// Build a deterministic index map for module include ordering.
+/// We compute inter-module dependencies and then topologically sort modules
+/// so headers only include dependency headers that come earlier in the order.
+fn module_include_index_map(
+    type_namespace_map: &BTreeMap<String, String>,
+    schemas: &SchemaMap,
+) -> BTreeMap<String, usize> {
+    use std::collections::{HashMap, VecDeque};
+
+    // Collect all modules
+    let mut modules: BTreeSet<String> = BTreeSet::new();
+    for (module, _) in schemas {
+        modules.insert(slugify(module.trim_end_matches(".dll")).to_string());
+    }
+
+    // Build dependency graph: module -> set of modules it depends on
+    let mut deps: BTreeMap<String, BTreeSet<String>> = BTreeMap::new();
+    for (module, (classes, _)) in schemas {
+        let ns = slugify(module.trim_end_matches(".dll"));
+        let mut sdeps: BTreeSet<String> = BTreeSet::new();
+        for c in classes {
+            if let Some(parent) = &c.parent_name {
+                let sanitized_parent = sanitize_class_name(parent);
+                if let Some(owner_ns) = type_namespace_map.get(&sanitized_parent) {
+                    if owner_ns != &ns {
+                        sdeps.insert(owner_ns.clone());
+                    }
+                }
+            }
+
+
+        }
+        deps.insert(ns.clone(), sdeps);
+    }
+
+    // Kahn's algorithm for topological sort of modules
+    // Build adjacency list where edge dep -> module (dep must come before module)
+    let mut in_degree: HashMap<String, usize> = HashMap::new();
+    let mut adj: HashMap<String, Vec<String>> = HashMap::new();
+    for m in &modules {
+        in_degree.insert(m.clone(), 0);
+    }
+
+    for (module, sdeps) in &deps {
+        // module depends on each dep; increment module's in-degree
+        let cnt = in_degree.entry(module.clone()).or_insert(0);
+        *cnt += sdeps.len();
+        for dep in sdeps {
+            adj.entry(dep.clone()).or_insert_with(Vec::new).push(module.clone());
+        }
+    }
+
+    let mut q: VecDeque<String> = in_degree
+        .iter()
+        .filter_map(|(k, v)| if *v == 0 { Some(k.clone()) } else { None })
+        .collect();
+
+    let mut order: Vec<String> = Vec::new();
+    while let Some(m) = q.pop_front() {
+        order.push(m.clone());
+        if let Some(children) = adj.get(&m) {
+            for child in children {
+                if let Some(cnt) = in_degree.get_mut(child) {
+                    *cnt = cnt.saturating_sub(1);
+                    if *cnt == 0 {
+                        q.push_back(child.clone());
+                    }
+                }
+            }
+        }
+    }
+
+    // If cycles exist, append remaining modules deterministically.
+    if order.len() < modules.len() {
+        // Remaining modules set
+        let remaining_set: BTreeSet<String> = modules.into_iter().filter(|m| !order.contains(m)).collect();
+
+        // Build subgraph of dependencies restricted to the remaining modules
+        let mut sub_deps: BTreeMap<String, BTreeSet<String>> = BTreeMap::new();
+        for (module, sdeps) in &deps {
+            if remaining_set.contains(module) {
+                let mut filtered: BTreeSet<String> = BTreeSet::new();
+                for d in sdeps {
+                    if remaining_set.contains(d) {
+                        filtered.insert(d.clone());
+                    }
+                }
+                sub_deps.insert(module.clone(), filtered);
+            }
+        }
+
+        // Try Kahn's algorithm on the restricted subgraph to produce a partial order
+        use std::collections::VecDeque;
+        let mut in_deg: BTreeMap<String, usize> = BTreeMap::new();
+        let mut adj: BTreeMap<String, Vec<String>> = BTreeMap::new();
+        for m in &remaining_set {
+            in_deg.insert(m.clone(), 0);
+        }
+        for (m, sdeps) in &sub_deps {
+            let cnt = in_deg.entry(m.clone()).or_insert(0);
+            *cnt += sdeps.len();
+            for dep in sdeps {
+                adj.entry(dep.clone()).or_insert_with(Vec::new).push(m.clone());
+            }
+        }
+
+        let mut q: VecDeque<String> = in_deg.iter().filter_map(|(k, v)| if *v == 0 { Some(k.clone()) } else { None }).collect();
+        let mut sub_order: Vec<String> = Vec::new();
+        while let Some(m) = q.pop_front() {
+            sub_order.push(m.clone());
+            if let Some(children) = adj.get(&m) {
+                for child in children {
+                    if let Some(cnt) = in_deg.get_mut(child) {
+                        *cnt = cnt.saturating_sub(1);
+                        if *cnt == 0 {
+                            q.push_back(child.clone());
+                        }
+                    }
+                }
+            }
+        }
+
+        // Any modules not included by the sub-order are in a cycle. Append
+        // them deterministically with a small priority favoring server.
+        let mut remaining_list: Vec<String> = remaining_set.into_iter().filter(|m| !sub_order.contains(m)).collect();
+        let priority = |m: &str| {
+            match m {
+                "server" => 0,
+                "client" => 1,
+                _ => 2,
+            }
+        };
+        remaining_list.sort_by_key(|m| (priority(m.as_str()), m.clone()));
+
+        // Append the sub_order first, then the remaining_list
+        for m in sub_order.into_iter() {
+            order.push(m);
+        }
+        for m in remaining_list.into_iter() {
+            order.push(m);
+        }
+    }
+
+    // Build index map
+    let mut map = BTreeMap::new();
+    for (i, m) in order.into_iter().enumerate() {
+        map.insert(m, i);
+    }
+    map
 }
 
 /// Topologically sort classes so that base classes are defined before derived classes.
@@ -199,6 +563,90 @@ fn topological_sort_classes(classes: &[Class]) -> Vec<&Class> {
     sorted
 }
 
+/// Map of types to their proper SDK namespaces.
+/// Used to emit types in their correct nested namespace scope.
+fn get_type_namespace_map() -> BTreeMap<&'static str, &'static str> {
+    let mut map = BTreeMap::new();
+
+    // resourcesystem types
+    map.insert("InfoForResourceTypeIPulseGraphDef", "resourcesystem");
+    map.insert("InfoForResourceTypeCModel", "resourcesystem");
+    map.insert("InfoForResourceTypeCRenderMesh", "resourcesystem");
+    map.insert("InfoForResourceTypeCCompositeMaterialKit", "resourcesystem");
+    map.insert("InfoForResourceTypeCCompositeMaterial", "resourcesystem");
+    map.insert("InfoForResourceTypeCNmSkeleton", "resourcesystem");
+    map.insert("InfoForResourceTypeIMaterial2", "resourcesystem");
+    map.insert("InfoForResourceTypeIParticleSystemDefinition", "resourcesystem");
+    map.insert("InfoForResourceTypeIParticleSnapshot", "resourcesystem");
+    map.insert("InfoForResourceTypeCNmGraphDefinition", "resourcesystem");
+    map.insert("InfoForResourceTypeCNmClip", "resourcesystem");
+    map.insert("InfoForResourceTypeCEntityLump", "resourcesystem");
+    map.insert("InfoForResourceTypeCChoreoSceneResource", "resourcesystem");
+    map.insert("InfoForResourceTypeCPostProcessingResource", "resourcesystem");
+    map.insert("InfoForResourceTypeCPhysAggregateData", "resourcesystem");
+    map.insert("InfoForResourceTypeCAnimationGroup", "resourcesystem");
+    map.insert("InfoForResourceTypeCSequenceGroupData", "resourcesystem");
+    map.insert("InfoForResourceTypeCTextureBase", "resourcesystem");
+    map.insert("InfoForResourceTypeCAnimData", "resourcesystem");
+    map.insert("InfoForResourceTypeCVoiceContainerBase", "resourcesystem");
+    map.insert("InfoForResourceTypeCVMixListResource", "resourcesystem");
+    map.insert("AABB_t", "resourcesystem");
+    map.insert("PackedAABB_t", "resourcesystem");
+
+    // schemasystem types
+    map.insert("fieldtype_t", "schemasystem");
+
+    // rendersystemdx11 types
+    map.insert("RenderPrimitiveType_t", "rendersystemdx11");
+
+    // particles types
+    map.insert("ParticleAttributeIndex_t", "particles");
+    map.insert("ParticleIndex_t", "particles");
+    map.insert("ParticleModelType_t", "particles");
+    map.insert("ParticleNamedValueSource_t", "particles");
+    map.insert("ParticleColorBlendType_t", "particles");
+    map.insert("ParticleColorBlendMode_t", "particles");
+    map.insert("ParticleDirectionNoiseType_t", "particles");
+    map.insert("ParticleSetMethod_t", "particles");
+    map.insert("IParticleCollection", "particles");
+
+    // server types
+    map.insert("CRangeFloat", "server");
+    map.insert("CLogicalEntity", "server");
+    map.insert("CBaseFilter", "server");
+    map.insert("CBaseAnimGraph", "server");
+    map.insert("CBaseProp", "server");
+    map.insert("CServerOnlyModelEntity", "server");
+    map.insert("CEntityComponent", "server");
+    map.insert("CPathNode", "server");
+    map.insert("CAttributeManager", "server");
+    map.insert("CPlayerPawnComponent", "server");
+    map.insert("CPlayerControllerComponent", "server");
+    map.insert("CSkeletonAnimationController", "server");
+    map.insert("CBaseAnimGraphDestructibleParts_GraphController", "server");
+    map.insert("CBaseAnimGraphVariationUserData", "server");
+    map.insert("CBasePropDoor", "server");
+    // Canonical owner overrides for classes that are conceptually client-side
+    // but occasionally appear in multiple module schema dumps. Ensure these
+    // are emitted in the client module so server headers can reference them
+    // as ::sdk::client::Type.
+    map.insert("CPathSimple", "client");
+    map.insert("CPathQueryComponent", "client");
+    map.insert("CPathWithDynamicNodes", "client");
+    map.insert("CPathMover", "client");
+
+    // vphysics2 types
+    map.insert("RnSphereDesc_t", "vphysics2");
+    map.insert("RnCapsuleDesc_t", "vphysics2");
+    map.insert("RnHullDesc_t", "vphysics2");
+    map.insert("RnMeshDesc_t", "vphysics2");
+    map.insert("RnSoftbodyParticle_t", "vphysics2");
+    map.insert("RnSoftbodySpring_t", "vphysics2");
+    map.insert("RnSoftbodyCapsule_t", "vphysics2");
+
+    map
+}
+
 /// Render a tiny shared header (`cs2sdk_macros.hpp`) that defines the
 /// `SCHEMA_FIELD` macro family the generated headers depend on.
 ///
@@ -228,6 +676,8 @@ pub fn render_macros_header() -> String {
 #include <cstddef>
 #include <cstdint>
 #include <utility>
+
+
 
 // ============================================================================
 // Source 2 Engine Type Aliases
@@ -457,6 +907,21 @@ class CParticleProperty {
 public:
     std::uint8_t m_Data[8];
 };
+
+// Forward-declare common server-owned types in the proper namespace so
+// client headers can reference them as ::sdk::server::Type without
+// requiring the server header to be included first.
+namespace sdk { namespace server {
+    class CBaseAnimGraph;
+    class CBaseFilter;
+    class CEntityComponent;
+    class CLogicalEntity;
+    class CBaseProp;
+    class CAttributeManager;
+    class CSkeletonAnimationController;
+    class CBaseAnimGraphDestructibleParts_GraphController;
+    class CBaseAnimGraphVariationUserData;
+}}
 
 enum class TakeDamageFlags_t : std::uint64_t {};
 enum class EntityPlatformTypes_t : std::uint8_t {};
@@ -1553,6 +2018,7 @@ fn render_one_module(
     build_number: Option<u32>,
     timestamp: &str,
     type_namespace_map: &BTreeMap<String, String>,
+    module_index_map: &BTreeMap<String, usize>,
 ) -> String {
     let ns = slugify(module.trim_end_matches(".dll"));
     let mut s = String::with_capacity(64 * 1024);
@@ -1560,6 +2026,54 @@ fn render_one_module(
     write_banner(&mut s, module, classes.len(), enums.len(), build_number, timestamp);
     s.push_str("#pragma once\n");
     s.push_str("#include \"cs2sdk_macros.hpp\"\n\n");
+
+    // Scan all classes in this module (before filtering) to find cross-module base dependencies.
+    // We build two sets: `parent_deps` for classes whose parent is in another module
+    // (these must be included unconditionally because inheritance requires the base
+    // class definition), and `other_deps` for cross-module references discovered in
+    // field types (these can be included conditionally based on module order).
+    let mut parent_deps: BTreeSet<String> = BTreeSet::new();
+    let mut other_deps: BTreeSet<String> = BTreeSet::new();
+    for c in classes {
+        if let Some(parent_name) = &c.parent_name {
+            let sanitized_parent = sanitize_class_name(parent_name);
+            // Look up the parent's module ownership
+            if let Some(owner_ns) = type_namespace_map.get(&sanitized_parent) {
+                if owner_ns != &ns {
+                    parent_deps.insert(owner_ns.clone());
+                }
+            }
+        }
+
+
+    }
+
+    // Emit includes. Parent dependencies are inheritance requirements, so they
+    // must be included unconditionally for standalone header compilation.
+    // Other dependencies are still ordered to reduce cycle pressure.
+    let my_index = module_index_map.get(&ns).cloned().unwrap_or_default();
+
+    for dep in &parent_deps {
+        writeln!(s, "#include \"{}_dll.hpp\"", dep).ok();
+    }
+
+    for dep in other_deps.difference(&parent_deps) {
+        // Include non-parent dependencies only if they appear earlier in the
+        // global module ordering. This avoids mutual includes between modules
+        // while keeping inheritance includes unconditional.
+        if let Some(&dep_index) = module_index_map.get(dep) {
+            if dep_index < my_index {
+                writeln!(s, "#include \"{}_dll.hpp\"", dep).ok();
+            }
+        } else {
+            // Unknown module index: be conservative and include it.
+            writeln!(s, "#include \"{}_dll.hpp\"", dep).ok();
+        }
+    }
+
+    if !parent_deps.is_empty() || !other_deps.is_empty() {
+        s.push('\n');
+    }
 
     writeln!(s, "namespace sdk::{} {{", ns).ok();
     writeln!(s).ok();
@@ -1649,12 +2163,26 @@ fn render_one_module(
     for c in &sorted_classes {
         write_class_doc(&mut s, c);
         let sanitized_name = sanitize_class_name(&c.name);
-        let parent = c
-            .parent_name
-            .as_deref()
-            .map(sanitize_class_name)
-            .map(|p| format!(" : public {}", p))
-            .unwrap_or_default();
+
+        // Qualify the parent class with its owning sdk::<module> namespace
+        // if it was emitted in a different module. This avoids unqualified
+        // base class names that may be defined elsewhere (causing C2504).
+        let parent = match &c.parent_name {
+            Some(raw_parent) => {
+                let sanitized_parent = sanitize_class_name(raw_parent);
+                if let Some(owner_ns) = type_namespace_map.get(&sanitized_parent) {
+                    if owner_ns != &ns {
+                        format!(" : public ::sdk::{}::{}", owner_ns, sanitized_parent)
+                    } else {
+                        format!(" : public {}", sanitized_parent)
+                    }
+                } else {
+                    format!(" : public {}", sanitized_parent)
+                }
+            }
+            None => String::new(),
+        };
+
         writeln!(s, "    class {}{} {{", sanitized_name, parent).ok();
         writeln!(s, "    public:").ok();
 
@@ -1912,6 +2440,8 @@ fn sanitize_enum_member(raw: &str) -> String {
 fn sanitize_class_name(raw: &str) -> String {
     raw.replace("::", "_")
 }
+
+
 
 /// Optional helper: collect every (class, parent) pair so a TUI / docs
 /// page can render the class hierarchy. Currently unused by the emitter

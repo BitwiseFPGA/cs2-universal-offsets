@@ -1,3 +1,4 @@
+use std::collections::{BTreeMap, BTreeSet};
 use std::fmt::{self, Write};
 use std::fs;
 use std::path::Path;
@@ -125,15 +126,117 @@ impl<'a> Output<'a> {
         let ts = self.timestamp.to_rfc3339();
 
         // 1. shared SCHEMA_FIELD macros
-        fs::write(self.out_dir.join("cs2sdk_macros.hpp"), sdk_classes::render_macros_header())?;
+        // Render module headers first so we can iterate and write them below
+        let module_data = sdk_classes::render_module_headers(&self.result.schemas, &self.result.buttons, build_number, &ts);
+
+        // Render base macros (includes a rich set of global forward-decls / minimal types)
+        let macros_path = self.out_dir.join("cs2sdk_macros.hpp");
+        let mut macros = sdk_classes::render_macros_header();
+
+        // Scan all module bodies for cross-module ::sdk::NAMESPACE::Type references
+        // and for enum definitions so we can emit safe forward-declarations in the
+        // macros header. Forward-declarations avoid ordering problems between
+        // per-module headers when included together.
+        let mut namespace_blocks: BTreeMap<String, BTreeSet<String>> = BTreeMap::new();
+        let mut enum_underlying: BTreeMap<(String, String), String> = BTreeMap::new();
+
+        for (_file_name, body) in &module_data {
+            // Parse the current module namespace from the header preamble
+            let mut current_ns = String::new();
+            if let Some(ns_pos) = body.find("namespace sdk::") {
+                let ns_start = ns_pos + "namespace sdk::".len();
+                let mut ns_end = ns_start;
+                while ns_end < body.len() {
+                    let c = body.as_bytes()[ns_end] as char;
+                    if c.is_whitespace() || c == '{' { break; }
+                    ns_end += 1;
+                }
+                current_ns = body[ns_start..ns_end].to_string();
+            }
+
+            // Collect enum definitions and their underlying types scoped to this module
+            let mut scan_idx = 0usize;
+            let bytes = body.as_bytes();
+            while let Some(found) = body[scan_idx..].find("enum class") {
+                let pos = scan_idx + found;
+                let mut name_start = pos + "enum class".len();
+                // skip whitespace
+                while name_start < bytes.len() && (bytes[name_start] as char).is_whitespace() {
+                    name_start += 1;
+                }
+                let mut name_end = name_start;
+                while name_end < bytes.len() {
+                    let c = bytes[name_end] as char;
+                    if c.is_ascii_alphanumeric() || c == '_' { name_end += 1; } else { break; }
+                }
+                if name_end > name_start {
+                    let name = body[name_start..name_end].trim().to_string();
+                    // Look for ':' and '{' to extract underlying type
+                    let rest = &body[name_end..];
+                    if let Some(colon_rel) = rest.find(':') {
+                        if let Some(brace_rel) = rest.find('{') {
+                            if brace_rel > colon_rel {
+                                let underlying = rest[colon_rel + 1..brace_rel].trim().to_string();
+                                enum_underlying.insert((current_ns.clone(), name), underlying);
+                            }
+                        }
+                    }
+                }
+                scan_idx = pos + 1;
+            }
+
+            // Collect explicit cross-module qualified uses like ::sdk::resourcesystem::Type
+            let mut search_idx = 0usize;
+            while let Some(found) = body[search_idx..].find("::sdk::") {
+                let pos = search_idx + found + "::sdk::".len();
+                if let Some(ns_end_rel) = body[pos..].find("::") {
+                    let ns = &body[pos..pos + ns_end_rel];
+                    let type_start = pos + ns_end_rel + 2;
+                    let mut type_end = type_start;
+                    while type_end < body.len() {
+                        let c = body.as_bytes()[type_end] as char;
+                        if c.is_ascii_alphanumeric() || c == '_' { type_end += 1; } else { break; }
+                    }
+                    if type_end > type_start {
+                        let ty = &body[type_start..type_end];
+                        namespace_blocks
+                            .entry(ns.to_string())
+                            .or_insert_with(BTreeSet::new)
+                            .insert(ty.to_string());
+                    }
+                    search_idx = type_end;
+                } else { break; }
+            }
+        }
+
+        macros.push_str("\n// ============================================================================\n");
+        macros.push_str("// Cross-module forward declarations (auto-generated)\n");
+        macros.push_str("// These provide declaration-only stubs for types referenced across\n");
+        macros.push_str("// different sdk::<module> namespaces so headers can be included in any\n");
+        macros.push_str("// order. They are intentionally declaration-only; the real definitions\n");
+        macros.push_str("// live in the per-module headers.\n\n");
+
+        for (ns, types_set) in &namespace_blocks {
+            macros.push_str(&format!("namespace sdk {{ namespace {} {{\n", ns));
+            for ty in types_set {
+                if let Some(under) = enum_underlying.get(&(ns.clone(), ty.clone())) {
+                    macros.push_str(&format!("    enum class {} : {};\n", ty, under));
+                } else {
+                    macros.push_str(&format!("    class {};\n", ty));
+                }
+            }
+            macros.push_str("} }\n\n");
+        }
+
+        fs::write(macros_path, macros)?;
 
         // 2. per-module SDK class headers (skip modules with 0 classes
         //    AND 0 enums to avoid emitting empty/useless headers like
         //    host_dll.hpp).
         let mut module_stems = Vec::new();
-        for (file_name, body) in sdk_classes::render_module_headers(&self.result.schemas, &self.result.buttons, build_number, &ts) {
+        for (file_name, body) in module_data {
             // Cheap heuristic: an "empty" module body has no `class ` or
-            // `enum class` definitions — only the namespace shell.
+            // `enum class ` definitions — only the namespace shell.
             // We still keep client.dll because of the buttons enum.
             let is_empty = !body.contains("class ") && !body.contains("enum class ");
             if is_empty { continue; }
@@ -142,6 +245,7 @@ impl<'a> Output<'a> {
                 module_stems.push(stem.to_string());
             }
         }
+
 
         // 3. netvars (split from schema). Only emit if we actually got
         //    any networked fields — the schema walker can come back
@@ -160,9 +264,32 @@ impl<'a> Output<'a> {
 
         // 5. amalgamation (C++ only; Rust amalgamation dropped —
         //    repo is C++-only output now).
+        // Try to reorder module_stems using the emitted module_order.txt
+        // file in the output `sdk/` directory so the single-include
+        // amalgamation includes modules in a stable dependency order.
+        let mut ordered_stems = module_stems.clone();
+        let order_paths = [self.out_dir.join("sdk/module_order.txt"), self.out_dir.join("module_order.txt")];
+        for p in &order_paths {
+            if let Ok(txt) = std::fs::read_to_string(p) {
+                let mut idx_map: std::collections::BTreeMap<String, usize> = std::collections::BTreeMap::new();
+                for line in txt.lines() {
+                    if let Some((idxs, name)) = line.split_once(':') {
+                        if let Ok(idx) = idxs.parse::<usize>() {
+                            let stem = name.trim().trim_end_matches(".dll").to_string();
+                            idx_map.insert(stem, idx);
+                        }
+                    }
+                }
+                if !idx_map.is_empty() {
+                    ordered_stems.sort_by_key(|m| idx_map.get(m).cloned().unwrap_or(usize::MAX));
+                    break;
+                }
+            }
+        }
+
         fs::write(
             self.out_dir.join("cs2sdk.hpp"),
-            amalgamation::render_hpp(&module_stems, build_number),
+            amalgamation::render_hpp(&ordered_stems, build_number),
         )?;
 
         // 6. hand-curated "verified working features" catalogue.

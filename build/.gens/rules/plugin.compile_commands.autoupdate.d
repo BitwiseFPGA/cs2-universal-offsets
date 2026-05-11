@@ -1,20 +1,21 @@
 {
+    files = {
+        [[C:\Users\macin\Desktop\asteria\xmake.lua]],
+        [[C:\Users\macin\Desktop\asteria\vendor\cs2-sdk\.xmake\windows\x64\xmake.conf]]
+    },
     values = {
-        [[src\cheat\cheat.cpp]],
-        [[src\cheat\hooks\AggregateSceneObjectArray.cpp]],
-        [[src\cheat\hooks\InputBlock.cpp]],
-        [[src\cheat\hooks\Present.cpp]],
-        [[src\cheat\hooks\RenderDecals.cpp]],
-        [[src\cheat\hooks\hooks.cpp]],
-        [[src\cheat\menu\menu.cpp]],
-        [[src\cheat\test\test_bhop.cpp]],
-        [[src\cheat\test\test_chams.cpp]],
-        [[src\cheat\test\test_skinchanger.cpp]],
-        [[src\config\config.cpp]],
+        [[src\core\entities\entities.cpp]],
+        [[src\core\hooks\handlers\OnAddEntity.cpp]],
+        [[src\core\hooks\handlers\OnRemoveEntity.cpp]],
+        [[src\core\hooks\hooks.cpp]],
         [[src\entry.cpp]],
-        [[src\utils\io.cpp]],
-        [[src\utils\memory.cpp]],
-        [[src\utils\modules.cpp]],
+        [[src\menu\menu.cpp]],
+        [[src\menu\ui\ui.cpp]],
+        [[src\utils\config\config.cpp]],
+        [[src\utils\input\input.cpp]],
+        [[src\utils\io\io.cpp]],
+        [[src\utils\memory\memory.cpp]],
+        [[src\utils\modules\modules.cpp]],
         [[vendor\imgui\backends\imgui_impl_dx11.cpp]],
         [[vendor\imgui\backends\imgui_impl_win32.cpp]],
         [[vendor\imgui\imgui.cpp]],
@@ -48,9 +49,5 @@
         [[vendor\zydis\src\String.c]],
         [[vendor\zydis\src\Utils.c]],
         [[vendor\zydis\src\Zydis.c]]
-    },
-    files = {
-        [[C:\Users\macin\Desktop\cool\xmake.lua]],
-        [[C:\Users\macin\Desktop\cool\vendor\cs2-sdk\.xmake\windows\x64\xmake.conf]]
     }
 }
