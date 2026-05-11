@@ -71,54 +71,18 @@ fn display_name(raw: &str) -> String {
     raw.to_string()
 }
 
-fn friendly_proto(sig_name: &str, proto: &str) -> String {
-    if proto.is_empty() {
-        return String::new();
+/// Convert a signature prototype into a C function-pointer body that is
+/// guaranteed to compile in downstream consumers.
+///
+/// We only preserve a fully-typed signature when we explicitly know it is
+/// safe.  Everything else falls back to the generic variadic form so we do
+/// not leak IDA-only aliases like `_QWORD` / `_DWORD` / project-specific
+/// class names into consumer builds.
+fn proto_to_fnptr(sig_name: &str, _proto: &str) -> String {
+    if sig_name == "CreateMove" {
+        return "bool(__fastcall*)(void* pthis, int nSlot, float flInputSampleTime, bool bActive)".to_string();
     }
-    let display = display_name(sig_name);
-    let mut out = proto.to_string();
-    if let Some(start) = out.find("sub_") {
-        let mut end = start + 4;
-        while end < out.len() && out.as_bytes()[end].is_ascii_hexdigit() {
-            end += 1;
-        }
-        out.replace_range(start..end, &display);
-    }
-    out
-}
-
-/// Convert an IDA / Hex-Rays prototype into a C function-pointer body.
-/// We keep the real return type and argument list when possible, and only
-/// fall back to a generic variadic shape if the prototype is too weird to
-/// parse safely.
-fn proto_to_fnptr(sig_name: &str, proto: &str) -> String {
-    let proto = friendly_proto(sig_name, proto);
-    let Some(lp) = proto.find('(') else {
-        return "void(__fastcall*)(void*, ...)".to_string();
-    };
-    let Some(rp) = proto.rfind(')') else {
-        return "void(__fastcall*)(void*, ...)".to_string();
-    };
-
-    let head = proto[..lp].trim();
-    let args = proto[lp + 1..rp].trim();
-    let mut head_parts: Vec<&str> = head.split_whitespace().collect();
-    if head_parts.is_empty() {
-        return "void(__fastcall*)(void*, ...)".to_string();
-    }
-    let _func_name = head_parts.pop().unwrap();
-    let cc = match head_parts.last().copied() {
-        Some("__fastcall") | Some("__cdecl") | Some("__thiscall") | Some("__stdcall") | Some("__vectorcall") | Some("__regcall") => {
-            Some(head_parts.pop().unwrap())
-        }
-        _ => None,
-    };
-    let ret = if head_parts.is_empty() { "void".to_string() } else { head_parts.join(" ") };
-    let args = if args.is_empty() { "void" } else { args };
-    match cc {
-        Some(cc) => format!("{} ({}*)({})", ret, cc, args),
-        None => format!("{} (*)({})", ret, args),
-    }
+    "void(__fastcall*)(void*, ...)".to_string()
 }
 
 /// Heuristic: is this signature's `name` actually a *type / data / vtable*
