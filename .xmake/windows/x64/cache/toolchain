@@ -1,81 +1,113 @@
 {
-    dotnet_arch_x64_plat_windows = {
-        plat = "windows",
-        __checked = false,
+    cuda_arch_x64_plat_windows = {
         __global = true,
-        arch = "x64"
+        arch = "x64",
+        plat = "windows",
+        __checked = true
     },
-    nasm_arch_x64_plat_windows = {
-        plat = "windows",
-        __checked = true,
+    nim_arch_x64_plat_windows = {
         __global = true,
-        arch = "x64"
+        arch = "x64",
+        plat = "windows",
+        __checked = false
     },
-    go_arch_x64_plat_windows = {
-        plat = "windows",
-        __checked = true,
-        __global = true,
-        arch = "x64"
+    tool_target_asteria_windows_x64_cc = {
+        toolname = "cl",
+        program = [[C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.50.35717\bin\HostX64\x64\cl.exe]],
+        toolchain_info = {
+            cachekey = "msvc_arch_x64_plat_windows",
+            name = "msvc",
+            plat = "windows",
+            arch = "x64"
+        }
     },
-    rust_arch_x64_plat_windows = {
-        plat = "windows",
-        __checked = true,
+    swift_arch_x64_plat_windows = {
         __global = true,
-        arch = "x64"
-    },
-    gfortran_arch_x64_plat_windows = {
+        arch = "x64",
         plat = "windows",
-        __checked = true,
-        __global = true,
-        arch = "x64"
+        __checked = true
     },
     tool_target_asteria_windows_x64_sh = {
         toolname = "link",
+        program = [[C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.50.35717\bin\HostX64\x64\link.exe]],
         toolchain_info = {
-            plat = "windows",
             cachekey = "msvc_arch_x64_plat_windows",
-            arch = "x64",
-            name = "msvc"
-        },
-        program = [[C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.50.35717\bin\HostX64\x64\link.exe]]
+            name = "msvc",
+            plat = "windows",
+            arch = "x64"
+        }
     },
-    swift_arch_x64_plat_windows = {
-        plat = "windows",
-        __checked = true,
+    tool_target_asteria_windows_x64_cxx = {
+        toolname = "cl",
+        program = [[C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.50.35717\bin\HostX64\x64\cl.exe]],
+        toolchain_info = {
+            cachekey = "msvc_arch_x64_plat_windows",
+            name = "msvc",
+            plat = "windows",
+            arch = "x64"
+        }
+    },
+    zig_arch_x64_plat_windows = {
         __global = true,
-        arch = "x64"
+        arch = "x64",
+        plat = "windows",
+        __checked = false
+    },
+    yasm_arch_x64_plat_windows = {
+        __global = true,
+        arch = "x64",
+        plat = "windows",
+        __checked = true
+    },
+    tool_target_asteria_windows_x64_ld = {
+        toolname = "link",
+        program = [[C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.50.35717\bin\HostX64\x64\link.exe]],
+        toolchain_info = {
+            cachekey = "msvc_arch_x64_plat_windows",
+            name = "msvc",
+            plat = "windows",
+            arch = "x64"
+        }
+    },
+    dotnet_arch_x64_plat_windows = {
+        __global = true,
+        arch = "x64",
+        plat = "windows",
+        __checked = false
+    },
+    rust_arch_x64_plat_windows = {
+        __global = true,
+        arch = "x64",
+        plat = "windows",
+        __checked = true
+    },
+    fpc_arch_x64_plat_windows = {
+        __global = true,
+        arch = "x64",
+        plat = "windows",
+        __checked = true
+    },
+    clang_arch_x64_plat_windows = {
+        __global = true,
+        arch = "x64",
+        plat = "windows"
+    },
+    gfortran_arch_x64_plat_windows = {
+        __global = true,
+        arch = "x64",
+        plat = "windows",
+        __checked = true
+    },
+    go_arch_x64_plat_windows = {
+        __global = true,
+        arch = "x64",
+        plat = "windows",
+        __checked = true
     },
     msvc_arch_x64_plat_windows = {
-        vcvars = {
-            VCInstallDir = [[C:\Program Files\Microsoft Visual Studio\18\Community\VC\]],
-            VCToolsRedistDir = [[C:\Program Files\Microsoft Visual Studio\18\Community\VC\Redist\MSVC\14.50.35710\]],
-            WindowsSdkDir = [[C:\Program Files (x86)\Windows Kits\10\]],
-            VSCMD_ARG_TGT_ARCH = "x64",
-            VCToolsInstallDir = [[C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.50.35717\]],
-            WindowsSDKVersion = "10.0.26100.0",
-            ExtensionSdkDir = [[C:\Program Files (x86)\Microsoft SDKs\Windows Kits\10\ExtensionSDKs]],
-            VSCMD_VER = "18.5.1",
-            VCToolsVersion = "14.50.35717",
-            LIB = [[C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.50.35717\ATLMFC\lib\x64;C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.50.35717\lib\x64;C:\Program Files (x86)\Windows Kits\10\lib\10.0.26100.0\ucrt\x64;C:\Program Files (x86)\Windows Kits\10\\lib\10.0.26100.0\\um\x64]],
-            UniversalCRTSdkDir = [[C:\Program Files (x86)\Windows Kits\10\]],
-            VSCMD_ARG_app_plat = "Desktop",
-            WindowsSdkBinPath = [[C:\Program Files (x86)\Windows Kits\10\bin\]],
-            PATH = [[C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.50.35717\bin\HostX64\x64;C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\VC\VCPackages;C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\TestWindow;C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\TeamFoundation\Team Explorer;C:\Program Files\Microsoft Visual Studio\18\Community\MSBuild\Current\bin\Roslyn;C:\Program Files\Microsoft Visual Studio\18\Community\Team Tools\DiagnosticsHub\Collector;C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\Extensions\Microsoft\CodeCoverage.Console;C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\\x64;C:\Program Files (x86)\Windows Kits\10\bin\\x64;C:\Program Files\Microsoft Visual Studio\18\Community\\MSBuild\Current\Bin\amd64;C:\Windows\Microsoft.NET\Framework64\v4.0.30319;C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\;C:\Program Files\Microsoft Visual Studio\18\Community\Common7\Tools\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\;C:\Program Files\Git\cmd;C:\Program Files\nodejs\;C:\Program Files\NVIDIA Corporation\NVIDIA App\NvDLISR;C:\Users\macin\xmake;C:\Users\macin\.cargo\bin;C:\Users\macin\AppData\Local\Programs\Python\Python314\Scripts\;C:\Users\macin\AppData\Local\Programs\Python\Python314\;C:\Users\macin\AppData\Local\Programs\Python\Launcher\;C:\Users\macin\AppData\Local\Microsoft\WindowsApps;C:\Users\macin\AppData\Local\Programs\Zed\bin;C:\Users\macin\AppData\Local\spicetify;C:\Users\macin\xmake;C:\Users\macin\AppData\Roaming\npm;C:\Users\macin\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\macin\AppData\Local\Programs\Antigravity\bin;C:\Users\macin\AppData\Local\Programs\Kiro\bin;C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin;C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\Ninja;C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\VC\Linux\bin\ConnectionManagerExe;C:\Program Files\Microsoft Visual Studio\18\Community\VC\vcpkg]],
-            UCRTVersion = "10.0.26100.0",
-            LIBPATH = [[C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.50.35717\ATLMFC\lib\x64;C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.50.35717\lib\x64;C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.50.35717\lib\x86\store\references;C:\Program Files (x86)\Windows Kits\10\UnionMetadata\10.0.26100.0;C:\Program Files (x86)\Windows Kits\10\References\10.0.26100.0;C:\Windows\Microsoft.NET\Framework64\v4.0.30319]],
-            VCIDEInstallDir = [[C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\VC\]],
-            WindowsLibPath = [[C:\Program Files (x86)\Windows Kits\10\UnionMetadata\10.0.26100.0;C:\Program Files (x86)\Windows Kits\10\References\10.0.26100.0]],
-            VSCMD_ARG_HOST_ARCH = "x64",
-            VisualStudioVersion = "18.0",
-            VS180COMNTOOLS = [[C:\Program Files\Microsoft Visual Studio\18\Community\Common7\Tools\]],
-            VSInstallDir = [[C:\Program Files\Microsoft Visual Studio\18\Community\]],
-            WindowsSdkVerBinPath = [[C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\]],
-            INCLUDE = [[C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.50.35717\include;C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.50.35717\ATLMFC\include;C:\Program Files\Microsoft Visual Studio\18\Community\VC\Auxiliary\VS\include;C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\um;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\shared;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\winrt;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\cppwinrt]],
-            DevEnvdir = [[C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\]]
-        },
-        vs_toolset = "14.50.35717",
+        __global = true,
+        vs_sdkver = "10.0.26100.0",
         vs = "2026",
-        arch = "x64",
         vcarchs = {
             "arm",
             "arm64",
@@ -83,74 +115,42 @@
             "x64",
             "x86"
         },
-        plat = "windows",
-        __checked = "2026",
-        vs_sdkver = "10.0.26100.0",
-        __global = true
-    },
-    zig_arch_x64_plat_windows = {
-        plat = "windows",
-        __checked = false,
-        __global = true,
-        arch = "x64"
-    },
-    cuda_arch_x64_plat_windows = {
-        plat = "windows",
-        __checked = true,
-        __global = true,
-        arch = "x64"
-    },
-    nim_arch_x64_plat_windows = {
-        plat = "windows",
-        __checked = false,
-        __global = true,
-        arch = "x64"
-    },
-    tool_target_asteria_windows_x64_cc = {
-        toolname = "cl",
-        toolchain_info = {
-            plat = "windows",
-            cachekey = "msvc_arch_x64_plat_windows",
-            arch = "x64",
-            name = "msvc"
+        vcvars = {
+            VSCMD_ARG_HOST_ARCH = "x64",
+            VS180COMNTOOLS = [[C:\Program Files\Microsoft Visual Studio\18\Community\Common7\Tools\]],
+            VCToolsVersion = "14.50.35717",
+            UCRTVersion = "10.0.26100.0",
+            WindowsLibPath = [[C:\Program Files (x86)\Windows Kits\10\UnionMetadata\10.0.26100.0;C:\Program Files (x86)\Windows Kits\10\References\10.0.26100.0]],
+            WindowsSdkDir = [[C:\Program Files (x86)\Windows Kits\10\]],
+            WindowsSdkVerBinPath = [[C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\]],
+            WindowsSDKVersion = "10.0.26100.0",
+            VCToolsRedistDir = [[C:\Program Files\Microsoft Visual Studio\18\Community\VC\Redist\MSVC\14.50.35710\]],
+            WindowsSdkBinPath = [[C:\Program Files (x86)\Windows Kits\10\bin\]],
+            PATH = [[C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.50.35717\bin\HostX64\x64;C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\VC\VCPackages;C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\TestWindow;C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\TeamFoundation\Team Explorer;C:\Program Files\Microsoft Visual Studio\18\Community\MSBuild\Current\bin\Roslyn;C:\Program Files\Microsoft Visual Studio\18\Community\Team Tools\DiagnosticsHub\Collector;C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\Extensions\Microsoft\CodeCoverage.Console;C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\\x64;C:\Program Files (x86)\Windows Kits\10\bin\\x64;C:\Program Files\Microsoft Visual Studio\18\Community\\MSBuild\Current\Bin\amd64;C:\Windows\Microsoft.NET\Framework64\v4.0.30319;C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\;C:\Program Files\Microsoft Visual Studio\18\Community\Common7\Tools\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\;C:\Program Files\Git\cmd;C:\Program Files\nodejs\;C:\Program Files\NVIDIA Corporation\NVIDIA App\NvDLISR;C:\Users\macin\xmake;C:\Users\macin\.cargo\bin;C:\Users\macin\AppData\Local\Programs\Python\Python314\Scripts\;C:\Users\macin\AppData\Local\Programs\Python\Python314\;C:\Users\macin\AppData\Local\Programs\Python\Launcher\;C:\Users\macin\AppData\Local\Microsoft\WindowsApps;C:\Users\macin\AppData\Local\Programs\Zed\bin;C:\Users\macin\AppData\Local\spicetify;C:\Users\macin\xmake;C:\Users\macin\AppData\Roaming\npm;C:\Users\macin\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\macin\AppData\Local\Programs\Antigravity\bin;C:\Users\macin\AppData\Local\Programs\Kiro\bin;C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin;C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\Ninja;C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\VC\Linux\bin\ConnectionManagerExe;C:\Program Files\Microsoft Visual Studio\18\Community\VC\vcpkg]],
+            UniversalCRTSdkDir = [[C:\Program Files (x86)\Windows Kits\10\]],
+            INCLUDE = [[C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.50.35717\include;C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.50.35717\ATLMFC\include;C:\Program Files\Microsoft Visual Studio\18\Community\VC\Auxiliary\VS\include;C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\um;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\shared;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\winrt;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\cppwinrt]],
+            VCInstallDir = [[C:\Program Files\Microsoft Visual Studio\18\Community\VC\]],
+            ExtensionSdkDir = [[C:\Program Files (x86)\Microsoft SDKs\Windows Kits\10\ExtensionSDKs]],
+            VSCMD_VER = "18.5.1",
+            LIB = [[C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.50.35717\ATLMFC\lib\x64;C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.50.35717\lib\x64;C:\Program Files (x86)\Windows Kits\10\lib\10.0.26100.0\ucrt\x64;C:\Program Files (x86)\Windows Kits\10\\lib\10.0.26100.0\\um\x64]],
+            VSInstallDir = [[C:\Program Files\Microsoft Visual Studio\18\Community\]],
+            LIBPATH = [[C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.50.35717\ATLMFC\lib\x64;C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.50.35717\lib\x64;C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.50.35717\lib\x86\store\references;C:\Program Files (x86)\Windows Kits\10\UnionMetadata\10.0.26100.0;C:\Program Files (x86)\Windows Kits\10\References\10.0.26100.0;C:\Windows\Microsoft.NET\Framework64\v4.0.30319]],
+            VSCMD_ARG_app_plat = "Desktop",
+            VisualStudioVersion = "18.0",
+            VCToolsInstallDir = [[C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.50.35717\]],
+            VCIDEInstallDir = [[C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\VC\]],
+            DevEnvdir = [[C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\]],
+            VSCMD_ARG_TGT_ARCH = "x64"
         },
-        program = [[C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.50.35717\bin\HostX64\x64\cl.exe]]
-    },
-    clang_arch_x64_plat_windows = {
         plat = "windows",
+        arch = "x64",
+        vs_toolset = "14.50.35717",
+        __checked = "2026"
+    },
+    nasm_arch_x64_plat_windows = {
         __global = true,
-        arch = "x64"
-    },
-    tool_target_asteria_windows_x64_ld = {
-        toolname = "link",
-        toolchain_info = {
-            plat = "windows",
-            cachekey = "msvc_arch_x64_plat_windows",
-            arch = "x64",
-            name = "msvc"
-        },
-        program = [[C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.50.35717\bin\HostX64\x64\link.exe]]
-    },
-    fpc_arch_x64_plat_windows = {
+        arch = "x64",
         plat = "windows",
-        __checked = true,
-        __global = true,
-        arch = "x64"
-    },
-    tool_target_asteria_windows_x64_cxx = {
-        toolname = "cl",
-        toolchain_info = {
-            plat = "windows",
-            cachekey = "msvc_arch_x64_plat_windows",
-            arch = "x64",
-            name = "msvc"
-        },
-        program = [[C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.50.35717\bin\HostX64\x64\cl.exe]]
-    },
-    yasm_arch_x64_plat_windows = {
-        plat = "windows",
-        __checked = true,
-        __global = true,
-        arch = "x64"
+        __checked = true
     }
 }

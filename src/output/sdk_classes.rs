@@ -574,7 +574,13 @@ using ChangeAccessorFieldPathIndex_t = std::int32_t;
 
 // Handle types - typically 32-bit indices
 template <typename T>
-using CHandle = std::uint32_t;
+struct CHandle {
+    std::uint32_t m_Handle;
+
+    std::uint32_t GetIndex() const noexcept { return m_Handle & 0x7FFF; }
+    bool IsValid() const noexcept { return m_Handle != 0xFFFFFFFF; }
+};
+static_assert(sizeof(CHandle<int>) == 4, "CHandle must be 4 bytes");
 
 template <typename T>
 using CStrongHandle = std::uint64_t;
@@ -2118,18 +2124,13 @@ fn render_one_module(
         writeln!(s, "    struct c_mesh_draw_primitive {{").ok();
         writeln!(s, "        std::byte _pad0[0x20];").ok();
         writeln!(s, "        void* m_material;          // +0x20").ok();
-        writeln!(s, "        void* m_material2;         // +0x28").ok();
-        writeln!(s, "        std::byte _pad1[0x40 - 0x30];").ok();
-        writeln!(s, "        void* m_scene_object;      // +0x40 — points to pSceneObject + 0x30").ok();
-        writeln!(s, "        std::byte _pad2[0x50 - 0x48];").ok();
+        writeln!(s, "        std::byte _pad1[0x28];").ok();
         writeln!(s, "        std::uint32_t m_tint_color;   // +0x50 — packed RGBA uint32 (0xAABBGGRR)").ok();
         writeln!(s, "        float m_alpha_scale;       // +0x54 — alpha scale (default 1.0f)").ok();
-        writeln!(s, "        std::byte _pad3[0x68 - 0x58];").ok();
-        writeln!(s).ok();
-        writeln!(s, "        template <typename T>").ok();
-        writeln!(s, "        T* get_scene_object() noexcept {{").ok();
-        writeln!(s, "            return static_cast<T*>(m_scene_object);").ok();
-        writeln!(s, "        }}").ok();
+        writeln!(s, "        std::byte _pad3[0x62 - 0x58];").ok();
+        writeln!(s, "        std::uint16_t m_render_flags;  // +0x62").ok();
+        writeln!(s, "        std::uint16_t m_render_flags2; // +0x64").ok();
+        writeln!(s, "        std::byte _pad4[0x68 - 0x66];").ok();
         writeln!(s, "    }};\n").ok();
 
         writeln!(s, "    // c_mesh_primitive_output_buffer — output buffer passed to GeneratePrimitives").ok();

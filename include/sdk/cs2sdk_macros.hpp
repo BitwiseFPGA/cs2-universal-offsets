@@ -57,7 +57,13 @@ using ChangeAccessorFieldPathIndex_t = std::int32_t;
 
 // Handle types - typically 32-bit indices
 template <typename T>
-using CHandle = std::uint32_t;
+struct CHandle {
+    std::uint32_t m_Handle;
+
+    std::uint32_t GetIndex() const noexcept { return m_Handle & 0x7FFF; }
+    bool IsValid() const noexcept { return m_Handle != 0xFFFFFFFF; }
+};
+static_assert(sizeof(CHandle<int>) == 4, "CHandle must be 4 bytes");
 
 template <typename T>
 using CStrongHandle = std::uint64_t;

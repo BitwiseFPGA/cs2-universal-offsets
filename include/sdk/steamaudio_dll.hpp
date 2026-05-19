@@ -3,7 +3,7 @@
 // module:        steamaudio.dll
 // classes:       17
 // enums:         0
-// generated_at:  2026-05-17T14:17:59.271361100+00:00
+// generated_at:  2026-05-19T08:36:10.980246+00:00
 //
 // Use:
 //   auto* pawn = reinterpret_cast<C_CSPlayerPawn*>(addr);
@@ -32,13 +32,22 @@ namespace sdk::steamaudio {
     class CSteamAudioProbeGrid;
     class CSteamAudioCompressedReverb;
 
-    // CSteamAudioBakedMaterialsData
+    // SteamAudioReverbClusteringSettings_t
     //   fields: 3
-    class CSteamAudioBakedMaterialsData {
+    class SteamAudioReverbClusteringSettings_t {
     public:
-        SCHEMA_FIELD(CSteamAudioProbeData            , m_probes                                        , 0x0) // CSteamAudioProbeData
-        SCHEMA_FIELD(CUtlVector<uint32>              , m_vecMaterialTokens                             , 0x8) // CUtlVector<uint32>
-        SCHEMA_FIELD(CUtlVector<float32>             , m_vecMaterialWeights                            , 0x20) // CUtlVector<float32>
+        SCHEMA_FIELD(bool                            , m_bEnableClustering                             , 0x0) // bool
+        SCHEMA_FIELD(std::int32_t                    , m_nCubeMapResolution                            , 0x4) // int32
+        SCHEMA_FIELD(float                           , m_flDepthThreshold                              , 0x8) // float32
+    };
+
+    // CSteamAudioBakedPathingData
+    //   fields: 3
+    class CSteamAudioBakedPathingData {
+    public:
+        SCHEMA_FIELD(std::int32_t                    , m_nBands                                        , 0x0) // int32
+        SCHEMA_FIELD(CSteamAudioProbeData            , m_probes                                        , 0x8) // CSteamAudioProbeData
+        SCHEMA_FIELD(CSteamAudioMovableBakedData<CSteamAudioBakedPathingData>, m_movables                                      , 0x10) // CSteamAudioMovableBakedData<CSteamAudioBakedPathingData>
     };
 
     // SteamAudioReverbCompressionSettings_t
@@ -49,15 +58,55 @@ namespace sdk::steamaudio {
         SCHEMA_FIELD(float                           , m_flQuality                                     , 0x4) // float32
     };
 
-    // SteamAudioReverbSettings_t
-    //   fields: 5
-    class SteamAudioReverbSettings_t {
+    // CSteamAudioProbeLineSegment
+    //   fields: 4
+    class CSteamAudioProbeLineSegment {
     public:
-        SCHEMA_FIELD(std::int32_t                    , m_nNumRays                                      , 0x0) // int32
-        SCHEMA_FIELD(std::int32_t                    , m_nNumBounces                                   , 0x4) // int32
-        SCHEMA_FIELD(float                           , m_flIRDuration                                  , 0x8) // float32
-        SCHEMA_FIELD(std::int32_t                    , m_nAmbisonicsOrder                              , 0xC) // int32
-        SCHEMA_FIELD(bool                            , m_bExportScene                                  , 0x10) // bool
+        SCHEMA_FIELD(::Vector                        , m_vStart                                        , 0x0) // Vector
+        SCHEMA_FIELD(::Vector                        , m_vEnd                                          , 0xC) // Vector
+        SCHEMA_FIELD(CUtlVector<float32>             , m_vecIntervals                                  , 0x18) // CUtlVector<float32>
+        SCHEMA_FIELD(CUtlVector<int32>               , m_vecProbeIndices                               , 0x30) // CUtlVector<int32>
+    };
+
+    // CSteamAudioCompressedReverb
+    //   fields: 8
+    class CSteamAudioCompressedReverb {
+    public:
+        SCHEMA_FIELD(std::int32_t                    , m_nChannels                                     , 0x0) // int32
+        SCHEMA_FIELD(std::int32_t                    , m_nBands                                        , 0x4) // int32
+        SCHEMA_FIELD(std::int32_t                    , m_nBins                                         , 0x8) // int32
+        SCHEMA_FIELD(std::int32_t                    , m_nProbes                                       , 0xC) // int32
+        SCHEMA_FIELD(CUtlVector<int32>               , m_vecNumSingularValues                          , 0x10) // CUtlVector<int32>
+        SCHEMA_FIELD(CUtlVector<float32>             , m_vecDictionary                                 , 0x28) // CUtlVector<float32>
+        SCHEMA_FIELD(CUtlVector<float32>             , m_vecCompressedData                             , 0x40) // CUtlVector<float32>
+        SCHEMA_FIELD(IPLCompressedEnergyFields       , m_pCompressedData                               , 0x58) // IPLCompressedEnergyFields
+    };
+
+    // SteamAudioPathSettings_t
+    //   fields: 4
+    class SteamAudioPathSettings_t {
+    public:
+        SCHEMA_FIELD(std::int32_t                    , m_nNumVisSamples                                , 0x0) // int32
+        SCHEMA_FIELD(float                           , m_flProbeVisRadius                              , 0x4) // float32
+        SCHEMA_FIELD(float                           , m_flProbeVisThreshold                           , 0x8) // float32
+        SCHEMA_FIELD(float                           , m_flProbePathRange                              , 0xC) // float32
+    };
+
+    // CSteamAudioSceneData
+    //   fields: 2
+    class CSteamAudioSceneData {
+    public:
+        SCHEMA_FIELD(IPLScene                        , m_pScene                                        , 0x0) // IPLScene
+        SCHEMA_FIELD(IPLStaticMesh                   , m_pStaticMesh                                   , 0x8) // IPLStaticMesh
+    };
+
+    // CSteamAudioBakedMaterialsData
+    //   fields: 3
+    class CSteamAudioBakedMaterialsData {
+    public:
+        SCHEMA_FIELD(CSteamAudioProbeData            , m_probes                                        , 0x0) // CSteamAudioProbeData
+        SCHEMA_FIELD(CUtlVector<uint32>              , m_vecMaterialTokens                             , 0x8) // CUtlVector<uint32>
+        SCHEMA_FIELD(CUtlVector<float32>             , m_vecMaterialWeights                            , 0x20) // CUtlVector<float32>
     };
 
     // CSteamAudioBakedReverbData
@@ -85,14 +134,22 @@ namespace sdk::steamaudio {
         SCHEMA_FIELD(IPLProbeBatch                   , m_pProbeBatch                                   , 0x0) // IPLProbeBatch
     };
 
-    // CSteamAudioProbeLineSegment
-    //   fields: 4
-    class CSteamAudioProbeLineSegment {
+    // SteamAudioCustomDataDimensionsSettings_t
+    //   fields: 5
+    class SteamAudioCustomDataDimensionsSettings_t {
     public:
-        SCHEMA_FIELD(::Vector                        , m_vStart                                        , 0x0) // Vector
-        SCHEMA_FIELD(::Vector                        , m_vEnd                                          , 0xC) // Vector
-        SCHEMA_FIELD(CUtlVector<float32>             , m_vecIntervals                                  , 0x18) // CUtlVector<float32>
-        SCHEMA_FIELD(CUtlVector<int32>               , m_vecProbeIndices                               , 0x30) // CUtlVector<int32>
+        SCHEMA_FIELD(std::int32_t                    , m_nAmbisonicsOrderOutsideField                  , 0x0) // int32
+        SCHEMA_FIELD(std::int32_t                    , m_nAmbisonicsOrderInsideSizeField               , 0x4) // int32
+        SCHEMA_FIELD(float                           , m_flOutsideThreshold                            , 0x8) // float32
+        SCHEMA_FIELD(float                           , m_flSizeThreshold                               , 0xC) // float32
+        SCHEMA_FIELD(float                           , m_flInsideThreshold                             , 0x10) // float32
+    };
+
+    // CSteamAudioAmbisonicsField
+    //   fields: 1
+    class CSteamAudioAmbisonicsField {
+    public:
+        SCHEMA_FIELD(CUtlVector<float32>             , m_field                                         , 0x0) // CUtlVector<float32>
     };
 
     // CSteamAudioBakedOcclusionData
@@ -104,6 +161,17 @@ namespace sdk::steamaudio {
         SCHEMA_FIELD(CUtlVector<float32>             , m_vecPathingRatio                               , 0x18) // CUtlVector<float32>
         SCHEMA_FIELD(CUtlVector<float32>             , m_vecPathingDeviation                           , 0x30) // CUtlVector<float32>
         SCHEMA_FIELD(CUtlVector<float32>             , m_vecReflectionRatio                            , 0x48) // CUtlVector<float32>
+    };
+
+    // SteamAudioReverbSettings_t
+    //   fields: 5
+    class SteamAudioReverbSettings_t {
+    public:
+        SCHEMA_FIELD(std::int32_t                    , m_nNumRays                                      , 0x0) // int32
+        SCHEMA_FIELD(std::int32_t                    , m_nNumBounces                                   , 0x4) // int32
+        SCHEMA_FIELD(float                           , m_flIRDuration                                  , 0x8) // float32
+        SCHEMA_FIELD(std::int32_t                    , m_nAmbisonicsOrder                              , 0xC) // int32
+        SCHEMA_FIELD(bool                            , m_bExportScene                                  , 0x10) // bool
     };
 
     // SteamAudioCustomDataOcclusionSettings_t
@@ -129,55 +197,6 @@ namespace sdk::steamaudio {
         SCHEMA_FIELD(CUtlVector<Vector>              , m_vecProbes                                     , 0x40) // CUtlVector<Vector>
     };
 
-    // SteamAudioCustomDataDimensionsSettings_t
-    //   fields: 5
-    class SteamAudioCustomDataDimensionsSettings_t {
-    public:
-        SCHEMA_FIELD(std::int32_t                    , m_nAmbisonicsOrderOutsideField                  , 0x0) // int32
-        SCHEMA_FIELD(std::int32_t                    , m_nAmbisonicsOrderInsideSizeField               , 0x4) // int32
-        SCHEMA_FIELD(float                           , m_flOutsideThreshold                            , 0x8) // float32
-        SCHEMA_FIELD(float                           , m_flSizeThreshold                               , 0xC) // float32
-        SCHEMA_FIELD(float                           , m_flInsideThreshold                             , 0x10) // float32
-    };
-
-    // CSteamAudioSceneData
-    //   fields: 2
-    class CSteamAudioSceneData {
-    public:
-        SCHEMA_FIELD(IPLScene                        , m_pScene                                        , 0x0) // IPLScene
-        SCHEMA_FIELD(IPLStaticMesh                   , m_pStaticMesh                                   , 0x8) // IPLStaticMesh
-    };
-
-    // CSteamAudioBakedPathingData
-    //   fields: 3
-    class CSteamAudioBakedPathingData {
-    public:
-        SCHEMA_FIELD(std::int32_t                    , m_nBands                                        , 0x0) // int32
-        SCHEMA_FIELD(CSteamAudioProbeData            , m_probes                                        , 0x8) // CSteamAudioProbeData
-        SCHEMA_FIELD(CSteamAudioMovableBakedData<CSteamAudioBakedPathingData>, m_movables                                      , 0x10) // CSteamAudioMovableBakedData<CSteamAudioBakedPathingData>
-    };
-
-    // CSteamAudioCompressedReverb
-    //   fields: 8
-    class CSteamAudioCompressedReverb {
-    public:
-        SCHEMA_FIELD(std::int32_t                    , m_nChannels                                     , 0x0) // int32
-        SCHEMA_FIELD(std::int32_t                    , m_nBands                                        , 0x4) // int32
-        SCHEMA_FIELD(std::int32_t                    , m_nBins                                         , 0x8) // int32
-        SCHEMA_FIELD(std::int32_t                    , m_nProbes                                       , 0xC) // int32
-        SCHEMA_FIELD(CUtlVector<int32>               , m_vecNumSingularValues                          , 0x10) // CUtlVector<int32>
-        SCHEMA_FIELD(CUtlVector<float32>             , m_vecDictionary                                 , 0x28) // CUtlVector<float32>
-        SCHEMA_FIELD(CUtlVector<float32>             , m_vecCompressedData                             , 0x40) // CUtlVector<float32>
-        SCHEMA_FIELD(IPLCompressedEnergyFields       , m_pCompressedData                               , 0x58) // IPLCompressedEnergyFields
-    };
-
-    // CSteamAudioAmbisonicsField
-    //   fields: 1
-    class CSteamAudioAmbisonicsField {
-    public:
-        SCHEMA_FIELD(CUtlVector<float32>             , m_field                                         , 0x0) // CUtlVector<float32>
-    };
-
     // CSteamAudioBakedDimensionsData
     //   fields: 7
     class CSteamAudioBakedDimensionsData {
@@ -189,25 +208,6 @@ namespace sdk::steamaudio {
         SCHEMA_FIELD(CUtlVector<CSteamAudioAmbisonicsField>, m_vecOutsideField                               , 0x50) // CUtlVector<CSteamAudioAmbisonicsField>
         SCHEMA_FIELD(CUtlVector<CSteamAudioAmbisonicsField>, m_vecInsideSmallSizeField                       , 0x68) // CUtlVector<CSteamAudioAmbisonicsField>
         SCHEMA_FIELD(CSteamAudioMovableBakedData<CSteamAudioBakedDimensionsData>, m_movables                                      , 0x80) // CSteamAudioMovableBakedData<CSteamAudioBakedDimensionsData>
-    };
-
-    // SteamAudioPathSettings_t
-    //   fields: 4
-    class SteamAudioPathSettings_t {
-    public:
-        SCHEMA_FIELD(std::int32_t                    , m_nNumVisSamples                                , 0x0) // int32
-        SCHEMA_FIELD(float                           , m_flProbeVisRadius                              , 0x4) // float32
-        SCHEMA_FIELD(float                           , m_flProbeVisThreshold                           , 0x8) // float32
-        SCHEMA_FIELD(float                           , m_flProbePathRange                              , 0xC) // float32
-    };
-
-    // SteamAudioReverbClusteringSettings_t
-    //   fields: 3
-    class SteamAudioReverbClusteringSettings_t {
-    public:
-        SCHEMA_FIELD(bool                            , m_bEnableClustering                             , 0x0) // bool
-        SCHEMA_FIELD(std::int32_t                    , m_nCubeMapResolution                            , 0x4) // int32
-        SCHEMA_FIELD(float                           , m_flDepthThreshold                              , 0x8) // float32
     };
 
 } // namespace sdk::steamaudio

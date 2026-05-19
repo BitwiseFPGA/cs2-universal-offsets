@@ -1,16 +1,9 @@
 {
-    files = {
-        [[C:\Users\macin\Desktop\asteria\xmake.lua]],
-        [[C:\Users\macin\Desktop\asteria\vendor\cs2-sdk\.xmake\windows\x64\xmake.conf]]
-    },
     values = {
-        [[src\core\entities\entities.cpp]],
         [[src\core\features\chams\chams.cpp]],
-        [[src\core\features\chams\materials.cpp]],
+        [[src\core\features\chams\vmats.cpp]],
         [[src\core\features\features.cpp]],
         [[src\core\hooks\handlers\GeneratePrimitives.cpp]],
-        [[src\core\hooks\handlers\OnAddEntity.cpp]],
-        [[src\core\hooks\handlers\OnRemoveEntity.cpp]],
         [[src\core\hooks\hooks.cpp]],
         [[src\entry.cpp]],
         [[src\menu\menu.cpp]],
@@ -49,5 +42,9 @@
         [[vendor\zydis\src\String.c]],
         [[vendor\zydis\src\Utils.c]],
         [[vendor\zydis\src\Zydis.c]]
+    },
+    files = {
+        [[C:\Users\macin\Desktop\asteria\xmake.lua]],
+        [[C:\Users\macin\Desktop\asteria\vendor\cs2-sdk\.xmake\windows\x64\xmake.conf]]
     }
 }

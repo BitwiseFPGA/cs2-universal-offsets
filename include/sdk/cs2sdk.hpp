@@ -13,7 +13,7 @@
 
 #pragma once
 
-inline constexpr unsigned int CS2_BUILD = 14161;
+inline constexpr unsigned int CS2_BUILD = 14162;
 
 // SDK macros (SCHEMA_FIELD, field_ref<T>, ...)
 #include "cs2sdk_macros.hpp"

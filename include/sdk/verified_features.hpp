@@ -6,7 +6,7 @@
 // verified live against the current CS2 build. Constants are static
 // constexpr so they can be used at compile time.
 //
-// CS2_BUILD: 14161
+// CS2_BUILD: 14162
 // =====================================================================
 
 #pragma once

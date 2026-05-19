@@ -19,6 +19,7 @@ mod formatter;
 // SDK-style emitters — every disk output the dumper produces is now
 // expressed in typed, cheat-developer-friendly form.
 pub mod amalgamation;
+pub mod entity_system;
 pub mod ident;
 pub mod interfaces_sdk;
 pub mod netvars;
@@ -260,6 +261,12 @@ impl<'a> Output<'a> {
         fs::write(
             self.out_dir.join("interfaces_sdk.hpp"),
             interfaces_sdk::render_hpp(&self.result.interfaces, build_number),
+        )?;
+
+        // 4b. entity system helpers
+        fs::write(
+            self.out_dir.join("entity_system.hpp"),
+            entity_system::render_hpp(&self.result.offsets, build_number, &self.result.schemas),
         )?;
 
         // 5. amalgamation (C++ only; Rust amalgamation dropped —

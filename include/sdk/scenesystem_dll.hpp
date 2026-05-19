@@ -3,7 +3,7 @@
 // module:        scenesystem.dll
 // classes:       9
 // enums:         5
-// generated_at:  2026-05-17T14:17:59.271361100+00:00
+// generated_at:  2026-05-19T08:36:10.980246+00:00
 //
 // Use:
 //   auto* pawn = reinterpret_cast<C_CSPlayerPawn*>(addr);
@@ -67,32 +67,6 @@ namespace sdk::scenesystem {
         SCENEOBJECT_VIS_INSTANCING = 0x5,
     };
 
-    // SceneViewId_t
-    //   fields: 2
-    class SceneViewId_t {
-    public:
-        SCHEMA_FIELD(std::uint64_t                   , m_nViewId                                       , 0x0) // uint64
-        SCHEMA_FIELD(std::uint64_t                   , m_nFrameCount                                   , 0x8) // uint64
-    };
-
-    // CSSDSMsg_LayerBase
-    //   fields: 5
-    class CSSDSMsg_LayerBase {
-    public:
-        SCHEMA_FIELD(SceneViewId_t                   , m_viewId                                        , 0x0) // SceneViewId_t
-        SCHEMA_FIELD(::CUtlString                    , m_ViewName                                      , 0x10) // CUtlString
-        SCHEMA_FIELD(std::uint64_t                   , m_nLayerId                                      , 0x18) // uint64
-        SCHEMA_FIELD(::CUtlString                    , m_LayerName                                     , 0x20) // CUtlString
-        SCHEMA_FIELD(::CUtlString                    , m_displayText                                   , 0x28) // CUtlString
-    };
-
-    // CSSDSMsg_EndFrame
-    //   fields: 1
-    class CSSDSMsg_EndFrame {
-    public:
-        SCHEMA_FIELD(CUtlVector<CSSDSEndFrameViewInfo>, m_Views                                         , 0x0) // CUtlVector<CSSDSEndFrameViewInfo>
-    };
-
     // CSSDSMsg_ViewTarget
     //   fields: 10
     class CSSDSMsg_ViewTarget {
@@ -109,31 +83,20 @@ namespace sdk::scenesystem {
         SCHEMA_FIELD(std::int32_t                    , m_nFormat                                       , 0x2C) // int32
     };
 
-    // CSSDSEndFrameViewInfo
-    //   fields: 2
-    class CSSDSEndFrameViewInfo {
+    // CSSDSMsg_LayerBase
+    //   fields: 5
+    class CSSDSMsg_LayerBase {
     public:
-        SCHEMA_FIELD(std::uint64_t                   , m_nViewId                                       , 0x0) // uint64
-        SCHEMA_FIELD(::CUtlString                    , m_ViewName                                      , 0x8) // CUtlString
+        SCHEMA_FIELD(SceneViewId_t                   , m_viewId                                        , 0x0) // SceneViewId_t
+        SCHEMA_FIELD(::CUtlString                    , m_ViewName                                      , 0x10) // CUtlString
+        SCHEMA_FIELD(std::uint64_t                   , m_nLayerId                                      , 0x18) // uint64
+        SCHEMA_FIELD(::CUtlString                    , m_LayerName                                     , 0x20) // CUtlString
+        SCHEMA_FIELD(::CUtlString                    , m_displayText                                   , 0x28) // CUtlString
     };
 
     // CSSDSMsg_PostLayer
     //   fields: 0
     class CSSDSMsg_PostLayer {
-    public:
-    };
-
-    // CSSDSMsg_ViewRender
-    //   fields: 2
-    class CSSDSMsg_ViewRender {
-    public:
-        SCHEMA_FIELD(SceneViewId_t                   , m_viewId                                        , 0x0) // SceneViewId_t
-        SCHEMA_FIELD(::CUtlString                    , m_ViewName                                      , 0x10) // CUtlString
-    };
-
-    // CSSDSMsg_PreLayer
-    //   fields: 0
-    class CSSDSMsg_PreLayer {
     public:
     };
 
@@ -146,22 +109,54 @@ namespace sdk::scenesystem {
         SCHEMA_FIELD(CUtlVector<CSSDSMsg_ViewTarget> , m_Targets                                       , 0x18) // CUtlVector<CSSDSMsg_ViewTarget>
     };
 
+    // CSSDSMsg_PreLayer
+    //   fields: 0
+    class CSSDSMsg_PreLayer {
+    public:
+    };
+
+    // SceneViewId_t
+    //   fields: 2
+    class SceneViewId_t {
+    public:
+        SCHEMA_FIELD(std::uint64_t                   , m_nViewId                                       , 0x0) // uint64
+        SCHEMA_FIELD(std::uint64_t                   , m_nFrameCount                                   , 0x8) // uint64
+    };
+
+    // CSSDSMsg_ViewRender
+    //   fields: 2
+    class CSSDSMsg_ViewRender {
+    public:
+        SCHEMA_FIELD(SceneViewId_t                   , m_viewId                                        , 0x0) // SceneViewId_t
+        SCHEMA_FIELD(::CUtlString                    , m_ViewName                                      , 0x10) // CUtlString
+    };
+
+    // CSSDSMsg_EndFrame
+    //   fields: 1
+    class CSSDSMsg_EndFrame {
+    public:
+        SCHEMA_FIELD(CUtlVector<CSSDSEndFrameViewInfo>, m_Views                                         , 0x0) // CUtlVector<CSSDSEndFrameViewInfo>
+    };
+
+    // CSSDSEndFrameViewInfo
+    //   fields: 2
+    class CSSDSEndFrameViewInfo {
+    public:
+        SCHEMA_FIELD(std::uint64_t                   , m_nViewId                                       , 0x0) // uint64
+        SCHEMA_FIELD(::CUtlString                    , m_ViewName                                      , 0x8) // CUtlString
+    };
+
     // c_mesh_draw_primitive — per-element mesh draw primitive (0x68 bytes)
     struct c_mesh_draw_primitive {
         std::byte _pad0[0x20];
         void* m_material;          // +0x20
-        void* m_material2;         // +0x28
-        std::byte _pad1[0x40 - 0x30];
-        void* m_scene_object;      // +0x40 — points to pSceneObject + 0x30
-        std::byte _pad2[0x50 - 0x48];
+        std::byte _pad1[0x28];
         std::uint32_t m_tint_color;   // +0x50 — packed RGBA uint32 (0xAABBGGRR)
         float m_alpha_scale;       // +0x54 — alpha scale (default 1.0f)
-        std::byte _pad3[0x68 - 0x58];
-
-        template <typename T>
-        T* get_scene_object() noexcept {
-            return static_cast<T*>(m_scene_object);
-        }
+        std::byte _pad3[0x62 - 0x58];
+        std::uint16_t m_render_flags;  // +0x62
+        std::uint16_t m_render_flags2; // +0x64
+        std::byte _pad4[0x68 - 0x66];
     };
 
     // c_mesh_primitive_output_buffer — output buffer passed to GeneratePrimitives
