@@ -137,7 +137,7 @@ namespace sdk::sigs {
         inline constexpr std::string_view DrawScopeOverlay = "48 8B C4 53 57 48 83 EC 68 48 8B FA 44 0F 29 40";
         inline constexpr std::string_view DrawSmokeVertex = "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 57 41 56 41 57 48 83 EC 40 48 8B 9C 24 88 00 00 00 4D 8B F8 48 8B FA 48 8B";
         inline constexpr std::string_view E8 = "40 53 48 83 EC 20 48 8B 89 90 14 00 00 48 8B DA";
-        inline constexpr std::string_view EmitPanoramaSound = "40 53 48 81 EC B0 00 00 00 0F 10 02 48 8B 05 D5";
+        inline constexpr std::string_view EmitPanoramaSound = "40 53 48 81 EC B0 00 00 00 0F 10 02 48 8B 05 95";
         inline constexpr std::string_view EmitSoundByHandle = "40 53 48 83 EC 30 4C 89 4C 24 20 48 8B D9 45 8B";
         inline constexpr std::string_view EquipItemInLoadout = "48 89 5C 24 08 48 89 6C 24 18 48 89 74 24 20 89 54 24 10 57 41 54 41 55 41 56 41 57 48 83 EC 70";
         inline constexpr std::string_view Event = "48 89 74 24 18 48 89 7C 24 20 41 56 48 83 EC 20 48 63 FA 41 8B F0 4C 8B F1 45 85 C0 74 79 8B 41 10 48 89 5C 24 30 8B 19 41 03 D8 4C 89 7C 24 38";
