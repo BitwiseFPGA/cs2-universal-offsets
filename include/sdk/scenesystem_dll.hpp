@@ -3,7 +3,7 @@
 // module:        scenesystem.dll
 // classes:       9
 // enums:         5
-// generated_at:  2026-05-19T19:08:30.309633500+00:00
+// generated_at:  2026-05-22T22:41:58.203788+00:00
 //
 // Use:
 //   auto* pawn = reinterpret_cast<C_CSPlayerPawn*>(addr);
@@ -67,22 +67,6 @@ namespace sdk::scenesystem {
         SCENEOBJECT_VIS_INSTANCING = 0x5,
     };
 
-    // CSSDSMsg_ViewTarget
-    //   fields: 10
-    class CSSDSMsg_ViewTarget {
-    public:
-        SCHEMA_FIELD(::CUtlString                    , m_Name                                          , 0x0) // CUtlString
-        SCHEMA_FIELD(std::uint64_t                   , m_TextureId                                     , 0x8) // uint64
-        SCHEMA_FIELD(std::int32_t                    , m_nWidth                                        , 0x10) // int32
-        SCHEMA_FIELD(std::int32_t                    , m_nHeight                                       , 0x14) // int32
-        SCHEMA_FIELD(std::int32_t                    , m_nRequestedWidth                               , 0x18) // int32
-        SCHEMA_FIELD(std::int32_t                    , m_nRequestedHeight                              , 0x1C) // int32
-        SCHEMA_FIELD(std::int32_t                    , m_nNumMipLevels                                 , 0x20) // int32
-        SCHEMA_FIELD(std::int32_t                    , m_nDepth                                        , 0x24) // int32
-        SCHEMA_FIELD(std::int32_t                    , m_nMultisampleNumSamples                        , 0x28) // int32
-        SCHEMA_FIELD(std::int32_t                    , m_nFormat                                       , 0x2C) // int32
-    };
-
     // CSSDSMsg_PostLayer
     //   fields: 0
     class CSSDSMsg_PostLayer {
@@ -106,12 +90,20 @@ namespace sdk::scenesystem {
         SCHEMA_FIELD(::CUtlString                    , m_ViewName                                      , 0x10) // CUtlString
     };
 
-    // CSSDSEndFrameViewInfo
-    //   fields: 2
-    class CSSDSEndFrameViewInfo {
+    // CSSDSMsg_ViewTarget
+    //   fields: 10
+    class CSSDSMsg_ViewTarget {
     public:
-        SCHEMA_FIELD(std::uint64_t                   , m_nViewId                                       , 0x0) // uint64
-        SCHEMA_FIELD(::CUtlString                    , m_ViewName                                      , 0x8) // CUtlString
+        SCHEMA_FIELD(::CUtlString                    , m_Name                                          , 0x0) // CUtlString
+        SCHEMA_FIELD(std::uint64_t                   , m_TextureId                                     , 0x8) // uint64
+        SCHEMA_FIELD(std::int32_t                    , m_nWidth                                        , 0x10) // int32
+        SCHEMA_FIELD(std::int32_t                    , m_nHeight                                       , 0x14) // int32
+        SCHEMA_FIELD(std::int32_t                    , m_nRequestedWidth                               , 0x18) // int32
+        SCHEMA_FIELD(std::int32_t                    , m_nRequestedHeight                              , 0x1C) // int32
+        SCHEMA_FIELD(std::int32_t                    , m_nNumMipLevels                                 , 0x20) // int32
+        SCHEMA_FIELD(std::int32_t                    , m_nDepth                                        , 0x24) // int32
+        SCHEMA_FIELD(std::int32_t                    , m_nMultisampleNumSamples                        , 0x28) // int32
+        SCHEMA_FIELD(std::int32_t                    , m_nFormat                                       , 0x2C) // int32
     };
 
     // SceneViewId_t
@@ -128,11 +120,12 @@ namespace sdk::scenesystem {
     public:
     };
 
-    // CSSDSMsg_EndFrame
-    //   fields: 1
-    class CSSDSMsg_EndFrame {
+    // CSSDSEndFrameViewInfo
+    //   fields: 2
+    class CSSDSEndFrameViewInfo {
     public:
-        SCHEMA_FIELD(CUtlVector<CSSDSEndFrameViewInfo>, m_Views                                         , 0x0) // CUtlVector<CSSDSEndFrameViewInfo>
+        SCHEMA_FIELD(std::uint64_t                   , m_nViewId                                       , 0x0) // uint64
+        SCHEMA_FIELD(::CUtlString                    , m_ViewName                                      , 0x8) // CUtlString
     };
 
     // CSSDSMsg_LayerBase
@@ -144,6 +137,13 @@ namespace sdk::scenesystem {
         SCHEMA_FIELD(std::uint64_t                   , m_nLayerId                                      , 0x18) // uint64
         SCHEMA_FIELD(::CUtlString                    , m_LayerName                                     , 0x20) // CUtlString
         SCHEMA_FIELD(::CUtlString                    , m_displayText                                   , 0x28) // CUtlString
+    };
+
+    // CSSDSMsg_EndFrame
+    //   fields: 1
+    class CSSDSMsg_EndFrame {
+    public:
+        SCHEMA_FIELD(CUtlVector<CSSDSEndFrameViewInfo>, m_Views                                         , 0x0) // CUtlVector<CSSDSEndFrameViewInfo>
     };
 
     // c_mesh_draw_primitive — per-element mesh draw primitive (0x68 bytes)

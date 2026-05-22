@@ -4,14 +4,14 @@
 #include <cstdint>
 #include "client_dll.hpp"
 
-namespace cs2::entity_system { inline constexpr std::uint32_t CS2_BUILD = 14162; }
+namespace cs2::entity_system { inline constexpr std::uint32_t CS2_BUILD = 14164; }
 
 struct CGameEntitySystem {
     /// Get the highest entity index currently in use.
     static int GetHighestEntityIndex() noexcept {
         auto client = reinterpret_cast<uintptr_t>(GetModuleHandleA("client.dll"));
         if (!client) return 0;
-        auto es = *reinterpret_cast<uintptr_t*>(client + 0x250C5B0);
+        auto es = *reinterpret_cast<uintptr_t*>(client + 0x24E44E0);
         if (!es) return 0;
         return *reinterpret_cast<int*>(es + 0x2090);
     }
@@ -20,7 +20,7 @@ struct CGameEntitySystem {
     static sdk::client::CCSPlayerController* GetLocalPlayer() noexcept {
         auto client = reinterpret_cast<uintptr_t>(GetModuleHandleA("client.dll"));
         if (!client) return nullptr;
-        return *reinterpret_cast<sdk::client::CCSPlayerController**>(client + 0x2345D50);
+        return *reinterpret_cast<sdk::client::CCSPlayerController**>(client + 0x231D830);
     }
 
     /// Walk the chunked entity list and return the CEntityIdentity at index.
@@ -29,7 +29,7 @@ struct CGameEntitySystem {
         if (index < 0) return nullptr;
         auto client = reinterpret_cast<uintptr_t>(GetModuleHandleA("client.dll"));
         if (!client) return nullptr;
-        auto entity_system = *reinterpret_cast<uintptr_t*>(client + 0x250C5B0);
+        auto entity_system = *reinterpret_cast<uintptr_t*>(client + 0x24E44E0);
         if (!entity_system) return nullptr;
         // +0x10 is an inline array of 64 chunk pointers (32768 / 512)
         auto chunk = *reinterpret_cast<uintptr_t*>(entity_system + 0x10 + static_cast<size_t>(index / 512) * 8);

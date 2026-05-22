@@ -16,57 +16,57 @@ namespace cs2::offsets {
     }
     // Module: client.dll
     namespace client {
-        constexpr uintptr_t GlobalVariables_ptr = 0x2085788;
-        constexpr uintptr_t GameRules_ptr = 0x2366788;
-        constexpr uintptr_t GameEntitySystemPtr = 0x250C5B0;
-        constexpr uintptr_t ParticleManager_ptr = 0x2069BF8;
-        constexpr uintptr_t CSGOInput_ptr = 0x209D430;
-        constexpr uintptr_t ClientMode_ptr = 0x2379290;
-        constexpr uintptr_t ViewRender_ptr = 0x236B4F8;
-        constexpr uintptr_t VPhys2World_ptr = 0x2069868;
-        constexpr uintptr_t GetBBox_ptr = 0x2366788;
-        constexpr uintptr_t GetInstanceS = 0x22F4E40;
-        constexpr uintptr_t GlowManager_ptr = 0x2363580;
-        constexpr uintptr_t Sensitivity_ptr = 0x2364090;
-        constexpr uintptr_t EntityList_ptr = 0x250C5B0;
-        constexpr uintptr_t ViewMatrix_addr = 0x236C2F0;
-        constexpr uintptr_t PlantedC4Alt_ptr = 0x2374278;
-        constexpr uintptr_t GameRulesAlt_addr = 0x1A21D28;
-        constexpr uintptr_t Prediction_ptr = 0x2090790;
-        constexpr uintptr_t WeaponC4_ptr = 0x22E4518;
-        constexpr uintptr_t LocalPlayerController_ptr = 0x2345D50;
-        constexpr uintptr_t global_vars_v2 = 0x2366788;
-        constexpr uintptr_t local_controller = 0x2345D50;
-        constexpr uintptr_t entity_list_ptr = 0x250C6B8;
-        constexpr uintptr_t view_matrix_ptr = 0x236C2F0;
-        constexpr uintptr_t planted_c4_ptr = 0x22E4518;
-        constexpr uintptr_t CSGOInput_resolved = 0x209D437;
-        constexpr uintptr_t CInputPtrGlobal = 0x209D430;
-        constexpr uintptr_t MainMenuPanelPointer = 0x23C8C68;
-        constexpr uintptr_t HudPanelPointer = 0x23D5AA0;
-        constexpr uintptr_t GlobalVarsPointer = 0x2085788;
-        constexpr uintptr_t TransformTranslate3dVMT = 0x1B22C50;
-        constexpr uintptr_t TransformScale3dVMT = 0x1B2B508;
-        constexpr uintptr_t WorldToProjectionMatrixPointer = 0x236C2F0;
-        constexpr uintptr_t ViewToProjectionMatrixPointer = 0x236C2B0;
-        constexpr uintptr_t ManageGlowSceneObjectPointer = 0xB04C30;
-        constexpr uintptr_t SetSceneObjectAttributeFloat4 = 0x1743A0;
-        constexpr uintptr_t PointerToClientMode = 0x2379290;
-        constexpr uintptr_t CvarPointer = 0x257D1D8;
-        constexpr uintptr_t GetAbsOriginFunction = 0x20E0A0;
-        constexpr uintptr_t EntitySystemPointer = 0x234EB48;
-        constexpr uintptr_t GameRulesPointer = 0x2366788;
-        constexpr uintptr_t SetImageFunctionPointer = 0x16990A0;
-        constexpr uintptr_t ImagePanelConstructorPointer = 0x1695FA0;
-        constexpr uintptr_t LabelPanelConstructorPointer = 0x16657B0;
-        constexpr uintptr_t SetLabelTextFunctionPointer = 0x1670BF0;
-        constexpr uintptr_t UiEnginePointer = 0x25239F0;
-        constexpr uintptr_t PlantedC4sPointer = 0x2374270;
-        constexpr uintptr_t GetBombsiteACenter = 0x875A90;
-        constexpr uintptr_t GetBombsiteBCenter = 0x875AF0;
-        constexpr uintptr_t SliderSetValueFunction = 0xA063D0;
-        constexpr uintptr_t TextEntrySetTextFunction = 0x1692FD0;
-        constexpr uintptr_t SetItemItemIdFunction = 0xDC9D50;
+        constexpr uintptr_t GlobalVariables_ptr = 0x205E6D0;
+        constexpr uintptr_t GameRules_ptr = 0x233E258;
+        constexpr uintptr_t GameEntitySystemPtr = 0x24E44E0;
+        constexpr uintptr_t ParticleManager_ptr = 0x2042B38;
+        constexpr uintptr_t CSGOInput_ptr = 0x2076830;
+        constexpr uintptr_t ClientMode_ptr = 0x2350F40;
+        constexpr uintptr_t ViewRender_ptr = 0x2343E58;
+        constexpr uintptr_t VPhys2World_ptr = 0x2042990;
+        constexpr uintptr_t GetBBox_ptr = 0x233E258;
+        constexpr uintptr_t GetInstanceS = 0x22CC910;
+        constexpr uintptr_t GlowManager_ptr = 0x233B050;
+        constexpr uintptr_t Sensitivity_ptr = 0x233BB60;
+        constexpr uintptr_t EntityList_ptr = 0x24E44E0;
+        constexpr uintptr_t ViewMatrix_addr = 0x2343AB0;
+        constexpr uintptr_t PlantedC4Alt_ptr = 0x234CF08;
+        constexpr uintptr_t GameRulesAlt_addr = 0x1A00BB0;
+        constexpr uintptr_t Prediction_ptr = 0x2069710;
+        constexpr uintptr_t WeaponC4_ptr = 0x22BBE30;
+        constexpr uintptr_t LocalPlayerController_ptr = 0x231D830;
+        constexpr uintptr_t global_vars_v2 = 0x233E258;
+        constexpr uintptr_t local_controller = 0x231D830;
+        constexpr uintptr_t entity_list_ptr = 0x24E45E8;
+        constexpr uintptr_t view_matrix_ptr = 0x2343AB0;
+        constexpr uintptr_t planted_c4_ptr = 0x22BBE30;
+        constexpr uintptr_t CSGOInput_resolved = 0x2076837;
+        constexpr uintptr_t CInputPtrGlobal = 0x2076830;
+        constexpr uintptr_t MainMenuPanelPointer = 0x23A04C8;
+        constexpr uintptr_t HudPanelPointer = 0x23AD330;
+        constexpr uintptr_t GlobalVarsPointer = 0x205E6D0;
+        constexpr uintptr_t TransformTranslate3dVMT = 0x1B01858;
+        constexpr uintptr_t TransformScale3dVMT = 0x1B0A110;
+        constexpr uintptr_t WorldToProjectionMatrixPointer = 0x2343AB0;
+        constexpr uintptr_t ViewToProjectionMatrixPointer = 0x2343A70;
+        constexpr uintptr_t ManageGlowSceneObjectPointer = 0xADF400;
+        constexpr uintptr_t SetSceneObjectAttributeFloat4 = 0x1740D0;
+        constexpr uintptr_t PointerToClientMode = 0x2350F40;
+        constexpr uintptr_t CvarPointer = 0x2555108;
+        constexpr uintptr_t GetAbsOriginFunction = 0x20DDD0;
+        constexpr uintptr_t EntitySystemPointer = 0x2327590;
+        constexpr uintptr_t GameRulesPointer = 0x233E258;
+        constexpr uintptr_t SetImageFunctionPointer = 0x167F4A0;
+        constexpr uintptr_t ImagePanelConstructorPointer = 0x167C3A0;
+        constexpr uintptr_t LabelPanelConstructorPointer = 0x164BBB0;
+        constexpr uintptr_t SetLabelTextFunctionPointer = 0x1656FF0;
+        constexpr uintptr_t UiEnginePointer = 0x24FB910;
+        constexpr uintptr_t PlantedC4sPointer = 0x234CF00;
+        constexpr uintptr_t GetBombsiteACenter = 0x84FD50;
+        constexpr uintptr_t GetBombsiteBCenter = 0x84FDB0;
+        constexpr uintptr_t SliderSetValueFunction = 0x9E0BA0;
+        constexpr uintptr_t TextEntrySetTextFunction = 0x16793D0;
+        constexpr uintptr_t SetItemItemIdFunction = 0xDA4180;
     }
     // Module: engine2.dll
     namespace engine2 {
@@ -87,7 +87,7 @@ namespace cs2::offsets {
     }
     // Module: matchmaking.dll
     namespace matchmaking {
-        constexpr uintptr_t GameTypes_ptr = 0x1DF0B0;
+        constexpr uintptr_t GameTypes_ptr = 0x1B0F80;
     }
     // Module: networksystem.dll
     namespace networksystem {
@@ -133,23 +133,23 @@ namespace cs2_dumper {
     namespace offsets {
         // Module: client.dll
         namespace client_dll {
-            constexpr std::ptrdiff_t dwCSGOInput = 0x237B5B0;
-            constexpr std::ptrdiff_t dwEntityList = 0x250C5B0;
-            constexpr std::ptrdiff_t dwGameEntitySystem = 0x250C5B0;
+            constexpr std::ptrdiff_t dwCSGOInput = 0x2353190;
+            constexpr std::ptrdiff_t dwEntityList = 0x24E44E0;
+            constexpr std::ptrdiff_t dwGameEntitySystem = 0x24E44E0;
             constexpr std::ptrdiff_t dwGameEntitySystem_highestEntityIndex = 0x2090;
-            constexpr std::ptrdiff_t dwGameRules = 0x1A21D28;
-            constexpr std::ptrdiff_t dwGlobalVars = 0x2085788;
-            constexpr std::ptrdiff_t dwGlowManager = 0x2363580;
-            constexpr std::ptrdiff_t dwLocalPlayerController = 0x2345D50;
-            constexpr std::ptrdiff_t dwLocalPlayerPawn = 0x2090880;
-            constexpr std::ptrdiff_t dwPlantedC4 = 0x2374278;
-            constexpr std::ptrdiff_t dwPrediction = 0x2090790;
-            constexpr std::ptrdiff_t dwSensitivity = 0x2364098;
+            constexpr std::ptrdiff_t dwGameRules = 0x1A00BB0;
+            constexpr std::ptrdiff_t dwGlobalVars = 0x205E6D0;
+            constexpr std::ptrdiff_t dwGlowManager = 0x233B050;
+            constexpr std::ptrdiff_t dwLocalPlayerController = 0x231D830;
+            constexpr std::ptrdiff_t dwLocalPlayerPawn = 0x2069800;
+            constexpr std::ptrdiff_t dwPlantedC4 = 0x234CF08;
+            constexpr std::ptrdiff_t dwPrediction = 0x2069710;
+            constexpr std::ptrdiff_t dwSensitivity = 0x233BB68;
             constexpr std::ptrdiff_t dwSensitivity_sensitivity = 0x58;
-            constexpr std::ptrdiff_t dwViewAngles = 0x237BC38;
-            constexpr std::ptrdiff_t dwViewMatrix = 0x236C2F0;
-            constexpr std::ptrdiff_t dwViewRender = 0x236B4F8;
-            constexpr std::ptrdiff_t dwWeaponC4 = 0x22E4518;
+            constexpr std::ptrdiff_t dwViewAngles = 0x2353818;
+            constexpr std::ptrdiff_t dwViewMatrix = 0x2343AB0;
+            constexpr std::ptrdiff_t dwViewRender = 0x2343E58;
+            constexpr std::ptrdiff_t dwWeaponC4 = 0x22BBE30;
         }
         // Module: engine2.dll
         namespace engine2_dll {
@@ -171,7 +171,7 @@ namespace cs2_dumper {
         }
         // Module: matchmaking.dll
         namespace matchmaking_dll {
-            constexpr std::ptrdiff_t dwGameTypes = 0x1DF0B0;
+            constexpr std::ptrdiff_t dwGameTypes = 0x1B0F80;
         }
         // Module: soundsystem.dll
         namespace soundsystem_dll {

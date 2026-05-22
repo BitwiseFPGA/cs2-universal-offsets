@@ -35,53 +35,53 @@ namespace sdk::sigs {
         inline constexpr std::string_view BuildBoneMergeWork = "40 55 56 57 41 54 41 55 41 56 41 57 48 83 EC 50 48 8D 6C 24 50 80 A1 06";
         inline constexpr std::string_view BuildTemplateMaterialFromFile = "48 89 54 24 10 55 53 41 55 41 57 48 8D AC 24 18";
         inline constexpr std::string_view BulkRegenIterator = "57 48 83 EC 40 0F B6 F9 E8 ? ? ? ? 48 85 C0";
-        inline constexpr std::string_view BulletServices = "40 53 48 83 EC 50 8B 15 ? ? ? ? 48 8B D9 65 48 8B 04 25 58 00 00 00 B9 98 00 00 00 48 8B 04 D0 8B 04 01 39 05 2E B9";
+        inline constexpr std::string_view BulletServices = "40 53 48 83 EC 50 8B 15 ? ? ? ? 48 8B D9 65 48 8B 04 25 58 00 00 00 B9 98 00 00 00 48 8B 04 D0 8B 04 01 39 05 3E 91";
         inline constexpr std::string_view CAttributeStringFill = "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 48 89 7C 24 20 41 56 48 83 EC 20 33 F6 0F 57 C0 0F";
-        inline constexpr std::string_view CAttributeStringInit = "48 8B C2 48 83 C8 02 45 84 C0 48 0F 44 C2 48 89 41 08 48 8D 05 D7 7F 3D";
+        inline constexpr std::string_view CAttributeStringInit = "48 8B C2 48 83 C8 02 45 84 C0 48 0F 44 C2 48 89 41 08 48 8D 05 8F AC 3C";
         inline constexpr std::string_view CBodyComponent = "48 83 EC 38 48 8B 05 ? ? ? ? 48 85 C0 0F 85 ? ? ? ? 48 89 5C 24 40 B9 50 00 00 00 48 89 6C 24 48 4C 89 64 24 30 4C 89 74 24 28 4C 89 7C";
-        inline constexpr std::string_view CBodyComponentSkeletonInstance = "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 57 48 83 EC 20 8B 0D 56 B6";
+        inline constexpr std::string_view CBodyComponentSkeletonInstance = "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 57 48 83 EC 20 8B 0D 56 38";
         inline constexpr std::string_view CBufferStringInit = "48 89 5C 24 10 57 48 83 EC 30 8B 41 04 48 8D 79";
         inline constexpr std::string_view CCSGOHudVote_OnVoteResult = "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 57 41 56 41 57 48 81 EC 90";
         inline constexpr std::string_view CCSGO_HudChat_OnSayText2 = "48 89 5C 24 08 55 56 57 41 54 41 55 41 56 41 57 48 8D AC 24 70 F3 FF FF";
-        inline constexpr std::string_view CCSGameRules = "4C 8D 05 ? ? ? ? 48 8D 15 ? ? ? ? 48 8D 0D DB 54 25";
-        inline constexpr std::string_view CCSGameRulesProxy = "48 83 EC 28 48 8D 15 ? ? ? ? 48 8D 4C 24 38 E8 7B F1 0F";
+        inline constexpr std::string_view CCSGameRules = "4C 8D 05 ? ? ? ? 48 8D 15 ? ? ? ? 48 8D 0D 0B D3 22";
+        inline constexpr std::string_view CCSGameRulesProxy = "48 83 EC 28 48 8D 15 ? ? ? ? 48 8D 4C 24 38 E8 7B C9 10";
         inline constexpr std::string_view CCSPlayerController = "40 55 41 56 41 57 48 8B EC 48 83 EC 40 4C 8B F2 83 F9 06 0F 87 1E 03 00";
-        inline constexpr std::string_view CCSPlayerPawn = "48 83 EC 28 48 8D 15 ? ? ? ? 48 8D 4C 24 38 E8 8B 6F C3";
+        inline constexpr std::string_view CCSPlayerPawn = "48 83 EC 28 48 8D 15 ? ? ? ? 48 8D 4C 24 38 E8 BB 2B C4";
         inline constexpr std::string_view CCSPlayer_MovementServices_ValidateVelocity = "4C 89 44 24 18 55 53 56 57 41 54 41 55 41 56 41 57 48 8D 6C";
-        inline constexpr std::string_view CCSWeaponBase = "48 83 EC 28 48 8D 15 ? ? ? ? 48 8D 4C 24 38 E8 2B 93 06";
-        inline constexpr std::string_view CCSWeaponBaseGun = "48 83 EC 28 48 8D 15 ? ? ? ? 48 8D 4C 24 38 E8 8B 92 06";
+        inline constexpr std::string_view CCSWeaponBase = "48 83 EC 28 48 8D 15 ? ? ? ? 48 8D 4C 24 38 E8 3B 61 07";
+        inline constexpr std::string_view CCSWeaponBaseGun = "48 83 EC 28 48 8D 15 ? ? ? ? 48 8D 4C 24 38 E8 9B 60 07";
         inline constexpr std::string_view CCSWeaponBaseVData = "48 8D 05 ? ? ? ? C3 CC CC CC CC CC CC CC CC 48 8B 81 88";
-        inline constexpr std::string_view CCollisionProperty = "48 83 EC 58 83 F9 01 0F 85 ? ? ? ? 48 89 5C 24 60 48 8D 05 E7 A3 83";
-        inline constexpr std::string_view CDecoyProjectile = "48 83 EC 28 48 8D 15 ? ? ? ? 48 8D 4C 24 38 E8 5B A4 09";
+        inline constexpr std::string_view CCollisionProperty = "48 83 EC 58 83 F9 01 0F 85 ? ? ? ? 48 89 5C 24 60 48 8D 05 87 4E 81";
+        inline constexpr std::string_view CDecoyProjectile = "48 83 EC 28 48 8D 15 ? ? ? ? 48 8D 4C 24 38 E8 BB 77 0A";
         inline constexpr std::string_view CEconItemCreateInstance = "48 83 EC 28 B9 48 00 00 00 E8 ? ? ? ? 48 85";
-        inline constexpr std::string_view CFlashbangProjectile = "48 83 EC 28 48 8D 15 ? ? ? ? 48 8D 4C 24 38 E8 FB 71 80";
-        inline constexpr std::string_view CFogController = "48 83 EC 28 48 8D 15 ? ? ? ? 48 8D 4C 24 38 E8 CB 14 59";
+        inline constexpr std::string_view CFlashbangProjectile = "48 83 EC 28 48 8D 15 ? ? ? ? 48 8D 4C 24 38 E8 FB 7E 80";
+        inline constexpr std::string_view CFogController = "48 83 EC 28 48 8D 15 ? ? ? ? 48 8D 4C 24 38 E8 9B 7B 57";
         inline constexpr std::string_view CGameSceneNode = "41 56 48 83 EC 30 4C 8B F2 85 C9 74 25 83 F9 06 74 09 33 C0 48 83 C4 30 41 5E C3 48 8B 02 49 8B CE 48 8D 54 24 58 FF 10 48 8B 00 48 83 C4 30 41";
         inline constexpr std::string_view CGlowProperty = "48 83 EC 58 83 F9 01 0F 85 ? ? ? ? 48 8D 05 ? ? ? ? C7 44 24 30 00 00 00 80 89 4C 24 28 4C 8D 05 ? ? ? ? 48 89 44 24 48 48 8D 4C 24";
-        inline constexpr std::string_view CHEGrenadeProjectile = "48 83 EC 28 48 8D 15 ? ? ? ? 48 8D 4C 24 38 E8 5B 71 80";
+        inline constexpr std::string_view CHEGrenadeProjectile = "48 83 EC 28 48 8D 15 ? ? ? ? 48 8D 4C 24 38 E8 5B 7E 80";
         inline constexpr std::string_view CLegacyGameUI_Initialize = "48 89 5C 24 18 55 56 41 56 48 8B EC 48 83 EC 50";
-        inline constexpr std::string_view CMolotovProjectile = "48 83 EC 28 48 8D 15 ? ? ? ? 48 8D 4C 24 38 E8 7B A2 09";
-        inline constexpr std::string_view CPostProcessingVolume = "48 83 EC 28 48 8D 15 ? ? ? ? 48 8D 4C 24 38 E8 3B C7 56";
+        inline constexpr std::string_view CMolotovProjectile = "48 83 EC 28 48 8D 15 ? ? ? ? 48 8D 4C 24 38 E8 DB 75 0A";
+        inline constexpr std::string_view CPostProcessingVolume = "48 83 EC 28 48 8D 15 ? ? ? ? 48 8D 4C 24 38 E8 0B 2E 55";
         inline constexpr std::string_view CPrediction_Update = "48 8B C4 89 50 10 48 89 48 08 55 53 57 41 56 48";
         inline constexpr std::string_view CSBaseGunFireData = "48 8B C4 55 53 56 57 41 54 41 55 41 56 41 57 48 8D 68 A8 48";
         inline constexpr std::string_view CSkeletonInstance = "40 57 48 83 EC 20 48 8B FA 85 C9 74 23 83 F9 06 74 08 33 C0 48 83 C4 20 5F C3 48 8B 02 48 8B CF 48 8D 54 24 48 FF 10 48 8B 00 48 83 C4 20 5F C3";
-        inline constexpr std::string_view CSmokeGrenadeProjectile = "48 83 EC 28 48 8D 15 ? ? ? ? 48 8D 4C 24 38 E8 DB A1 09";
-        inline constexpr std::string_view CTonemapController2 = "48 83 EC 28 48 8D 15 ? ? ? ? 48 8D 4C 24 38 E8 0B 88 5B";
+        inline constexpr std::string_view CSmokeGrenadeProjectile = "48 83 EC 28 48 8D 15 ? ? ? ? 48 8D 4C 24 38 E8 3B 75 0A";
+        inline constexpr std::string_view CTonemapController2 = "48 83 EC 28 48 8D 15 ? ? ? ? 48 8D 4C 24 38 E8 DB EE 59";
         inline constexpr std::string_view C_AttributeContainer = "41 56 48 83 EC 40 4C 8B F2 83 F9 06 0F 87 C7 02";
         inline constexpr std::string_view C_BaseEntity = "48 89 5C 24 10 48 89 74 24 18 57 48 83 EC 20 65 48 8B 04 25 58 00 00 00 48 8D 35 ? ? ? ? 8B 0D ? ? ? ? 33 FF BA 98 00 00 00 48 8B 1C C8";
         inline constexpr std::string_view C_BaseEntity_CheckPredictionForceReLatch = "48 8B C4 48 89 50 10 53 55 56 48 81 EC 00 01 00";
         inline constexpr std::string_view C_BaseEntity_ProcessInterpolatedList = "4C 8B DC 49 89 5B 10 49 89 6B 18 49 89 73 20 57 41 54 41 57";
         inline constexpr std::string_view C_BaseEntity_RestoreData = "40 55 53 56 41 54 41 57 48 8D AC 24 20 FF FF FF";
         inline constexpr std::string_view C_BaseEntity_SaveData = "48 8B C4 55 56 57 41 56 41 57 48 8D A8 E8 FD FF";
-        inline constexpr std::string_view C_BaseEntity_StartParticleSystem = "48 89 5C 24 08 55 48 8B EC 48 83 EC 40 E8 3E 5B";
-        inline constexpr std::string_view C_BaseModelEntity = "40 55 41 56 48 83 EC 78 4C 8B F2 83 F9 06 0F 87 ? ? ? ? 48 63 C1 48 8D 15 92 79";
+        inline constexpr std::string_view C_BaseEntity_StartParticleSystem = "48 89 5C 24 08 55 48 8B EC 48 83 EC 40 E8 7E 1A";
+        inline constexpr std::string_view C_BaseModelEntity = "40 55 41 56 48 83 EC 78 4C 8B F2 83 F9 06 0F 87 ? ? ? ? 48 63 C1 48 8D 15 92 75";
         inline constexpr std::string_view C_BasePlayerPawn = "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 20 65 48 8B 04 25 58 00 00 00 48 8D 35 ? ? ? ? 8B 0D ? ? ? ? 33 FF BA 98 00 00 00 48 8B 1C C8";
         inline constexpr std::string_view C_BasePlayerPawn_PrePhysicsSimulate = "4C 8B DC 49 89 5B 08 49 89 6B 10 49 89 73 18 57 48 83 EC 60 49 C7 43 C0 A8 01 00 00";
         inline constexpr std::string_view C_C4 = "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 20 65 48 8B 04 25 58 00 00 00 48 8D 35 ? ? ? ? 8B 0D ? ? ? ? 33 FF BA 98 00 00 00 48 8B 1C C8";
         inline constexpr std::string_view C_CSPlayerPawn = "40 56 48 83 EC 40 48 8B F2 83 F9 06 0F 87 85 01";
-        inline constexpr std::string_view C_CSPlayerPawnBase = "40 53 48 83 EC 20 65 48 8B 04 25 58 00 00 00 8B 0D 9B ED 97";
+        inline constexpr std::string_view C_CSPlayerPawnBase = "40 53 48 83 EC 20 65 48 8B 04 25 58 00 00 00 8B 0D FB C4 97";
         inline constexpr std::string_view C_CSWeaponBase = "40 56 48 83 EC 40 48 8B F2 85 C9 74 27 83 F9 06 74 08 33 C0 48 83 C4 40 5E C3 48 8B 02 48 8B CE 48 8D 54 24 68 FF 90 70 01 00 00 48 8B 00 48 83";
-        inline constexpr std::string_view C_CSWeaponBase_GetEconWpnData = "40 53 48 83 EC 40 48 8B D9 E8 ? ? ? ? 48 8B C8 E8 6A 53";
+        inline constexpr std::string_view C_CSWeaponBase_GetEconWpnData = "40 53 48 83 EC 40 48 8B D9 E8 ? ? ? ? 48 8B C8 E8 BA 4D";
         inline constexpr std::string_view C_DispatchEffect = "40 55 56 48 83 EC 28 44 8B 05 ? ? ? ? 48 8B";
         inline constexpr std::string_view C_EconEntity_BuildLegacyGloveSkinMaterial = "40 55 56 57 48 8D AC 24 30 FD FF FF 48 81 EC D0";
         inline constexpr std::string_view C_EconEntity_BuildLegacyWeaponSkinMaterial = "40 55 53 41 57 48 8D AC 24 00 FE FF FF 48 81 EC";
@@ -89,59 +89,54 @@ namespace sdk::sigs {
         inline constexpr std::string_view C_EconEntity_BuildNametagOverlayMaterial = "40 55 53 56 48 8D AC 24 B0 FC FF FF 48 81 EC 50";
         inline constexpr std::string_view C_EconItemView = "40 56 48 83 EC 20 48 8B F2 85 C9 74 27 83 F9 06";
         inline constexpr std::string_view C_EconWearable_OnNewCustomMaterials = "48 89 5C 24 08 57 48 83 EC 20 8B DA 48 8B F9 E8 ? ? ? ? F6 C3 01 0F";
-        inline constexpr std::string_view C_GameRules_ctor = "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 20 8B 15 6B 21 A5";
+        inline constexpr std::string_view C_GameRules_ctor = "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 20 8B 15 CB F8 A4";
         inline constexpr std::string_view C_Hostage = "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 20 65 48 8B 04 25 58 00 00 00 48 8D 35 ? ? ? ? 8B 0D ? ? ? ? 33 FF BA 98 00 00 00 48 8B 1C C8";
         inline constexpr std::string_view C_Inferno = "48 89 5C 24 10 48 89 74 24 18 57 48 83 EC 20 65 48 8B 04 25 58 00 00 00 48 8D 35 ? ? ? ? 8B 0D ? ? ? ? 33 FF BA 98 00 00 00 48 8B 1C C8";
-        inline constexpr std::string_view C_PlantedC4 = "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 20 65 48 8B 04 25 58 00 00 00 48 8D 35 ? ? ? ? 8B 0D ? ? ? ? 33 FF BA 98 00 00 00 48 8B 1C C8";
         inline constexpr std::string_view C_PlantedC4_ClientThink = "40 55 53 57 41 57 48 8D 6C 24 B8 48 81 EC 48 01";
         inline constexpr std::string_view C_SmokeGrenadeProjectile = "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 20 65 48 8B 04 25 58 00 00 00 48 8D 35 ? ? ? ? 8B 0D ? ? ? ? 33 FF BA 98 00 00 00 48 8B 1C C8";
-        inline constexpr std::string_view CacheParticleEffect = "4C 8B DC 53 48 81 EC 90 00 00 00 F2 0F 10 05 D5";
-        inline constexpr std::string_view CalcSpread = "48 8B C4 48 89 58 08 48 89 68 18 48 89 70 20 57 41 54 41 55 41 56 41 57 48 81 EC E0";
-        inline constexpr std::string_view CalcViewmodel = "40 55 53 56 41 56 41 57 48 8B EC 48 83 EC 20 4D";
+        inline constexpr std::string_view CacheParticleEffect = "4C 8B DC 53 48 81 EC 90 00 00 00 F2 0F 10 05 A5";
         inline constexpr std::string_view CalcViewmodelTransform_v2 = "48 89 5C 24 20 55 56 57 41 54 41 55 41 56 41 57 48 8D 6C 24 80 48 81 EC 80 01 00 00 48 8B FA 48";
         inline constexpr std::string_view CalcViewmodelView = "40 53 48 83 EC 60 48 8B 41 08 49 8B D8 8B 48 30";
         inline constexpr std::string_view CalculateInterpolation = "48 83 EC 08 4C 8B 0D ? ? ? ? 4C 8B DA 48 8B";
         inline constexpr std::string_view CalculateWorldSpaceBones = "48 89 4C 24 08 55 53 56 57 41 54 41 55 41 56 41 57 B8 78 42";
         inline constexpr std::string_view Caller = "41 2B C4 41 89 07 48 85 F6 74 7E 49 8B 5F 08 49";
-        inline constexpr std::string_view CameraServices = "48 89 5C 24 08 57 48 83 EC 30 E8 ? ? ? ? 8B 15 5B 69 D4";
-        inline constexpr std::string_view ChangeModel = "40 53 48 83 EC 20 48 8B D9 4C 8B C2 48 8B 0D 75";
+        inline constexpr std::string_view CameraServices = "48 89 5C 24 08 57 48 83 EC 30 E8 ? ? ? ? 8B 15 CB 45 D4";
+        inline constexpr std::string_view ChangeModel = "40 53 48 83 EC 20 48 8B D9 4C 8B C2 48 8B 0D 95";
         inline constexpr std::string_view CheckJumpButton = "4C 89 44 24 18 55 56 41 56 48 8D AC 24 70 EC FF";
         inline constexpr std::string_view ClearHUDWeaponIcon = "4C 8B DC 55 57 48 83 EC 48 48 63 41 68 48 8B F9";
         inline constexpr std::string_view Client = "48 89 5C 24 20 48 89 4C 24 08 55 57 41 54 41 55";
         inline constexpr std::string_view ComputeRandomSeed = "48 89 5C 24 08 57 48 81 EC F0 00 00 00 F3 0F 10";
         inline constexpr std::string_view ConCommand_firstperson = "48 83 EC 28 48 8B 0D ? ? ? ? 48 8D 54 24 30 48 8B 01 FF 90 08 03 00 00 83 7C 24 30 00 75 69";
         inline constexpr std::string_view ConCommand_thirdperson = "48 83 EC 38 48 8B 0D ? ? ? ? 48 8D 54 24 40";
-        inline constexpr std::string_view Constructor = "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 30 48 8B F1 48 8B FA B9 50 00 00 00 E8 B1";
+        inline constexpr std::string_view Constructor = "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 30 48 8B F1 48 8B FA B9 50 00 00 00 E8 C1";
         inline constexpr std::string_view Context = "48 8B C4 48 81 EC C8 00 00 00 48 89 58 10 48 89";
         inline constexpr std::string_view ConvarGet = "8B D0 48 8D 0D ? ? ? ? E8 ? ? ? ? 0F 10 45 D0 83 F0";
         inline constexpr std::string_view CreateBaseTypeCache = "40 53 48 83 EC 20 4C 8B 49 18 44 8B D2 4C 63 41";
         inline constexpr std::string_view CreateEconItem = "48 83 EC 28 B9 48 00 00 00 E8 ? ? ? ? 48 85";
-        inline constexpr std::string_view CreateEntityByClassName = "4C 8D 05 ? ? ? ? 4C 8B CF BA 03 00 00 00 FF 15 25 1A 30";
+        inline constexpr std::string_view CreateEntityByClassName = "4C 8D 05 ? ? ? ? 4C 8B CF BA 03 00 00 00 FF 15 2D 16 30";
         inline constexpr std::string_view CreateInterface = "4C 8B 0D ? ? ? ? 4C 8B D2 4C 8B D9 4D 85 C9";
-        inline constexpr std::string_view CreateMove = "48 8B C4 4C 89 40 18 48 89 48 08 55 53 41 54 41";
-        inline constexpr std::string_view CreateNewSubtickMoveStep = "48 89 5C 24 10 57 48 83 EC 20 33 DB 48 8B F9 48 85 C9 75 2D B9 38 00 00 00 E8 92 62";
-        inline constexpr std::string_view CreateParticleEffect = "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 50 F3 0F 10 1D C1";
+        inline constexpr std::string_view CreateNewSubtickMoveStep = "48 89 5C 24 10 57 48 83 EC 20 33 DB 48 8B F9 48 85 C9 75 2D B9 38 00 00 00 E8 22 0D";
+        inline constexpr std::string_view CreateParticleEffect = "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 50 F3 0F 10 1D 41";
         inline constexpr std::string_view CreateSOSubclassEconItem = "48 83 EC 28 B9 48 00 00 00 E8 ? ? ? ? 48 85";
         inline constexpr std::string_view CreateTrace = "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 57 41 56 41 57 48 83 EC 50 F2 0F 10 02";
         inline constexpr std::string_view Ctrl = "48 89 5C 24 20 57 48 81 EC D0 06 00 00 48 8B 01";
-        inline constexpr std::string_view DamageFeedbackEmitter = "48 89 4C 24 08 55 53 41 54 41 55 41 57 48 8D AC";
         inline constexpr std::string_view DamageServices = "40 55 41 56 41 57 48 8B EC 48 83 EC 40 4C 8B F2 83 F9 06 0F 87 1E 03 00";
         inline constexpr std::string_view DestroyParticle = "83 FA FF 0F 84 ? ? ? ? 41 54 41 56 41 57 48";
         inline constexpr std::string_view DispatchEffect = "48 89 5C 24 08 57 48 83 EC 70 48 8B F9 48 8B DA";
         inline constexpr std::string_view DispatchSpawn = "4C 8B DC 55 56 48 83 EC 78 49 8B 68 08 48 8B F1";
         inline constexpr std::string_view DispatchSpawn_caller = "4C 8B DC 55 56 48 83 EC 78 49 8B 68 08 48 8B F1";
         inline constexpr std::string_view DispatchUpdateOnRemove = "48 89 5C 24 10 48 89 74 24 18 48 89 7C 24 20 55 41 56 41 57 48 8B EC 48 83 EC 60 48 8D B9 80 00";
-        inline constexpr std::string_view DrawCrosshair = "48 89 5C 24 08 57 48 83 EC 20 48 8B D9 E8 6E AE";
+        inline constexpr std::string_view DrawCrosshair = "48 89 5C 24 08 57 48 83 EC 20 48 8B D9 E8 5E BA";
         inline constexpr std::string_view DrawLegs = "40 55 53 56 41 56 41 57 48 8D AC 24 A0 FB FF FF";
         inline constexpr std::string_view DrawOverHead = "40 53 48 83 EC 20 48 8B D9 83 FA FF 75 17 48 8B";
         inline constexpr std::string_view DrawScopeOverlay = "48 8B C4 53 57 48 83 EC 68 48 8B FA 44 0F 29 40";
         inline constexpr std::string_view DrawSmokeVertex = "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 57 41 56 41 57 48 83 EC 40 48 8B 9C 24 88 00 00 00 4D 8B F8 48 8B FA 48 8B";
+        inline constexpr std::string_view DrawTeamIntro = "48 83 EC 28 45 0F B6 08 44 38 89 04 0F 00 00 74";
         inline constexpr std::string_view E8 = "40 53 48 83 EC 20 48 8B 89 90 14 00 00 48 8B DA";
-        inline constexpr std::string_view EmitPanoramaSound = "40 53 48 81 EC B0 00 00 00 0F 10 02 48 8B 05 95";
-        inline constexpr std::string_view EmitSoundByHandle = "40 53 48 83 EC 30 4C 89 4C 24 20 48 8B D9 45 8B";
+        inline constexpr std::string_view EmitPanoramaSound = "40 53 48 81 EC B0 00 00 00 0F 10 02 48 8B 05 F5";
         inline constexpr std::string_view EquipItemInLoadout = "48 89 5C 24 08 48 89 6C 24 18 48 89 74 24 20 89 54 24 10 57 41 54 41 55 41 56 41 57 48 83 EC 70";
         inline constexpr std::string_view Event = "48 89 74 24 18 48 89 7C 24 20 41 56 48 83 EC 20 48 63 FA 41 8B F0 4C 8B F1 45 85 C0 74 79 8B 41 10 48 89 5C 24 30 8B 19 41 03 D8 4C 89 7C 24 38";
-        inline constexpr std::string_view FindHudElement = "48 8D 15 ? ? ? ? 45 33 C0 B9 01 00 00 00 FF 15 F3 36 B4";
+        inline constexpr std::string_view FindHudElement = "48 8D 15 ? ? ? ? 45 33 C0 B9 01 00 00 00 FF 15 33 F2 B4";
         inline constexpr std::string_view FindHudElement_panorama = "4C 8B DC 53 48 83 EC 50 48 8B 05 ? ? ? ? 48";
         inline constexpr std::string_view FindOrCreateByName = "48 89 5C 24 08 48 89 6C 24 18 56 57 41 56 48 81 EC 50 01 00";
         inline constexpr std::string_view FindSOCache = "48 89 5C 24 08 57 48 83 EC 30 4C 8B 52 08 48 8B";
@@ -158,10 +153,11 @@ namespace sdk::sigs {
         inline constexpr std::string_view GetChatObject = "48 8B 05 ? ? ? ? C3 CC CC CC CC CC CC CC CC 48 8B 05 ? ? ? ? 48";
         inline constexpr std::string_view GetClientSystem = "48 8D 05 ? ? ? ? C3 CC CC CC CC CC CC CC CC 48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 30 48";
         inline constexpr std::string_view GetControllerCmd = "40 53 48 83 EC 20 8B DA E8 ? ? ? ? 4C 8B C0";
-        inline constexpr std::string_view GetCustomPaintKitIndex = "48 89 5C 24 08 57 48 83 EC 40 8B 15 ? ? ? ? 48 8B F9 65 48 8B 04 25 58 00 00 00 B9 98 00 00 00 48 8B 04 D0 8B 04 01 39 05 A2 2D 32 01 0F 8F";
+        inline constexpr std::string_view GetCustomPaintKitIndex = "48 89 5C 24 08 57 48 83 EC 40 8B 15 ? ? ? ? 48 8B F9 65 48 8B 04 25 58 00 00 00 B9 98 00 00 00 48 8B 04 D0 8B 04 01 39 05 42 41 31 01 0F 8F";
         inline constexpr std::string_view GetEconItemSystem = "48 83 EC 28 48 8B 05 ? ? ? ? 48 85 C0 0F 85 ? ? ? ? 48 89 5C 24 30 B9 50 00 00 00 48 89 74 24 40 4C 89 74 24 20 E8 ? ? ? ? 33 F6 48";
         inline constexpr std::string_view GetEntityByIndex = "4C 8D 49 10 81 FA FE 7F 00 00 77 47 8B CA C1 F9";
         inline constexpr std::string_view GetEntityHandle = "48 85 C9 74 32 48 8B 49 10 48 85 C9 74 29 44 8B";
+        inline constexpr std::string_view GetGameModeName = "48 83 EC 28 48 8B 0D ? ? ? ? 48 8B 01 FF 90 C8 00 00 00";
         inline constexpr std::string_view GetGlowColor = "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 57 48 83 EC 20 48 8B F2 48 8B F9 48 8B";
         inline constexpr std::string_view GetHitGroup = "40 53 48 83 EC 20 48 83 79 10 00 48 8B D9 74 16";
         inline constexpr std::string_view GetInaccuracy = "48 89 5C 24 10 55 56 57 48 81 EC B0 00 00 00 44";
@@ -169,64 +165,65 @@ namespace sdk::sigs {
         inline constexpr std::string_view GetInventoryManager = "48 8D 05 ? ? ? ? C3 CC CC CC CC CC CC CC CC 0F B6 81 6B";
         inline constexpr std::string_view GetItemInLoadout = "40 55 48 83 EC 30 49 63 E8 ? ? ? ? 87 94 01";
         inline constexpr std::string_view GetItemViewByID = "48 89 54 24 10 53 48 83 EC 50 48 8B D9 48 85 D2";
-        inline constexpr std::string_view GetLocalControllerById = "48 83 EC 28 83 F9 FF 75 17 48 8B 0D ? ? ? ? 48 8D 54 24 30 48 8B 01 FF 90 08 03 00 00 8B 08 48 63 C1 4C 8D 05 86 C6";
-        inline constexpr std::string_view GetLocalPawn = "48 83 EC 28 83 F9 FF 75 17 48 8B 0D ? ? ? ? 48 8D 54 24 30 48 8B 01 FF 90 08 03 00 00 8B 08 48 63 C1 4C 8D 05 86 C6";
-        inline constexpr std::string_view GetLocalPlayer_dispatcher = "48 83 EC 38 48 8B 05 ? ? ? ? 48 85 C0 0F 85 ? ? ? ? 48 89 5C 24 40 B9 50 00 00 00 48 89 74 24 50 4C 89 74 24 28 4C 89 7C 24 20 E8 FE ED";
+        inline constexpr std::string_view GetLocalControllerById = "48 83 EC 28 83 F9 FF 75 17 48 8B 0D ? ? ? ? 48 8D 54 24 30 48 8B 01 FF 90 08 03 00 00 8B 08 48 63 C1 4C 8D 05 B6 9E";
+        inline constexpr std::string_view GetLocalPawn = "48 83 EC 28 83 F9 FF 75 17 48 8B 0D ? ? ? ? 48 8D 54 24 30 48 8B 01 FF 90 08 03 00 00 8B 08 48 63 C1 4C 8D 05 B6 9E";
+        inline constexpr std::string_view GetLocalPlayer_dispatcher = "48 83 EC 38 48 8B 05 ? ? ? ? 48 85 C0 0F 85 ? ? ? ? 48 89 5C 24 40 B9 50 00 00 00 48 89 74 24 50 4C 89 74 24 28 4C 89 7C 24 20 E8 8E 98";
         inline constexpr std::string_view GetMatrixForView = "40 53 48 83 EC 60 0F 29 74 24 50 0F 57 DB F3 0F";
-        inline constexpr std::string_view GetPlayerByIndex_export = "48 83 EC 28 4C 8D 05 ? ? ? ? 48 8D 15 0E DF";
+        inline constexpr std::string_view GetPlayerByIndex_export = "48 83 EC 28 4C 8D 05 ? ? ? ? 48 8D 15 CE DA";
         inline constexpr std::string_view GetPlayerInterp = "40 53 48 83 EC 20 48 8B D9 48 8B 0D ? ? ? ? 48 83 C1 08";
-        inline constexpr std::string_view GetRemovedAimpunch = "F2 0F 10 44 24 60 F2 0F 11 84 24 88 00 00 00 FF 15 0C CA 81";
+        inline constexpr std::string_view GetPlayerTeamName = "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 20 57 48 83 EC 30 48 8B CA 48";
+        inline constexpr std::string_view GetRemovedAimpunch = "F2 0F 10 44 24 60 F2 0F 11 84 24 88 00 00 00 FF 15 E4 2C 80";
+        inline constexpr std::string_view GetServerName = "40 53 48 83 EC 20 48 8B D9 48 8B 0D ? ? ? ? 48 85 C9 74 35 E8 16 6F";
         inline constexpr std::string_view GetSurfaceData = "48 63 41 10 48 8B 0D ? ? ? ? 48 C1 E0 05 48";
         inline constexpr std::string_view GetTickBase = "8B 81 B8 06 00 00 C3 CC CC CC CC CC CC CC CC CC";
         inline constexpr std::string_view GetTraceInfo = "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 57 48 83 EC 60 48 8B E9 0F";
         inline constexpr std::string_view GetTransformsForHitboxList = "48 89 5C 24 18 55 56 57 41 55 41 57 48 81 EC A0";
-        inline constexpr std::string_view GetUserCmdManager = "41 56 41 57 48 83 EC 48 48 8D 54 24 68 E8 AE B0";
+        inline constexpr std::string_view GetUserCmdManager = "41 56 41 57 48 83 EC 48 48 8D 54 24 68 E8 AE 78";
         inline constexpr std::string_view GetViewAngles = "4C 8B C1 85 D2 74 08 48 8D 05 ? ? ? ? C3 8B";
-        inline constexpr std::string_view GetViewModelOffsets = "40 55 53 56 41 56 41 57 48 8B EC 48 83 EC 20 4D";
-        inline constexpr std::string_view GetWeaponInAccuracyRecoveryTime = "48 89 5C 24 08 57 48 83 EC 30 48 8B D9 E8 6E 55";
-        inline constexpr std::string_view GetWorldFovResolver = "40 53 48 83 EC 50 48 8B D9 E8 ? ? ? ? 48 85";
-        inline constexpr std::string_view GlobalLightUpdateState = "40 57 48 81 EC C0 00 00 00 48 8B F9 BA FF FF FF";
+        inline constexpr std::string_view GetWeaponInAccuracyRecoveryTime = "48 89 5C 24 08 57 48 83 EC 30 48 8B D9 E8 CE 61";
         inline constexpr std::string_view HandleBulletPenetration = "48 8B C4 44 89 48 20 48 89 50 10 48 89 48 08 55 57 41 57 48";
         inline constexpr std::string_view HandleEntityList = "48 8B C4 4C 89 48 20 4C 89 40 18 48 89 50 10 55 56 41 57 48";
         inline constexpr std::string_view HandleTeamIntro = "48 83 EC 28 45 0F B6 08 44 38 89 04 0F 00 00 74";
-        inline constexpr std::string_view HostageServices = "40 53 48 83 EC 50 8B 15 ? ? ? ? 48 8B D9 65 48 8B 04 25 58 00 00 00 B9 98 00 00 00 48 8B 04 D0 8B 04 01 39 05 2E B9";
+        inline constexpr std::string_view HostageServices = "40 53 48 83 EC 50 8B 15 ? ? ? ? 48 8B D9 65 48 8B 04 25 58 00 00 00 B9 98 00 00 00 48 8B 04 D0 8B 04 01 39 05 3E 91";
         inline constexpr std::string_view HudChatPrintf = "4C 89 44 24 18 4C 89 4C 24 20 53 B8 40 10 00 00";
         inline constexpr std::string_view InGameMoneyServices = "40 55 41 56 41 57 48 8B EC 48 83 EC 40 4C 8B F2 83 F9 06 0F 87 1E 03 00";
         inline constexpr std::string_view Init = "48 8B C4 4C 89 40 18 55 56 41 56 48 8D 68 A1 48";
         inline constexpr std::string_view InitFilter = "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 20 0F B6 41 39 33 FF 24 C9 C7";
         inline constexpr std::string_view InitPlayerMovementTraceFilter = "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 20 0F B6 41 39 33 FF C7 41 34";
         inline constexpr std::string_view InitTraceData = "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 20 48 8D 79 08 33";
-        inline constexpr std::string_view InitTraceInfo = "40 55 41 55 41 57 48 83 EC 30 4C 8B 3D EF E2 EF";
-        inline constexpr std::string_view InsecureEmitter = "48 89 5C 24 20 56 48 83 EC 20 48 8B D9 48 89 6C 24 30 48 8B E9 48 8B 0D";
+        inline constexpr std::string_view InitTraceInfo = "40 55 41 55 41 57 48 83 EC 30 4C 8B 3D 0F FE EE";
         inline constexpr std::string_view InventoryServices = "40 55 41 56 41 57 48 8B EC 48 83 EC 40 4C 8B F2 83 F9 06 0F 87 1E 03 00";
-        inline constexpr std::string_view ItemServices = "40 53 48 83 EC 50 8B 15 ? ? ? ? 48 8B D9 65 48 8B 04 25 58 00 00 00 B9 98 00 00 00 48 8B 04 D0 8B 04 01 39 05 FE 32";
-        inline constexpr std::string_view KillFeedbackEmitter = "48 89 5C 24 08 48 89 74 24 18 48 89 7C 24 20 55 41 56 41 57 48 8B EC 48 81 EC 80 00";
+        inline constexpr std::string_view IsLatched = "0F B6 81 08 02 00 00 C3 CC CC CC CC CC CC CC CC 48 83 EC 28";
+        inline constexpr std::string_view IsLocalPlayerWatchingOwnDemo = "48 89 5C 24 08 48 89 6C 24 18 56 57 41 56 48 83 EC 20 48 8B 0D BF 4B 43";
+        inline constexpr std::string_view IsOverwatch = "48 83 EC 28 E8 ? ? ? ? 0F B6 40 72 48 83 C4";
+        inline constexpr std::string_view ItemServices = "40 53 48 83 EC 50 8B 15 ? ? ? ? 48 8B D9 65 48 8B 04 25 58 00 00 00 B9 98 00 00 00 48 8B 04 D0 8B 04 01 39 05 16 0B";
         inline constexpr std::string_view LevelInit = "40 55 56 41 56 48 8D 6C 24 90 48 81 EC 70 01 00";
+        inline constexpr std::string_view LevelShutdown = "48 83 EC 28 48 8B 0D ? ? ? ? 48 8D 15 6E F2";
         inline constexpr std::string_view LoadDefaultKit = "48 89 6C 24 20 56 57 41 54 41 55 41 57 48 81 EC";
         inline constexpr std::string_view LoadFileForMe = "40 55 57 41 56 48 83 EC 20 4C 63 71 18 33 FF 48";
         inline constexpr std::string_view LoadPath = "48 89 74 24 20 57 48 83 EC 20 44 8B 49 04 BF FF FF FF 7F 44 23 CF 48 8B F1 41 8B C8 45 85 C0 74 30 83 E9 ? ? ? ? F9 01 0F 85 ? ? ? ? 41";
         inline constexpr std::string_view LookupBone = "40 53 48 83 EC 20 48 8B 89 30 03 00 00 48 8B DA 48 8B 01 FF 50 50 48 8B";
         inline constexpr std::string_view MatchFoundHandler = "48 83 EC 28 48 8B 0D ? ? ? ? 48 85 C9 74 60";
         inline constexpr std::string_view ModulationUpdate = "48 89 5C 24 08 57 48 83 EC 20 8B FA 48 8B D9 E8 ? ? ? ? 84 C0 0F 84";
-        inline constexpr std::string_view MovementServices = "48 83 EC 28 8B 0D ? ? ? ? 65 48 8B 04 25 58 00 00 00 BA 98 00 00 00 48 8B 04 C8 8B 04 02 39 05 B3 69 AD 01 0F 8F D3";
-        inline constexpr std::string_view NoClipOnChange = "48 89 5C 24 10 48 89 74 24 18 48 89 7C 24 20 55 48 8B EC 48 83 EC 30 48 8D 05 EA B3";
+        inline constexpr std::string_view MovementServices = "48 83 EC 28 8B 0D ? ? ? ? 65 48 8B 04 25 58 00 00 00 BA 98 00 00 00 48 8B 04 C8 8B 04 02 39 05 D3 41 AD 01 0F 8F D3";
+        inline constexpr std::string_view NoClipOnChange = "48 89 5C 24 10 48 89 74 24 18 48 89 7C 24 20 55 48 8B EC 48 83 EC 30 48 8D 05 3A 18";
         inline constexpr std::string_view NoSpread1 = "48 89 5C 24 08 57 48 81 EC F0 00 00 00 F3 0F 10";
         inline constexpr std::string_view OnAddEntity = "48 89 74 24 10 57 48 83 EC 20 41 B9 FF 7F 00 00 41 8B C0 41 23 C1 48 8B F2 41 83 F8 FF 48 8B F9 44 0F 45 C8 41 81 F9 00 40 00 00 73 0D FF 81 90";
         inline constexpr std::string_view OnBodyGroupChoiceChanged = "48 89 5C 24 08 57 48 83 EC 20 49 63 D8 49 8B F9";
-        inline constexpr std::string_view OnEvent = "40 53 57 48 81 EC 78 02 00 00 48 8B CA 48 8B FA";
-        inline constexpr std::string_view OnGlowTypeChanged = "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 20 48 8B 05 B2 FB";
+        inline constexpr std::string_view OnGlowTypeChanged = "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 20 48 8B 05 2A E3";
         inline constexpr std::string_view OnPostDataUpdate = "48 89 5C 24 08 48 89 74 24 18 55 57 41 56 48 8B EC 48 83 EC 50 45 8B F1";
         inline constexpr std::string_view OnRemoveEntity = "48 89 74 24 10 57 48 83 EC 20 41 B9 FF 7F 00 00 41 8B C0 41 23 C1 48 8B F2 41 83 F8 FF 48 8B F9 44 0F 45 C8 41 81 F9 00 40 00 00 73 08 FF 89 90";
         inline constexpr std::string_view OnSkeletonModelChanged = "49 8B 00 48 89 81 B8 00 00 00 C6 81 B0 00 00 00";
         inline constexpr std::string_view PanelConstructorPointer = "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 30 48 8B F1 48 8B FA B9 20 00";
+        inline constexpr std::string_view PanoramaEvent = "40 56 57 41 57 48 83 EC 40 48 8B 3D ? ? ? ?";
         inline constexpr std::string_view ParseSubtickDuration = "40 55 48 8D AC 24 70 FD FF FF 48 81 EC 90 03 00";
         inline constexpr std::string_view ParseSubtickFraction = "40 55 48 8D AC 24 40 FE FF FF 48 81 EC C0 02 00";
-        inline constexpr std::string_view ParticleCollection = "48 89 5C 24 08 57 48 83 EC 20 0F 28 05 DF D8 31";
+        inline constexpr std::string_view ParticleCollection = "48 89 5C 24 08 57 48 83 EC 20 0F 28 05 DF 5A 2F";
         inline constexpr std::string_view Pawn = "48 89 5C 24 08 57 48 83 EC 60 48 8B 01 48 8B FA 48 8B D9 FF";
         inline constexpr std::string_view PerTick = "40 55 56 57 48 8D AC 24 30 FD FF FF 48 81 EC D0";
         inline constexpr std::string_view PerTickOrchestrator = "48 8B C4 55 53 48 8D A8 E8 ? ? ? ? 81 EC 08";
         inline constexpr std::string_view PerformBatchedInvalidatePhysicsRecursive = "40 57 48 81 EC 90 00 00 00 84 C9 74 4D BF 01 00";
-        inline constexpr std::string_view PingServices = "40 53 48 83 EC 50 8B 15 ? ? ? ? 48 8B D9 65 48 8B 04 25 58 00 00 00 B9 98 00 00 00 48 8B 04 D0 8B 04 01 39 05 76 41";
+        inline constexpr std::string_view PingServices = "40 53 48 83 EC 50 8B 15 ? ? ? ? 48 8B D9 65 48 8B 04 25 58 00 00 00 B9 98 00 00 00 48 8B 04 D0 8B 04 01 39 05 96 19";
         inline constexpr std::string_view PlayVSound_client = "48 89 5C 24 08 48 89 74 24 18 48 89 7C 24 20 55 48 8D 6C 24 A9 48 81 EC 90 00 00 00";
         inline constexpr std::string_view PointerToGetInaccuracyFunction = "48 89 5C 24 10 55 56 57 48 81 EC B0 00 00 00 44";
         inline constexpr std::string_view PointerToGetSpreadFunction = "48 83 EC 38 48 63 91 B8 17 00 00 48 8B 81 88 03";
@@ -234,13 +231,12 @@ namespace sdk::sigs {
         inline constexpr std::string_view ProcessForceSubtickMoves = "40 55 53 48 8D AC 24 68 FF FF FF 48 81 EC 98 01 00 00 8B 15 ? ? ? ? 48 8B D9 65 48 8B 04 25 58 00 00 00 B9 98 00 00 00 48 8B 04 D0 8B 04 01";
         inline constexpr std::string_view ProcessImpacts = "48 8B C4 53 56 41 55 48 81 EC E0 00 00 00 44 0F";
         inline constexpr std::string_view ProcessMovement = "48 8B C4 53 55 56 57 41 54 41 55 41 56 41 57 48 83 EC 78 44";
-        inline constexpr std::string_view QueueForceSubtickMove = "48 83 EC 28 8B 0D ? ? ? ? 65 48 8B 04 25 58 00 00 00 BA 98 00 00 00 48 8B 04 C8 8B 04 02 39 05 5B 44 96 01 0F 8F F4";
+        inline constexpr std::string_view QueueForceSubtickMove = "48 83 EC 28 8B 0D ? ? ? ? 65 48 8B 04 25 58 00 00 00 BA 98 00 00 00 48 8B 04 C8 8B 04 02 39 05 1B 17 96 01 0F 8F F4";
         inline constexpr std::string_view QueuePostDataUpdates = "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 40 80";
         inline constexpr std::string_view RegenerateWeaponSkin = "40 55 53 41 57 48 8D AC 24 00 FE FF FF 48 81 EC";
         inline constexpr std::string_view RegenerateWeaponSkin_v2 = "40 55 53 41 57 48 8D AC 24 00 FE FF FF 48 81 EC";
         inline constexpr std::string_view RegenerateWeaponSkins = "48 83 EC 48 E8 ? ? ? ? 48 85 C0 0F 84 7F 00";
-        inline constexpr std::string_view RenderDecals = "44 88 4C 24 20 55 53 57 41 54 41 55 48 8D 6C 24";
-        inline constexpr std::string_view ReportHit = "40 53 48 83 EC 20 48 8D 05 ? ? ? ? 48 8D 59 08 48 89 01 F6 03 01 74 08 48 8B CB E8 8F 07 EB";
+        inline constexpr std::string_view ReportHit = "40 53 48 83 EC 20 48 8D 05 ? ? ? ? 48 8D 59 08 48 89 01 F6 03 01 74 08 48 8B CB E8 8F FB EA";
         inline constexpr std::string_view RunCommand = "48 8B C4 48 81 EC C8 00 00 00 48 89 58 10 48 89";
         inline constexpr std::string_view RunCommand_processor = "48 8B C4 48 81 EC C8 00 00 00 48 89 58 10 48 89";
         inline constexpr std::string_view SOCreated = "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 30 48 8B FA 48 8B F1 41 83 F9 01 75 7F 48 8B 5C 24 60 48 85 DB 74 75 48 85 D2 74 70 49 8B C8 E8 AE 48";
@@ -250,31 +246,35 @@ namespace sdk::sigs {
         inline constexpr std::string_view SetBodyGroup_inv = "85 D2 0F 88 ? ? ? ? 53 55 48 83 EC 38 48 63";
         inline constexpr std::string_view SetBodygroup = "85 D2 0F 88 ? ? ? ? 55 53 56 41 56 48 8B EC";
         inline constexpr std::string_view SetCollisionBounds = "48 83 EC 38 F2 0F 10 02 8B 42 08 48 8D 54 24 20";
-        inline constexpr std::string_view SetDynamicAttributeValue = "48 89 6C 24 20 57 41 56 41 57 48 81 EC A0 00 00 00 48 8B FA C7 44 24 20 00 00 00 00 4D 8B F8 4C 8D 0D ? ? ? ? 48 8B E9 ? ? ? ? DA 13 01";
-        inline constexpr std::string_view SetDynamicAttributeValue_raw = "48 89 6C 24 20 57 41 56 41 57 48 81 EC A0 00 00 00 48 8B FA C7 44 24 20 00 00 00 00 4D 8B F8 4C 8D 0D ? ? ? ? 48 8B E9 ? ? ? ? DA 13 01";
+        inline constexpr std::string_view SetDynamicAttributeValue = "48 89 6C 24 20 57 41 56 41 57 48 81 EC A0 00 00 00 48 8B FA C7 44 24 20 00 00 00 00 4D 8B F8 4C 8D 0D ? ? ? ? 48 8B E9 ? ? ? ? FE 12 01";
+        inline constexpr std::string_view SetDynamicAttributeValue_raw = "48 89 6C 24 20 57 41 56 41 57 48 81 EC A0 00 00 00 48 8B FA C7 44 24 20 00 00 00 00 4D 8B F8 4C 8D 0D ? ? ? ? 48 8B E9 ? ? ? ? FE 12 01";
         inline constexpr std::string_view SetMaterialGroup = "3B 91 C4 03 00 00 74 24 89 91 C4 03 00 00 48 8B";
         inline constexpr std::string_view SetMeshGroupMask = "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 20 48 8D 99 50 01";
-        inline constexpr std::string_view SetModel = "40 53 48 83 EC 20 48 8B D9 4C 8B C2 48 8B 0D 75";
+        inline constexpr std::string_view SetModel = "40 53 48 83 EC 20 48 8B D9 4C 8B C2 48 8B 0D 95";
         inline constexpr std::string_view SetPlayerReady = "40 53 48 83 EC 20 48 8B DA 48 8D 15 ? ? ? ? 48 8B CB FF";
         inline constexpr std::string_view SetSelectedIndexFunctionPointer = "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 20 48 8B F1 8B DA";
         inline constexpr std::string_view SetTraceData = "48 89 6C 24 18 48 89 7C 24 20 41 56 48 83 EC 20 48 63 29 4C 8B F2 48 8B F9 3B 69 10 0F 85 ? ? ? ? F7 41 14 00 00 00 40 0F 85 ? ? ? ? 8B";
         inline constexpr std::string_view SetTraceInit = "8B 01 89 02 8B 41 10 89 42 04 8B 41 20 89 42 08 48 8B C2 C3";
         inline constexpr std::string_view SetTypeKV3 = "40 53 48 83 EC 30 4C 8B 11 41 B9 16 00 00 00 49";
         inline constexpr std::string_view SetViewAngle = "85 D2 75 3D 48 63 81 50 0B 00 00 F2 41 0F 10 00";
+        inline constexpr std::string_view SetViewAngles = "85 D2 75 3D 48 63 81 50 0B 00 00 F2 41 0F 10 00";
         inline constexpr std::string_view SetupCmd = "48 83 EC 28 E8 ? ? ? ? 8B 80 10 59 00 00 48";
         inline constexpr std::string_view SetupMapInfo = "48 8B C4 48 89 58 10 48 89 68 18 48 89 70 20 57 48 81 EC A0 00 00 00 0F";
         inline constexpr std::string_view SetupMove = "48 89 5C 24 18 48 89 6C 24 20 56 57 41 56 48 83 EC 20 48 8B EA 4C 8B F1";
         inline constexpr std::string_view SetupMovementMoves = "48 8B CE E8 ? ? ? ? 48 8B 5C 24 50 48 8B 6C 24 58 48 83";
         inline constexpr std::string_view SharedRandomFloat = "4C 8B DC 49 89 5B 08 49 89 73 10 57 48 81 EC 00";
+        inline constexpr std::string_view ShouldShowHudElements = "48 83 EC 28 BA FF FF FF FF 48 8D 0D ? ? ? ? E8 AB E2 8F";
         inline constexpr std::string_view ShowMessageBox = "44 88 4C 24 20 53 41 56 41 57 48 81 EC 60 02 00";
         inline constexpr std::string_view Shutdown = "48 89 5C 24 08 55 56 57 41 54 41 55 41 56 41 57 48 81 EC 40";
         inline constexpr std::string_view SomeTimingFromPawn = "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 20 49 63 D8 48 8B";
         inline constexpr std::string_view SpectatorInput = "48 89 5C 24 10 55 56 57 41 56 41 57 48 8B EC 48 83 EC 60 48";
         inline constexpr std::string_view SpreadSeedGen = "48 89 5C 24 08 57 48 81 EC F0 00 00 00 F3 0F 10";
         inline constexpr std::string_view StartHierarchicalAttachment = "48 89 5C 24 10 48 89 6C 24 18 48 89 74 24 20 57 41 54 41 55 41 56 41 57 48 83 EC 30 48 8B F9 8B";
+        inline constexpr std::string_view SubmitCommendation = "48 89 74 24 18 55 57 41 56 48 8D 6C 24 B9 48 81 EC 90 00 00 00 48 8B CA";
+        inline constexpr std::string_view SubmitPlayerReport = "48 89 5C 24 10 56 48 83 EC 50 48 8B CA 49 8B F0";
         inline constexpr std::string_view TakeDamageOld = "40 55 53 56 57 41 54 48 8D 6C 24 E0 48 81 EC 20";
         inline constexpr std::string_view TestSurfaces = "40 53 57 41 56 48 83 EC 50 8B 84 24 90 00 00 00";
-        inline constexpr std::string_view ThinkReturn = "BA 04 00 00 00 FF 15 66 3B 61 01 84 C0 0F 84 C2";
+        inline constexpr std::string_view ThinkReturn = "BA 04 00 00 00 FF 15 26 9E 5F 01 84 C0 0F 84 C2";
         inline constexpr std::string_view ThirdPersonOffHandler = "48 83 EC 28 48 8B 0D ? ? ? ? 48 8D 54 24 30 48 8B 01 FF 90 08 03 00 00 83 7C 24 30 00 75 69";
         inline constexpr std::string_view ThirdPersonOnHandler = "48 83 EC 38 48 8B 0D ? ? ? ? 48 8D 54 24 40";
         inline constexpr std::string_view ThirdPersonReset = "48 8B 40 08 44 38 38 75 10 44 88 7F 01 44 89 BF";
@@ -283,26 +283,25 @@ namespace sdk::sigs {
         inline constexpr std::string_view TraceHandleBulletPen = "48 8B C4 44 89 48 20 48 89 50 10 48 89 48 08 55 57 41 57 48";
         inline constexpr std::string_view TraceInitData = "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 20 48 8D 79 08 33";
         inline constexpr std::string_view TraceInitFilter = "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 20 0F B6 41 39 33 FF 24 C9 C7";
-        inline constexpr std::string_view TraceInitInfo = "40 55 41 55 41 57 48 83 EC 30 4C 8B 3D EF E2 EF";
+        inline constexpr std::string_view TraceInitInfo = "40 55 41 55 41 57 48 83 EC 30 4C 8B 3D 0F FE EE";
         inline constexpr std::string_view TracePlayerBBox = "48 89 5C 24 18 55 57 41 54 41 55 41 56 48 8D 6C";
         inline constexpr std::string_view TraceShape = "48 89 5C 24 20 48 89 4C 24 08 55 57 41 54 41 55";
         inline constexpr std::string_view TraceToExit = "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 57 41 56 41 57 48 83 EC 50 F2 0F 10 02";
-        inline constexpr std::string_view TypeManager = "40 55 41 56 48 83 EC 78 4C 8B F2 83 F9 06 0F 87 ? ? ? ? 48 63 C1 48 8D 15 42 D9";
+        inline constexpr std::string_view TypeManager = "40 55 41 56 48 83 EC 78 4C 8B F2 83 F9 06 0F 87 ? ? ? ? 48 63 C1 48 8D 15 92 6E";
         inline constexpr std::string_view UnknownParticleFunction = "40 56 48 83 EC 20 41 8B F0 49 8B C1 45 33 C0 4C";
         inline constexpr std::string_view UnserializeEvent = "48 8B C4 48 89 50 10 55 41 54 41 55 41 56 48 8D";
-        inline constexpr std::string_view UntrustedFlagSetter = "74 26 C6 05 7A E9 ? ? ? ? C0 83 F8 01 74 18";
+        inline constexpr std::string_view UntrustedFlagSetter = "74 26 C6 05 CA 6B 05 02 01 33 C0 83 F8 01 74 18";
         inline constexpr std::string_view UpdateGlobalVars = "48 8B 0D ? ? ? ? 4C 8D 05 ? ? ? ? 48 85 D2 48 8D 05";
         inline constexpr std::string_view UpdateOnRemove = "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 40 48 8B D9 C6 05";
         inline constexpr std::string_view UpdatePostProcessing = "48 85 D2 0F 84 ? ? ? ? 48 89 5C 24 08 57 48 83 EC 60 80";
-        inline constexpr std::string_view UpdateSkybox = "48 89 5C 24 08 57 48 83 EC 30 48 8B F9 E8 DE 71";
+        inline constexpr std::string_view UpdateSkybox = "48 89 5C 24 08 57 48 83 EC 30 48 8B F9 E8 5E 17";
         inline constexpr std::string_view UpdateSubClass = "4C 8B DC 53 48 81 EC 90 01 00 00 48 8B 41 10 48";
         inline constexpr std::string_view UpdateTurningInAccuracy = "40 56 48 81 EC 80 00 00 00 48 8B F1 BA FF FF FF";
         inline constexpr std::string_view Use = "40 55 53 56 48 8D AC 24 C0 FE FF FF 48 81 EC 40";
-        inline constexpr std::string_view UseServices = "48 89 5C 24 08 57 48 83 EC 30 E8 ? ? ? ? 8B 15 FB 49 CD";
-        inline constexpr std::string_view ViewModelHideZoomed = "48 89 5C 24 20 55 56 57 41 54 41 56 48 8B EC 48 83 EC 50 48 8D 05 46 0E";
-        inline constexpr std::string_view WaterServices = "48 83 EC 28 8B 0D ? ? ? ? 65 48 8B 04 25 58 00 00 00 BA 98 00 00 00 48 8B 04 C8 8B 04 02 39 05 7B FA A9 01 0F 8F 43";
-        inline constexpr std::string_view WeaponServices = "48 83 EC 28 8B 0D ? ? ? ? 65 48 8B 04 25 58 00 00 00 BA 98 00 00 00 48 8B 04 C8 8B 04 02 39 05 73 0C AA 01 0F 8F C4";
-        inline constexpr std::string_view WriteSubtickFromEntry = "48 89 5C 24 18 55 57 41 56 48 8D 6C 24 C9 48 81";
+        inline constexpr std::string_view UseServices = "48 89 5C 24 08 57 48 83 EC 30 E8 ? ? ? ? 8B 15 6B 26 CD";
+        inline constexpr std::string_view ViewModelHideZoomed = "48 89 5C 24 20 55 56 57 41 54 41 56 48 8B EC 48 83 EC 50 48 8D 05 A6 06";
+        inline constexpr std::string_view WaterServices = "48 83 EC 28 8B 0D ? ? ? ? 65 48 8B 04 25 58 00 00 00 BA 98 00 00 00 48 8B 04 C8 8B 04 02 39 05 9B D2 A9 01 0F 8F 43";
+        inline constexpr std::string_view WeaponServices = "48 83 EC 28 8B 0D ? ? ? ? 65 48 8B 04 25 58 00 00 00 BA 98 00 00 00 48 8B 04 C8 8B 04 02 39 05 93 E4 A9 01 0F 8F C4";
         inline constexpr std::string_view create_move_v2 = "85 D2 0F 85 ? ? ? ? 48 8B C4 44 88 40 18 89";
         inline constexpr std::string_view draw_smoke_array = "40 55 41 54 41 55 48 8D AC 24 20 F9 FF FF 48 81";
         inline constexpr std::string_view draw_view_punch_v2 = "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 48 89 7C 24 20 41 56 48 83 EC 40 49 8B E9 49 8B F8";
@@ -310,11 +309,10 @@ namespace sdk::sigs {
         inline constexpr std::string_view get_fov = "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 48 89 7C 24 20 41 56 48 83 EC 40 49 8B E9 49 8B F8";
         inline constexpr std::string_view get_map_name = "48 83 EC 28 48 8B 0D ? ? ? ? 48 8B 01 FF 90 00 02 00 00";
         inline constexpr std::string_view get_view_angles_v2 = "4D 85 C0 74 72 85 D2 74 18 48 8D 05 ? ? ? ?";
-        inline constexpr std::string_view get_view_model = "40 55 53 56 41 56 41 57 48 8B EC 48 83 EC 20 4D";
         inline constexpr std::string_view is_demo_or_hltv = "48 83 EC 28 48 8B 0D ? ? ? ? 48 8B 01 FF 90 50 01 00 00 84 C0 75 0D";
         inline constexpr std::string_view level_init_v2 = "40 55 56 41 56 48 8D 6C 24 B9 48 81 EC E0 00 00 00 48 8B 0D";
-        inline constexpr std::string_view level_shutdown = "48 83 EC 28 48 8B 0D ? ? ? ? 48 8D 15 1E 4A";
-        inline constexpr std::string_view mark_interp_latch_flags_dirty = "40 53 56 57 48 83 EC 40 80 3D A1 38 14 02 00 8B";
+        inline constexpr std::string_view level_shutdown = "48 83 EC 28 48 8B 0D ? ? ? ? 48 8D 15 56 91";
+        inline constexpr std::string_view mark_interp_latch_flags_dirty = "40 53 56 57 48 83 EC 40 80 3D 95 B7 11 02 00 8B";
         inline constexpr std::string_view on_add_entity_v2 = "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 57 48 83 EC 20 8B 81 C0 20";
         inline constexpr std::string_view override_view_short = "40 57 48 83 EC 60 48 8B FA E8 ? ? ? ? BA FF";
         inline constexpr std::string_view paintkit_prefab = "48 89 5C 24 10 48 89 6C 24 18 48 89 74 24 20 57 48 83 EC 30 48 8B D9 48 81 C1 80 11";
@@ -368,12 +366,15 @@ namespace sdk::sigs {
         inline constexpr std::string_view SetSignonState = "44 89 44 24 18 89 54 24 10 55 53 56 57 41 55 41";
         inline constexpr std::string_view Tokenize = "48 89 6C 24 20 4C 89 44 24 18 56 57 41 54 41 56";
     }
+    namespace gameoverlayrenderer64 {
+        inline constexpr std::string_view GameOverlay = "48 89 5C 24 08 48 89 6C 24 10 56 57 41 54 41 56 41 57 48 83";
+    }
     namespace inputsystem {
         inline constexpr std::string_view AttachToWindow = "48 89 5C 24 20 55 48 83 EC 20 48 63 41 30 48 8B";
         inline constexpr std::string_view EventHandler = "53 48 81 EC 60 01 00 00 8B 02 48 8B DA 2D 00 04";
     }
     namespace matchmaking {
-        inline constexpr std::string_view InitializeGameSettings = "40 53 48 81 EC 40 01 00 00 48 89 BC 24 58 01 00 00 48 8D 15 ? ? ? ? 48 8B F9 41 B0 01 48 8B 49 10 FF 15 90 45 06 00";
+        inline constexpr std::string_view InitializeGameSettings = "40 53 48 81 EC 40 01 00 00 48 89 BC 24 58 01 00 00 48 8D 15 ? ? ? ? 48 8B F9 41 B0 01 48 8B 49 10 FF 15 60 41 06 00";
     }
     namespace materialsystem2 {
         inline constexpr std::string_view ApplyMaterialVarsForBatch = "4C 89 4C 24 20 4C 89 44 24 18 48 89 54 24 10 53";
@@ -439,7 +440,7 @@ namespace sdk::sigs {
     }
     namespace scenesystem {
         inline constexpr std::string_view AllocateAttributeListFunctionPointer = "40 55 48 83 EC 20 48 83 BA A8 00 00 00 00 48 8B";
-        inline constexpr std::string_view BuildSceneInfoGpu = "4C 89 4C 24 20 4C 89 44 24 18 48 89 4C 24 08 55 48 8D AC 24 00 E3 FF FF";
+        inline constexpr std::string_view CAnimatableSceneObjectDescRender = "48 8B C4 53 57 41 54 48 81 EC D0 00 00 00 49 63";
         inline constexpr std::string_view CreateStaticShape = "48 8B C4 48 89 48 08 55 41 54 41 56 48 8D 68 D8";
         inline constexpr std::string_view CullView = "4C 89 44 24 18 48 89 54 24 10 48 89 4C 24 08 55 53 56 57 41 54 41 55 41 56 41 57 48 8D 6C 24 E1";
         inline constexpr std::string_view DeleteObjectForReal = "40 53 56 41 54 48 83 EC 50 0F B6 82 9B 00 00 00";
@@ -449,12 +450,11 @@ namespace sdk::sigs {
         inline constexpr std::string_view DrawAggregateSceneObjectArray = "48 8B C4 48 89 50 10 48 89 48 08 55 53 56 57 41 54 41 55 41 56 41 57 48 8D A8 38 F9";
         inline constexpr std::string_view DrawArrayLight = "48 89 5C 24 08 48 89 6C 24 18 48 89 54 24 10 56 57 41 56 48";
         inline constexpr std::string_view DrawObject_legacy = "48 8B C4 53 57 41 54 48 81 EC D0 00 00 00 49 63";
-        inline constexpr std::string_view DrawSkyboxArray = "45 85 C9 0F 8E ? ? ? ? 4C 8B DC 55 41 56 49";
         inline constexpr std::string_view FrameUpdate = "48 8B C4 88 50 10 48 89 48 08 55 53 41 54 41 55";
-        inline constexpr std::string_view GeneratePrimitives = "48 8B C4 48 89 58 08 48 89 50 10 55 56 57 41 54 41 55 41 56 41 57 48 81";
         inline constexpr std::string_view InitGfxObjects = "40 55 53 56 57 41 54 41 55 41 56 41 57 48 8D AC 24 08 FE FF";
         inline constexpr std::string_view RenderSceneDrawList = "40 55 53 56 57 41 54 41 55 41 56 41 57 48 8D 6C 24 E1 48 81 EC D8 00 00";
         inline constexpr std::string_view ToneMapUpdate = "40 53 48 83 EC 60 48 8B D9 0F 29 74 24 50 48 8D";
+        inline constexpr std::string_view UpdateLightObject = "48 89 54 24 10 55 57 41 56 48 83 EC 50 48 8B FA";
     }
     namespace schemasystem {
         inline constexpr std::string_view InstallSchemaBindings = "40 53 48 83 EC 20 48 8B DA 48 8B D1 48 8D 0D 8D";
@@ -473,7 +473,7 @@ namespace sdk::sigs {
         inline constexpr std::string_view CheckTransmit = "48 8B C4 4C 89 48 20 48 89 50 10 48 89 48 08 55 48 8D A8 C8";
         inline constexpr std::string_view ClientPrint = "48 85 C9 0F 84 ? ? ? ? 48 89 5C 24 20 55 56";
         inline constexpr std::string_view ClientPrintAll = "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 57 48 83 EC 60 8B E9 49 8B";
-        inline constexpr std::string_view CreateEntityByName = "48 83 EC 48 C6 44 24 30 00 4C 8B C1 48 8B 0D 35";
+        inline constexpr std::string_view CreateEntityByName = "48 83 EC 48 C6 44 24 30 00 4C 8B C1 48 8B 0D E5";
         inline constexpr std::string_view DispatchParticleEffect = "48 89 5C 24 08 48 89 74 24 10 48 89 7C 24 18 4C 89 74 24 20 55 48 8D 6C 24 D1 48 81";
         inline constexpr std::string_view DispatchSpawn = "48 89 5C 24 10 57 48 83 EC 30 48 8B DA 48 8B F9 48 85 C9 0F";
         inline constexpr std::string_view EmitSoundFilter = "40 53 48 83 EC 30 4C 89 4C 24 20 48 8B D9 45 8B";
@@ -491,7 +491,7 @@ namespace sdk::sigs {
         inline constexpr std::string_view GiveNamedItem = "48 89 5C 24 08 48 89 74 24 10 48 89 7C 24 20 44 89 44 24 18";
         inline constexpr std::string_view GravityTouch = "48 89 5C 24 08 57 48 83 EC 20 48 8B 02 48 8B F9 48 8B CA 48 8B DA FF 90 48 05 00 00 84 C0 74 10";
         inline constexpr std::string_view IGameSystem_InitAllSystems_pFirst = "48 8B 1D ? ? ? ? 48 85 DB 0F 84 ? ? ? ? BD FF FF 00";
-        inline constexpr std::string_view IGameSystem_LoopPostInitAllSystems_pEventDispatcher = "48 39 1D 38 8E 92 01 74 4D 39 05 78 8C 92 01 7E";
+        inline constexpr std::string_view IGameSystem_LoopPostInitAllSystems_pEventDispatcher = "48 39 1D F0 30 8F 01 74 4D 39 05 48 2F 8F 01 7E";
         inline constexpr std::string_view Init = "40 53 48 83 EC 20 48 8B 01 48 8B D9 FF 50 10 48";
         inline constexpr std::string_view InputTestActivator = "48 89 5C 24 08 57 48 83 EC 20 4C 8B 02 48 8B FA";
         inline constexpr std::string_view InputTriggerForActivatedPlayer = "48 89 5C 24 18 56 48 83 EC 20 48 8B 1A 48 8B F1";
@@ -501,14 +501,14 @@ namespace sdk::sigs {
         inline constexpr std::string_view PostThink = "40 55 53 56 57 41 54 48 8D 6C 24 C9 48 81 EC D0";
         inline constexpr std::string_view ProcessUsercmds = "48 8B C4 44 88 48 20 44 89 40 18 48 89 50 10 53";
         inline constexpr std::string_view Remove = "48 85 C9 74 0F 48 8B D1 48 8B 0D ? ? ? ? E9";
-        inline constexpr std::string_view RemovePlayerItem = "48 85 D2 0F 84 ? ? ? ? 48 89 5C 24 08 57 48 83 EC 30 48 8B DA 48 8B F9 E8 92 99";
+        inline constexpr std::string_view RemovePlayerItem = "48 85 D2 0F 84 ? ? ? ? 48 89 5C 24 08 57 48 83 EC 30 48 8B DA 48 8B F9 E8 82 99";
         inline constexpr std::string_view Say = "44 89 4C 24 20 44 88 44 24 18 55 53 56 57 41 54";
         inline constexpr std::string_view SayText2Filter = "48 89 5C 24 08 48 89 74 24 10 48 89 7C 24 20 55 41 56 41 57 48 8D 6C 24 D9 48 81 EC";
         inline constexpr std::string_view SayTextFilter = "48 89 5C 24 10 48 89 74 24 18 48 89 7C 24 20 55 41 56 41 57 48 8D 6C 24 B9 48 81 EC D0 00 00 00 49 8B F8 48 89 4D B7 48";
         inline constexpr std::string_view SetEntityName = "48 89 5C 24 10 57 48 83 EC 20 48 8B D9 4C 8B C2";
         inline constexpr std::string_view SetGravityScale = "48 89 5C 24 08 57 48 83 EC 30 F3 0F 10 81 FC 03";
         inline constexpr std::string_view SetGroundEntity = "48 89 5C 24 18 55 56 57 41 55 41 57 48 83 EC 20 44 8B 89 EC";
-        inline constexpr std::string_view SetModel = "40 53 48 83 EC 20 48 8B D9 4C 8B C2 48 8B 0D 1D";
+        inline constexpr std::string_view SetModel = "40 53 48 83 EC 20 48 8B D9 4C 8B C2 48 8B 0D ? ? ? ? 48 8D 54 24 40 48 8B 01 FF 50 60 48 8B 54 24 40 48 8B CB E8 E5";
         inline constexpr std::string_view SetMoveType = "48 89 5C 24 08 48 89 6C 24 10 48 89 74 24 18 48 89 7C 24 20 41 56 48 83 EC 20 41 0F";
         inline constexpr std::string_view SetOrAddAttributeValueByName = "40 53 55 41 56 48 81 EC 90 00 00 00 0F 29 74 24";
         inline constexpr std::string_view SetPawn = "44 88 4C 24 20 53 57 41 54 41 56 41 57 48 83 EC";
@@ -523,13 +523,12 @@ namespace sdk::sigs {
         inline constexpr std::string_view PlayVSND = "48 89 5C 24 08 48 89 74 24 18 48 89 7C 24 20 55 48 8D 6C 24";
         inline constexpr std::string_view PlayVSound = "48 8B C4 48 89 58 08 57 48 81 EC A0 00 00 00 33";
         inline constexpr std::string_view SomeUtlSymbolFunc = "48 89 74 24 18 57 48 83 EC 20 48 63 F2 48 8B F9";
-        inline constexpr std::string_view StartSoundEvent = "40 53 55 56 48 83 EC 20 83 B9 EC 24 00 00 00 49";
     }
     namespace tier0 {
         inline constexpr std::string_view CreateInterface = "4C 8B 0D ? ? ? ? 4C 8B D2 4C 8B D9 4D 85 C9";
         inline constexpr std::string_view LoadKV3 = "48 89 5C 24 08 57 48 83 EC 70 4C 8B D1 48 C7 C0";
         inline constexpr std::string_view LoadKeyValues = "48 89 5C 24 10 48 89 6C 24 18 48 89 7C 24 20 41 54 41 56 41 57 48 83 EC 40 45 33 E4";
-        inline constexpr std::string_view Plat_FloatTime = "48 83 EC 28 48 83 3D 04 FE 28 00 00 75 05 E8 5D";
+        inline constexpr std::string_view Plat_FloatTime = "48 83 EC 28 48 83 3D 54 FD 28 00 00 75 05 E8 5D";
         inline constexpr std::string_view Plat_GetTime = "48 83 EC 28 48 8D 4C 24 30 E8 ? ? ? ? 48 8B";
         inline constexpr std::string_view Plat_MSTime = "40 53 48 83 EC 20 48 8B 1D ? ? ? ? 48 85 DB 75 0C E8 D9";
         inline constexpr std::string_view UtlBuffer = "48 89 5C 24 08 57 48 83 EC 20 8B 41 04 8D 7A 08";
@@ -614,10 +613,6 @@ namespace sdk::sigs_fn {
         using CTonemapController2_t = void(__fastcall*)(void*, ...);
         // PROTOTYPE: not yet reverse-engineered (placeholder)
         using CacheParticleEffect_t = void(__fastcall*)(void*, ...);
-        // PROTOTYPE: not yet reverse-engineered (placeholder)
-        using CalcSpread_t = void(__fastcall*)(void*, ...);
-        // PROTOTYPE: void __fastcall CalcViewmodel(__int64 a1, float *a2, float *a3) (placeholder — verify in IDA)
-        using CalcViewmodel_t = void(__fastcall*)(void*, ...);
         // PROTOTYPE: __int64 __fastcall CalcViewmodelTransform_v2(__int64 a1, __int64 a2) (placeholder — verify in IDA)
         using CalcViewmodelTransform_v2_t = void(__fastcall*)(void*, ...);
         // PROTOTYPE: __int64 __fastcall CalcViewmodelView(__int64 a1, __int64 a2, _DWORD *a3) (placeholder — verify in IDA)
@@ -658,8 +653,6 @@ namespace sdk::sigs_fn {
         using CreateEntityByClassName_t = void(__fastcall*)(void*, ...);
         // PROTOTYPE: __int64 __fastcall CreateInterface(__int64 a1, _DWORD *a2) (placeholder — verify in IDA)
         using CreateInterface_t = void(__fastcall*)(void*, ...);
-        // PROTOTYPE: bool __fastcall CreateMove(void* pthis, int nSlot, float flInputSampleTime, bool bActive) (placeholder — verify in IDA)
-        using CreateMove_t = bool(__fastcall*)(void* pthis, int nSlot, float flInputSampleTime, bool bActive);
         // PROTOTYPE: __int64 __fastcall CreateNewSubtickMoveStep(__int64 a1) (placeholder — verify in IDA)
         using CreateNewSubtickMoveStep_t = void(__fastcall*)(void*, ...);
         // PROTOTYPE: __int64 __fastcall CreateParticleEffect(int a1, int a2, int a3, __int64 a4, int a5) (placeholder — verify in IDA)
@@ -670,8 +663,6 @@ namespace sdk::sigs_fn {
         using CreateTrace_t = void(__fastcall*)(void*, ...);
         // PROTOTYPE: __int64 __fastcall Ctrl(__int64 a1) (placeholder — verify in IDA)
         using Ctrl_t = void(__fastcall*)(void*, ...);
-        // PROTOTYPE: void __fastcall DamageFeedbackEmitter(__int64 a1, _QWORD *a2, __int64 a3) (placeholder — verify in IDA)
-        using DamageFeedbackEmitter_t = void(__fastcall*)(void*, ...);
         // PROTOTYPE: __int64 __fastcall DamageServices(int a1, _QWORD *a2) (placeholder — verify in IDA)
         using DamageServices_t = void(__fastcall*)(void*, ...);
         // PROTOTYPE: void __fastcall DestroyParticle(__int64 a1, __int64 a2, unsigned __int8 a3, char a4) (placeholder — verify in IDA)
@@ -694,12 +685,12 @@ namespace sdk::sigs_fn {
         using DrawScopeOverlay_t = void(__fastcall*)(void*, ...);
         // PROTOTYPE: __int64 __fastcall DrawSmokeVertex(__int64 a1, __int64 a2, int a3, int a4, __int64 a5, __int64 a6) (placeholder — verify in IDA)
         using DrawSmokeVertex_t = void(__fastcall*)(void*, ...);
+        // PROTOTYPE: not yet reverse-engineered (placeholder)
+        using DrawTeamIntro_t = void(__fastcall*)(void*, ...);
         // PROTOTYPE: __int64 __fastcall E8(__int64 a1, __int64 a2) (placeholder — verify in IDA)
         using E8_t = void(__fastcall*)(void*, ...);
         // PROTOTYPE: not yet reverse-engineered (placeholder)
         using EmitPanoramaSound_t = void(__fastcall*)(void*, ...);
-        // PROTOTYPE: __int64 __fastcall EmitSoundByHandle(__int64 a1, int a2, int a3, __int64 a4) (placeholder — verify in IDA)
-        using EmitSoundByHandle_t = void(__fastcall*)(void*, ...);
         // PROTOTYPE: char __fastcall EquipItemInLoadout(_QWORD *a1, unsigned int a2, int a3, unsigned __int64 a4) (placeholder — verify in IDA)
         using EquipItemInLoadout_t = void(__fastcall*)(void*, ...);
         // PROTOTYPE: __int64 __fastcall Event(__int64 a1, unsigned int a2, int a3) (placeholder — verify in IDA)
@@ -746,6 +737,8 @@ namespace sdk::sigs_fn {
         using GetEntityByIndex_t = void(__fastcall*)(void*, ...);
         // PROTOTYPE: __int64 __fastcall GetEntityHandle(__int64 a1) (placeholder — verify in IDA)
         using GetEntityHandle_t = void(__fastcall*)(void*, ...);
+        // PROTOTYPE: not yet reverse-engineered (placeholder)
+        using GetGameModeName_t = void(__fastcall*)(void*, ...);
         // PROTOTYPE: void __fastcall GetGlowColor(__int64 a1, float *a2) (placeholder — verify in IDA)
         using GetGlowColor_t = void(__fastcall*)(void*, ...);
         // PROTOTYPE: __int64 __fastcall GetHitGroup(__int64 a1) (placeholder — verify in IDA)
@@ -772,8 +765,12 @@ namespace sdk::sigs_fn {
         using GetPlayerByIndex_export_t = void(__fastcall*)(void*, ...);
         // PROTOTYPE: float __fastcall GetPlayerInterp(__int64 a1) (placeholder — verify in IDA)
         using GetPlayerInterp_t = void(__fastcall*)(void*, ...);
+        // PROTOTYPE: not yet reverse-engineered (placeholder)
+        using GetPlayerTeamName_t = void(__fastcall*)(void*, ...);
         // PROTOTYPE: __int64 GetRemovedAimpunch() (placeholder — verify in IDA)
         using GetRemovedAimpunch_t = void(__fastcall*)(void*, ...);
+        // PROTOTYPE: not yet reverse-engineered (placeholder)
+        using GetServerName_t = void(__fastcall*)(void*, ...);
         // PROTOTYPE: __int64 __fastcall GetSurfaceData(__int64 a1) (placeholder — verify in IDA)
         using GetSurfaceData_t = void(__fastcall*)(void*, ...);
         // PROTOTYPE: __int64 __fastcall GetTickBase(__int64 a1) (placeholder — verify in IDA)
@@ -786,14 +783,8 @@ namespace sdk::sigs_fn {
         using GetUserCmdManager_t = void(__fastcall*)(void*, ...);
         // PROTOTYPE: __int64 *__fastcall GetViewAngles(__int64 a1, int a2) (placeholder — verify in IDA)
         using GetViewAngles_t = void(__fastcall*)(void*, ...);
-        // PROTOTYPE: void __fastcall GetViewModelOffsets(__int64 viewmodel, float *outOffsets, float *outFov) (placeholder — verify in IDA)
-        using GetViewModelOffsets_t = void(__fastcall*)(void*, ...);
         // PROTOTYPE: __m128 __fastcall GetWeaponInAccuracyRecoveryTime(__int64 a1) (placeholder — verify in IDA)
         using GetWeaponInAccuracyRecoveryTime_t = void(__fastcall*)(void*, ...);
-        // PROTOTYPE: float __fastcall GetWorldFovResolver(__int64 a1) (placeholder — verify in IDA)
-        using GetWorldFovResolver_t = void(__fastcall*)(void*, ...);
-        // PROTOTYPE: _BYTE *__fastcall GlobalLightUpdateState(__int64 a1) (placeholder — verify in IDA)
-        using GlobalLightUpdateState_t = void(__fastcall*)(void*, ...);
         // PROTOTYPE: char __fastcall HandleBulletPenetration(__int64 a1, float *a2, __int64 a3, int a4, __int64 a5) (placeholder — verify in IDA)
         using HandleBulletPenetration_t = void(__fastcall*)(void*, ...);
         // PROTOTYPE: __int64 __fastcall HandleEntityList(__int64 a1, __int64 a2, __int64 a3, __int64 a4, __int64 a5, int a6, int a7) (placeholder — verify in IDA)
@@ -816,16 +807,20 @@ namespace sdk::sigs_fn {
         using InitTraceData_t = void(__fastcall*)(void*, ...);
         // PROTOTYPE: __int64 __fastcall InitTraceInfo(__int64 a1) (placeholder — verify in IDA)
         using InitTraceInfo_t = void(__fastcall*)(void*, ...);
-        // PROTOTYPE: not yet reverse-engineered (placeholder)
-        using InsecureEmitter_t = void(__fastcall*)(void*, ...);
         // PROTOTYPE: __int64 __fastcall InventoryServices(int a1, _QWORD *a2) (placeholder — verify in IDA)
         using InventoryServices_t = void(__fastcall*)(void*, ...);
+        // PROTOTYPE: not yet reverse-engineered (placeholder)
+        using IsLatched_t = void(__fastcall*)(void*, ...);
+        // PROTOTYPE: not yet reverse-engineered (placeholder)
+        using IsLocalPlayerWatchingOwnDemo_t = void(__fastcall*)(void*, ...);
+        // PROTOTYPE: not yet reverse-engineered (placeholder)
+        using IsOverwatch_t = void(__fastcall*)(void*, ...);
         // PROTOTYPE: void *__fastcall ItemServices(__int64 a1) (placeholder — verify in IDA)
         using ItemServices_t = void(__fastcall*)(void*, ...);
-        // PROTOTYPE: __int64 __fastcall KillFeedbackEmitter(__int64 a1, __int64 a2) (placeholder — verify in IDA)
-        using KillFeedbackEmitter_t = void(__fastcall*)(void*, ...);
         // PROTOTYPE: __int64 __fastcall LevelInit(__int64 a1) (placeholder — verify in IDA)
         using LevelInit_t = void(__fastcall*)(void*, ...);
+        // PROTOTYPE: not yet reverse-engineered (placeholder)
+        using LevelShutdown_t = void(__fastcall*)(void*, ...);
         // PROTOTYPE: char __fastcall LoadDefaultKit(__int64 a1, KeyValues *a2, _DWORD *a3) (placeholder — verify in IDA)
         using LoadDefaultKit_t = void(__fastcall*)(void*, ...);
         // PROTOTYPE: void __fastcall LoadFileForMe(__int64 a1) (placeholder — verify in IDA)
@@ -848,8 +843,6 @@ namespace sdk::sigs_fn {
         using OnAddEntity_t = void(__fastcall*)(void*, ...);
         // PROTOTYPE: __int64 __fastcall OnBodyGroupChoiceChanged(__int64 a1, __int64 a2, int a3, _DWORD *a4) (placeholder — verify in IDA)
         using OnBodyGroupChoiceChanged_t = void(__fastcall*)(void*, ...);
-        // PROTOTYPE: void __fastcall OnEvent(__int64 a1, KeyValues *a2) (placeholder — verify in IDA)
-        using OnEvent_t = void(__fastcall*)(void*, ...);
         // PROTOTYPE: __int64 __fastcall OnGlowTypeChanged(__int64 a1) (placeholder — verify in IDA)
         using OnGlowTypeChanged_t = void(__fastcall*)(void*, ...);
         // PROTOTYPE: not yet reverse-engineered (placeholder)
@@ -860,6 +853,8 @@ namespace sdk::sigs_fn {
         using OnSkeletonModelChanged_t = void(__fastcall*)(void*, ...);
         // PROTOTYPE: not yet reverse-engineered (placeholder)
         using PanelConstructorPointer_t = void(__fastcall*)(void*, ...);
+        // PROTOTYPE: not yet reverse-engineered (placeholder)
+        using PanoramaEvent_t = void(__fastcall*)(void*, ...);
         // PROTOTYPE: not yet reverse-engineered (placeholder)
         using ParseSubtickDuration_t = void(__fastcall*)(void*, ...);
         // PROTOTYPE: not yet reverse-engineered (placeholder)
@@ -900,8 +895,6 @@ namespace sdk::sigs_fn {
         using RegenerateWeaponSkin_v2_t = void(__fastcall*)(void*, ...);
         // PROTOTYPE: __int64 RegenerateWeaponSkins() (placeholder — verify in IDA)
         using RegenerateWeaponSkins_t = void(__fastcall*)(void*, ...);
-        // PROTOTYPE: _BYTE *__fastcall RenderDecals(__int64 a1, __int64 **a2, char a3, char a4) (placeholder — verify in IDA)
-        using RenderDecals_t = void(__fastcall*)(void*, ...);
         // PROTOTYPE: char __fastcall ReportHit(_QWORD *a1) (placeholder — verify in IDA)
         using ReportHit_t = void(__fastcall*)(void*, ...);
         // PROTOTYPE: void __fastcall RunCommand(__int64 a1, __int64 a2) (placeholder — verify in IDA)
@@ -944,6 +937,8 @@ namespace sdk::sigs_fn {
         using SetTypeKV3_t = void(__fastcall*)(void*, ...);
         // PROTOTYPE: void __fastcall SetViewAngle(__int64 a1, int a2, __int64 *a3) (placeholder — verify in IDA)
         using SetViewAngle_t = void(__fastcall*)(void*, ...);
+        // PROTOTYPE: not yet reverse-engineered (placeholder)
+        using SetViewAngles_t = void(__fastcall*)(void*, ...);
         // PROTOTYPE: __int64 __fastcall SetupCmd(__int64 a1) (placeholder — verify in IDA)
         using SetupCmd_t = void(__fastcall*)(void*, ...);
         // PROTOTYPE: not yet reverse-engineered (placeholder)
@@ -954,6 +949,8 @@ namespace sdk::sigs_fn {
         using SetupMovementMoves_t = void(__fastcall*)(void*, ...);
         // PROTOTYPE: not yet reverse-engineered (placeholder)
         using SharedRandomFloat_t = void(__fastcall*)(void*, ...);
+        // PROTOTYPE: not yet reverse-engineered (placeholder)
+        using ShouldShowHudElements_t = void(__fastcall*)(void*, ...);
         // PROTOTYPE: not yet reverse-engineered (placeholder)
         using ShowMessageBox_t = void(__fastcall*)(void*, ...);
         // PROTOTYPE: __int64 Shutdown() (placeholder — verify in IDA)
@@ -966,6 +963,10 @@ namespace sdk::sigs_fn {
         using SpreadSeedGen_t = void(__fastcall*)(void*, ...);
         // PROTOTYPE: char __fastcall StartHierarchicalAttachment(__int64 a1) (placeholder — verify in IDA)
         using StartHierarchicalAttachment_t = void(__fastcall*)(void*, ...);
+        // PROTOTYPE: not yet reverse-engineered (placeholder)
+        using SubmitCommendation_t = void(__fastcall*)(void*, ...);
+        // PROTOTYPE: not yet reverse-engineered (placeholder)
+        using SubmitPlayerReport_t = void(__fastcall*)(void*, ...);
         // PROTOTYPE: unsigned __int64 __fastcall TakeDamageOld(__int64 a1, __int64 a2, __int64 **a3) (placeholder — verify in IDA)
         using TakeDamageOld_t = void(__fastcall*)(void*, ...);
         // PROTOTYPE: void __fastcall TestSurfaces(__int64 a1, float a2, float a3, float a4, int a5, int a6, __int64 a7) (placeholder — verify in IDA)
@@ -1026,8 +1027,6 @@ namespace sdk::sigs_fn {
         using WaterServices_t = void(__fastcall*)(void*, ...);
         // PROTOTYPE: __int64 *WeaponServices() (placeholder — verify in IDA)
         using WeaponServices_t = void(__fastcall*)(void*, ...);
-        // PROTOTYPE: not yet reverse-engineered (placeholder)
-        using WriteSubtickFromEntry_t = void(__fastcall*)(void*, ...);
         // PROTOTYPE: void __fastcall create_move_v2(__int64 *a1, int a2, char a3) (placeholder — verify in IDA)
         using create_move_v2_t = void(__fastcall*)(void*, ...);
         // PROTOTYPE: __int64 __fastcall draw_smoke_array(__int64 a1, __int64 a2, __int64 a3, __int64 a4, __int64 a5, unsigned int *a6) (placeholder — verify in IDA)
@@ -1042,8 +1041,6 @@ namespace sdk::sigs_fn {
         using get_map_name_t = void(__fastcall*)(void*, ...);
         // PROTOTYPE: void __fastcall get_view_angles_v2(__int64 a1, int a2, __int64 a3) (placeholder — verify in IDA)
         using get_view_angles_v2_t = void(__fastcall*)(void*, ...);
-        // PROTOTYPE: void __fastcall get_view_model(__int64 a1, float *a2, float *a3) (placeholder — verify in IDA)
-        using get_view_model_t = void(__fastcall*)(void*, ...);
         // PROTOTYPE: char is_demo_or_hltv() (placeholder — verify in IDA)
         using is_demo_or_hltv_t = void(__fastcall*)(void*, ...);
         // PROTOTYPE: __int64 __fastcall level_init_v2(__int64 a1, __int64 a2) (placeholder — verify in IDA)
@@ -1152,6 +1149,10 @@ namespace sdk::sigs_fn {
         using SetSignonState_t = void(__fastcall*)(void*, ...);
         // PROTOTYPE: not yet reverse-engineered (placeholder)
         using Tokenize_t = void(__fastcall*)(void*, ...);
+    }
+    namespace gameoverlayrenderer64 {
+        // PROTOTYPE: not yet reverse-engineered (placeholder)
+        using GameOverlay_t = void(__fastcall*)(void*, ...);
     }
     namespace inputsystem {
         // PROTOTYPE: int __fastcall AttachToWindow(__int64 a1, HWND a2) (placeholder — verify in IDA)
@@ -1279,7 +1280,7 @@ namespace sdk::sigs_fn {
         // PROTOTYPE: not yet reverse-engineered (placeholder)
         using AllocateAttributeListFunctionPointer_t = void(__fastcall*)(void*, ...);
         // PROTOTYPE: not yet reverse-engineered (placeholder)
-        using BuildSceneInfoGpu_t = void(__fastcall*)(void*, ...);
+        using CAnimatableSceneObjectDescRender_t = void(__fastcall*)(void*, ...);
         // PROTOTYPE: not yet reverse-engineered (placeholder)
         using CreateStaticShape_t = void(__fastcall*)(void*, ...);
         // PROTOTYPE: not yet reverse-engineered (placeholder)
@@ -1299,17 +1300,15 @@ namespace sdk::sigs_fn {
         // PROTOTYPE: not yet reverse-engineered (placeholder)
         using DrawObject_legacy_t = void(__fastcall*)(void*, ...);
         // PROTOTYPE: not yet reverse-engineered (placeholder)
-        using DrawSkyboxArray_t = void(__fastcall*)(void*, ...);
-        // PROTOTYPE: not yet reverse-engineered (placeholder)
         using FrameUpdate_t = void(__fastcall*)(void*, ...);
-        // PROTOTYPE: not yet reverse-engineered (placeholder)
-        using GeneratePrimitives_t = void(__fastcall*)(void*, ...);
         // PROTOTYPE: not yet reverse-engineered (placeholder)
         using InitGfxObjects_t = void(__fastcall*)(void*, ...);
         // PROTOTYPE: not yet reverse-engineered (placeholder)
         using RenderSceneDrawList_t = void(__fastcall*)(void*, ...);
         // PROTOTYPE: not yet reverse-engineered (placeholder)
         using ToneMapUpdate_t = void(__fastcall*)(void*, ...);
+        // PROTOTYPE: not yet reverse-engineered (placeholder)
+        using UpdateLightObject_t = void(__fastcall*)(void*, ...);
     }
     namespace schemasystem {
         // PROTOTYPE: not yet reverse-engineered (placeholder)
@@ -1434,8 +1433,6 @@ namespace sdk::sigs_fn {
         using PlayVSound_t = void(__fastcall*)(void*, ...);
         // PROTOTYPE: __int64 __fastcall SomeUtlSymbolFunc(__int64 a1, unsigned int a2) (placeholder — verify in IDA)
         using SomeUtlSymbolFunc_t = void(__fastcall*)(void*, ...);
-        // PROTOTYPE: not yet reverse-engineered (placeholder)
-        using StartSoundEvent_t = void(__fastcall*)(void*, ...);
     }
     namespace tier0 {
         // PROTOTYPE: void *__fastcall CreateInterface(const char *pName, int *pReturnCode) (placeholder — verify in IDA)
