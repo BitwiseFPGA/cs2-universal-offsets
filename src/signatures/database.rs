@@ -4749,4 +4749,25 @@ pub static CS2_SIGNATURES: &[Signature] = &[
     Signature { name: "CCSWeaponBase_GetInaccuracy", module: "client.dll", needle: "48 89 5C 24 ? 55 56 57 48 81 EC ? ? ? ? 44", resolve: NONE, extra_off: 0, prototype: "" },
     Signature { name: "CPanoramaUIEngine_RunScript", module: "panorama.dll", needle: "48 89 5C 24 ? 4C 89 4C 24 ? 48 89 54 24 ? 55 56 57 41 54 41 55 41 56 41 57 48 8D", resolve: NONE, extra_off: 0, prototype: "" },
 
+    // ---------- cspatterns.dev/cpp — added 2026-05-22 (build 14164) -----
+    // Patterns harvested from https://cspatterns.dev/cpp that were not
+    // previously present in this database. Names mirror the upstream
+    // #define identifiers (lowercase-stripped). All entries are scoped
+    // to the DLL they originate from per the cspatterns module header.
+    Signature { name: "Present_GameOverlay",                   module: "gameoverlayrenderer64.dll", needle: "48 89 5C 24 ? 48 89 6C 24 ? 56 57 41 54 41 56 41 57 48 83 EC ? 41 8B E8", resolve: NONE, extra_off: 0, prototype: "" },
+    Signature { name: "SetViewAngles",                         module: "client.dll", needle: "85 D2 75 ? 48 63 81", resolve: NONE, extra_off: 0, prototype: "" },
+    Signature { name: "LevelShutdown",                         module: "client.dll", needle: "48 83 EC ? 48 8B 0D ? ? ? ? 48 8D 15", resolve: NONE, extra_off: 0, prototype: "" },
+    Signature { name: "DrawTeamIntro",                         module: "client.dll", needle: "48 83 EC ? ? ? ? ? 44 38 89", resolve: NONE, extra_off: 0, prototype: "" },
+    Signature { name: "PanoramaEvent",                         module: "client.dll", needle: "40 56 57 41 57 48 83 EC ? 48 8B 3D ? ? ? ? 4D 85 C0", resolve: NONE, extra_off: 0, prototype: "" },
+    Signature { name: "GetGameModeName",                       module: "client.dll", needle: "48 83 EC ? 48 8B 0D ? ? ? ? ? ? ? FF 90 ? ? ? ? 48 85 C0 74 ? 48 8B 0D ? ? ? ? ? ? ? 4C 8B 42", resolve: NONE, extra_off: 0, prototype: "" },
+    Signature { name: "GetServerName",                         module: "client.dll", needle: "40 53 48 83 EC ? 48 8B D9 48 8B 0D ? ? ? ? 48 85 C9 74 ? E8 ? ? ? ? 48 85 C0", resolve: NONE, extra_off: 0, prototype: "" },
+    Signature { name: "IsLocalPlayerWatchingOwnDemo",          module: "client.dll", needle: "48 89 5C 24 ? 48 89 6C 24 ? 56 57 41 56 48 83 EC ? 48 8B 0D", resolve: NONE, extra_off: 0, prototype: "" },
+    Signature { name: "IsOverwatch",                           module: "client.dll", needle: "48 83 EC ? E8 ? ? ? ? 0F B6 40 ? 48 83 C4 ? C3", resolve: NONE, extra_off: 0, prototype: "" },
+    Signature { name: "SubmitCommendation",                    module: "client.dll", needle: "48 89 74 24 ? 55 57 41 56 48 8D 6C 24 ? 48 81 EC ? ? ? ? 48 8B CA", resolve: NONE, extra_off: 0, prototype: "" },
+    Signature { name: "SubmitPlayerReport",                    module: "client.dll", needle: "48 89 5C 24 ? 56 48 83 EC ? 48 8B CA", resolve: NONE, extra_off: 0, prototype: "" },
+    Signature { name: "ShouldShowHudElements",                 module: "client.dll", needle: "48 83 EC ? BA ? ? ? ? 48 8D 0D ? ? ? ? E8 ? ? ? ? 48 85 C0 75 ? 48 8B 05 ? ? ? ? 48 8B 40 ? ? ? 00 74 ? BA", resolve: NONE, extra_off: 0, prototype: "" },
+    Signature { name: "GetPlayerTeamName",                     module: "client.dll", needle: "48 89 5C 24 ? 48 89 6C 24 ? 48 89 74 24 ? 57 48 83 EC ? 48 8B CA 48 8B EA", resolve: NONE, extra_off: 0, prototype: "" },
+    Signature { name: "IsLatched",                             module: "client.dll", needle: "0F B6 81 ? ? ? ? C3 ? ? ? ? ? ? ? ? 48 83 EC ? 33 C9", resolve: NONE, extra_off: 0, prototype: "" },
+    Signature { name: "CAnimatableSceneObjectDescRender",      module: "scenesystem.dll", needle: "48 8B C4 53 57 41 54", resolve: NONE, extra_off: 0, prototype: "" },
+    Signature { name: "UpdateLightObject",                     module: "scenesystem.dll", needle: "48 89 54 24 ? 55 57 41 56 48 83 EC", resolve: NONE, extra_off: 0, prototype: "" },
 ];
