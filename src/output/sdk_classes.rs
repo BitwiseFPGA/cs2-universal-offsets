@@ -1868,7 +1868,8 @@ fn render_one_module(
 
     write_banner(&mut s, module, classes.len(), enums.len(), build_number, timestamp);
     s.push_str("#pragma once\n");
-    s.push_str("#include \"cs2sdk_macros.hpp\"\n\n");
+    // schemas/<module>.hpp → ../macros.hpp at the include root
+    s.push_str("#include \"../macros.hpp\"\n\n");
 
     // Scan all classes in this module (before filtering) to find cross-module base dependencies.
     // We build two sets: `parent_deps` for classes whose parent is in another module

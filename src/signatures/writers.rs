@@ -51,14 +51,6 @@ fn module_ident(module: &str) -> String {
     ident(module.trim_end_matches(".dll"))
 }
 
-fn markdown_cell(value: &str) -> String {
-    value
-        .replace('\r', "")
-        .replace('\n', "\\n")
-        .replace('|', "\\|")
-        .replace('`', "'")
-}
-
 /// Pick the pattern string we want to emit for a given hit.  We prefer
 /// the auto-synthesised IDA pattern at the resolved RVA (handles
 /// `StringRef` entries whose database `pattern` is text, not bytes),
@@ -109,36 +101,3 @@ pub fn render_hpp(hits: &[SignatureHit]) -> String {
     s
 }
 
-/// Compact human-readable summary used by `SIGNATURES.md`.
-pub fn render_markdown(hits: &[SignatureHit]) -> String {
-    let mut s = String::new();
-    s.push_str("# CS2 Signatures\n\n");
-    s.push_str("_This file is regenerated on every successful run of `cs2-sdk`._\n\n");
-    let groups = grouped(hits);
-    let total_found = hits.iter().filter(|h| h.found).count();
-    let total = hits.len();
-    s.push_str(&format!(
-        "**{}/{} signatures resolved across {} module(s).**\n\n",
-        total_found,
-        total,
-        groups.len(),
-    ));
-    for (module, items) in groups {
-        s.push_str(&format!("## `{}`\n\n", module));
-        s.push_str("| Name | Prototype | Resolve | VA | RVA | Pattern |\n");
-        s.push_str("| --- | --- | --- | --- | --- | --- |\n");
-        for h in items {
-            s.push_str(&format!(
-                "| `{}` | `{}` | `{}` | `0x{:X}` | `0x{:X}` | `{}` |\n",
-                markdown_cell(&h.name),
-                markdown_cell(h.prototype.as_deref().unwrap_or("")),
-                markdown_cell(&h.resolve),
-                h.va.unwrap_or(0),
-                h.rva.unwrap_or(0),
-                markdown_cell(&h.pattern),
-            ));
-        }
-        s.push('\n');
-    }
-    s
-}

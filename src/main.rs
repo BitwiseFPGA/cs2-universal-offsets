@@ -1,36 +1,26 @@
 // cs2-universal-dumper
 // --------------------
-// One binary, two passes:
-//   * offsets    (external offset/interface/schema/button dumper)
-//   * signatures (PE/section-aware IDA-style scanner with
-//                 rel32 / riprel / string-ref resolution)
+// Two passes, one binary: offsets dump + PE/section-aware signature scan.
 //
-// Output layout:
+// Output layout (flat root, single `schemas/` subdir for per-module headers):
 //
-//     <OutputRoot>/<DD-MM-YY>-CS2-SDK/
-//         manifest.json                       run metadata + module fingerprints
-//         logs/cs2-sdk.log                    full TRACE-level run log
-//         signatures/
-//             signatures.json     (hand-formatted, one entry per line)
-//             signatures.hpp      (C++ namespace per module + fn-ptr typedefs)
-//             signatures.rs       (Rust module per module patterns)
-//             ida_tutorials.json   (curated IDA walkthroughs)
-//             SIGNATURES.md       (human-readable table)
-//             diff.json           (delta vs. previous session, when found)
-//         sdk/
-//             cs2.hpp                          single-include amalgamation
-//             cs2sdk_macros.hpp                SCHEMA_FIELD macro family
-//             <module>.hpp                     typed schema classes per module
-//             netvars.(json|hpp|cs)            split networked-field offsets
-//             interfaces_sdk.(hpp|cs)          typed accessor stubs
-//             vtables.(json|hpp|cs)            interface vtable layouts
-//             buttons.(hpp|json|rs|zig)        symbolic button table
-//             verified_features.(json|md|hpp)  verified-working catalogue
-//
-//     <OutputRoot>/latest/                     mirror of the most recent
-//                                              successful session
+//     <OutputRoot>/
+//         cs2.hpp                    single-include amalgamation
+//         macros.hpp                 SCHEMA_FIELD macro family
+//         interfaces.hpp             typed interface accessors
+//         entity_system.hpp          CGameEntitySystem helpers
+//         buttons.{hpp,json}         symbolic button table
+//         offsets.{hpp,json}         RIPREL signatures + dwXxx aliases
+//         vtables.{hpp,json}         interface vtable layouts
+//         netvars.{hpp,json}         split networked-field offsets (optional)
+//         protobufs.{hpp,json}       libprotobuf message layouts
+//         signatures.{hpp,json}      resolved signature catalogue
+//         ida_tutorials.json         curated IDA walkthroughs per signature
+//         verified_features.{hpp,json}  hand-curated working catalogue
+//         manifest.json              run metadata
+//         cs2-sdk.log                warn+ log
+//         schemas/<module>_dll.hpp   typed schema classes per module
 
-use std::collections::BTreeMap;
 use std::fs::{self, File};
 use std::path::{Path, PathBuf};
 use std::str::FromStr;
@@ -109,20 +99,18 @@ fn main() -> Result<()> {
     ui::sound(ui::Cue::Start);
 
     let now = Local::now();
-    let session_dir = args.output.clone();
-    let sdk_dir = session_dir.join("sdk");
-    let sigs_dir = session_dir.join("signatures");
-    let logs_dir = session_dir.join("logs");
-    for d in [&session_dir, &sdk_dir, &sigs_dir, &logs_dir] {
+    let out_dir = args.output.clone();
+    let schemas_dir = out_dir.join("schemas");
+    for d in [&out_dir, &schemas_dir] {
         fs::create_dir_all(d)
             .with_context(|| format!("failed to create {}", d.display()))?;
     }
 
-    init_logging(&logs_dir, args.verbose)?;
+    init_logging(&out_dir, args.verbose)?;
 
     ui::section("Session");
     ui::kv("Timestamp", &now.format("%Y-%m-%d %H:%M:%S").to_string());
-    ui::kv("Output", &session_dir.display().to_string());
+    ui::kv("Output", &out_dir.display().to_string());
     ui::kv("Process", &args.process_name);
     ui::kv("File types", &args.file_types.join(","));
     ui::kv("Offsets", if args.skip_offsets { "skipped" } else { "enabled" });
@@ -164,7 +152,7 @@ fn main() -> Result<()> {
                     cc, ec, result.schemas.len()
                 ));
 
-                let out = Output::new(&sdk_dir, &result)?;
+                let out = Output::new(&out_dir, &schemas_dir, &result)?;
 
                 build_number = result
                     .offsets
@@ -254,53 +242,45 @@ fn main() -> Result<()> {
                     report.modules.len()
                 ));
 
-                let json_path = sigs_dir.join("signatures.json");
+                let json_path = out_dir.join("signatures.json");
                 fs::write(&json_path, format_found_signatures(&report))?;
                 ui::ok(&format!("wrote {}", json_path.display()));
 
-                // Multi-language fan-out (C++ only — Rust output dropped).
-                fs::write(sigs_dir.join("signatures.hpp"), signatures::writers::render_hpp(&report.hits))?;
-                fs::write(sigs_dir.join("SIGNATURES.md"), signatures::writers::render_markdown(&report.hits))?;
+                fs::write(out_dir.join("signatures.hpp"), signatures::writers::render_hpp(&report.hits))?;
                 fs::write(
-                    sigs_dir.join("ida_tutorials.json"),
+                    out_dir.join("ida_tutorials.json"),
                     signatures::tutorials::render_json(signatures::database::CS2_SIGNATURES),
                 )?;
 
-                // Write RIPREL signatures + a2x-style dwXxx aliases to
-                // sdk/offsets.{hpp,json}. The `analysis` block is what
-                // cs2-sdk.com / public CS2 cheats actually consume — it
-                // matches a2x/cs2-dumper byte-for-byte.
+                // RIPREL signatures + a2x-style dwXxx aliases.
                 let empty_offsets = analysis::OffsetMap::new();
                 let offset_map = analysis_result
                     .as_ref()
                     .map(|r| &r.offsets)
                     .unwrap_or(&empty_offsets);
                 fs::write(
-                    sdk_dir.join("offsets.hpp"),
+                    out_dir.join("offsets.hpp"),
                     signatures::offsets_writer::render_offsets_hpp(&report.hits, offset_map),
                 )?;
                 fs::write(
-                    sdk_dir.join("offsets.json"),
+                    out_dir.join("offsets.json"),
                     signatures::offsets_writer::render_offsets_json(offset_map),
                 )?;
 
-                // Stand-alone buttons.{hpp,json,rs,zig} — every kbutton
-                // pointer (jump, attack, duck, …) keyed by its in-engine
-                // name. Drop-in compatible with a2x cs2_dumper::buttons.
+                // buttons.{hpp,json}
                 if let Some(result) = analysis_result.as_ref()
                     && !result.buttons.is_empty()
                 {
                     if let Err(e) = output::write_buttons(
-                        &sdk_dir,
+                        &out_dir,
                         &result.buttons,
                         &args.file_types,
                     ) {
                         ui::warn(&format!("buttons emit failed: {}", e));
                     } else {
                         ui::ok(&format!(
-                            "buttons emitted ({} entries) -> sdk/buttons.{{{}}}",
-                            result.buttons.len(),
-                            args.file_types.join(",")
+                            "buttons emitted ({} entries)",
+                            result.buttons.len()
                         ));
                     }
                 }
@@ -309,7 +289,7 @@ fn main() -> Result<()> {
                 if let Some(prev) = &cache_path
                     && let Ok(diff) = signatures::diff::diff_against(prev, &report)
                 {
-                    let path = sigs_dir.join("diff.json");
+                    let path = out_dir.join("diff.json");
                     fs::write(&path, serde_json::to_string_pretty(&diff)?)?;
                     let n = diff.added.len() + diff.removed.len() + diff.shifted.len();
                     if n > 0 {
@@ -343,8 +323,8 @@ fn main() -> Result<()> {
                 .unwrap_or_default();
             let json = output::vtables::render_json(&result.vtables, &oracle);
             let hpp  = output::vtables::render_hpp(&result.vtables, &oracle, build_number);
-            let _ = fs::write(sdk_dir.join("vtables.json"), json);
-            let _ = fs::write(sdk_dir.join("vtables.hpp"),  hpp);
+            let _ = fs::write(out_dir.join("vtables.json"), json);
+            let _ = fs::write(out_dir.join("vtables.hpp"),  hpp);
             let labelled = result
                 .vtables
                 .values()
@@ -368,8 +348,8 @@ fn main() -> Result<()> {
     if !protobufs.is_empty() {
         let hpp = output::protobufs::render_hpp(&protobufs, build_number);
         let json = output::protobufs::render_json(&protobufs);
-        let _ = fs::write(sdk_dir.join("protobufs.hpp"), hpp);
-        let _ = fs::write(sdk_dir.join("protobufs.json"), json);
+        let _ = fs::write(out_dir.join("protobufs.hpp"), hpp);
+        let _ = fs::write(out_dir.join("protobufs.json"), json);
         let total: usize = protobufs.values().map(|m| m.len()).sum();
         ui::ok(&format!(
             "protobufs emitted (protobufs.{{json,hpp}}) — {} messages",
@@ -378,43 +358,34 @@ fn main() -> Result<()> {
     }
 
     // --- manifest ----------------------------------------------------------
+    // Minimal: timestamp, process, build, success flags, signature counts,
+    // and just the names of the modules we attached to. Per-module
+    // base/image/size/timestamp were removed — consumers that need a
+    // build-fingerprint use `build_number` directly.
     let sig_counts = sig_report
         .as_ref()
         .map(|r| json!({ "found": r.found, "total": r.total }))
         .unwrap_or(json!(null));
 
-    // Module fingerprints (PE timestamp + image size) for the major
-    // CS2 modules � lets consumers detect a build mismatch instantly.
-    let module_fingerprints = collect_module_fingerprints(&mut process);
+    let module_names = list_loaded_module_names(&mut process);
 
     let manifest = json!({
         "generated_at": now.to_rfc3339(),
         "process": args.process_name,
         "build_number": build_number,
-        "modules": module_fingerprints,
-        "stages": {
-            "offsets": {
-                "enabled": !args.skip_offsets,
-                "success": offsets_ok,
-                "output_dir": sdk_dir,
-            },
-            "signatures": {
-                "enabled": !args.skip_signatures,
-                "success": sigs_ok,
-                "counts": sig_counts,
-
-                "output_dir": sigs_dir,
-            },
-        },
+        "modules": module_names,
+        "offsets_ok": offsets_ok,
+        "signatures_ok": sigs_ok,
+        "signature_counts": sig_counts,
     });
     fs::write(
-        session_dir.join("manifest.json"),
+        out_dir.join("manifest.json"),
         serde_json::to_string_pretty(&manifest)?,
     )?;
 
     // --- summary -----------------------------------------------------------
     ui::section("Summary");
-    ui::kv("Output dir", &session_dir.display().to_string());
+    ui::kv("Output dir", &out_dir.display().to_string());
     if !args.skip_offsets {
         ui::kv("Offsets", if offsets_ok { "ok" } else { "FAIL" });
     }
@@ -436,7 +407,7 @@ fn main() -> Result<()> {
         Ok(())
     } else {
         ui::sound(ui::Cue::Failure);
-        ui::err("One or more stages failed — see logs/cs2-sdk.log.");
+        ui::err("One or more stages failed — see cs2-sdk.log.");
         std::process::exit(1);
     }
 }
@@ -473,7 +444,7 @@ fn build_os(args: &Args) -> Result<OsInstanceArcBox<'static>> {
     }
 }
 
-fn init_logging(logs_dir: &Path, verbose: u8) -> Result<()> {
+fn init_logging(out_dir: &Path, verbose: u8) -> Result<()> {
     let term_level = match verbose {
         0 => LevelFilter::Warn,
         1 => LevelFilter::Info,
@@ -481,105 +452,41 @@ fn init_logging(logs_dir: &Path, verbose: u8) -> Result<()> {
         _ => LevelFilter::Trace,
     };
     let mut loggers: Vec<Box<dyn SharedLogger>> = Vec::new();
-    // Terminal: warnings+ only by default (UI is our main output).
     loggers.push(TermLogger::new(
         term_level,
         Config::default(),
         TerminalMode::Mixed,
         ColorChoice::Auto,
     ));
-    // File: always full TRACE so logs/cs2-sdk.log captures the entire
-    // run regardless of -v level. Verbose only affects the console.
+    // File log captures warnings+ only — keeps cs2-sdk.log small and
+    // useful for post-mortem instead of being a multi-megabyte trace dump.
     loggers.push(WriteLogger::new(
-        LevelFilter::Trace,
+        LevelFilter::Warn,
         Config::default(),
-        File::create(logs_dir.join("cs2-sdk.log"))?,
+        File::create(out_dir.join("cs2-sdk.log"))?,
     ));
     CombinedLogger::init(loggers).ok();
     Ok(())
 }
 
-/// Collect a per-module fingerprint (PE TimeDateStamp + image size +
-/// base) for every loaded CS2 module of interest.  Lets consumers
-/// confirm at a glance whether their cached SDK still matches the live
-/// build, without having to re-run the full dumper.
-///
-/// We don't use `pelite::PeView::from_bytes` here because we only read
-/// the first 4 KiB of headers from the live process � `PeView` requires
-/// a complete image and would reject the truncated buffer.  The PE
-/// header layout is fixed, so a hand-rolled parse is safe and avoids
-/// the round-trip cost of dragging in a whole image just for one u32.
-fn collect_module_fingerprints<P: Process + MemoryView>(
+/// Names of the major CS2 modules we attached to. Returned as a sorted
+/// list for the manifest — consumers don't need per-module fingerprints,
+/// `build_number` already disambiguates builds.
+fn list_loaded_module_names<P: Process + MemoryView>(
     process: &mut P,
-) -> BTreeMap<String, serde_json::Value> {
+) -> Vec<&'static str> {
     const MODULES: &[&str] = &[
-        "client.dll",
-        "engine2.dll",
-        "server.dll",
-        "schemasystem.dll",
-        "animationsystem.dll",
-        "materialsystem2.dll",
-        "particles.dll",
-        "scenesystem.dll",
-        "soundsystem.dll",
-        "tier0.dll",
-        "vphysics2.dll",
-        "networksystem.dll",
-        "host.dll",
-        "panorama.dll",
-        "rendersystemdx11.dll",
-        "resourcesystem.dll",
-        "vstdlib.dll",
-        "pulse_system.dll",
-        "inputsystem.dll",
-        "filesystem_stdio.dll",
+        "client.dll", "engine2.dll", "server.dll", "schemasystem.dll",
+        "animationsystem.dll", "materialsystem2.dll", "particles.dll",
+        "scenesystem.dll", "soundsystem.dll", "tier0.dll", "vphysics2.dll",
+        "networksystem.dll", "host.dll", "panorama.dll",
+        "rendersystemdx11.dll", "resourcesystem.dll", "vstdlib.dll",
+        "pulse_system.dll", "inputsystem.dll", "filesystem_stdio.dll",
     ];
-
-    let mut out = BTreeMap::new();
-    for name in MODULES {
-        let Ok(m) = process.module_by_name(name) else {
-            continue;
-        };
-        let hdr_size = (m.size as usize).min(0x1000);
-        let Ok(hdr) = process.read_raw(m.base, hdr_size).data_part() else {
-            continue;
-        };
-        if hdr.len() < 0x40 {
-            continue;
-        }
-        let e_lfanew =
-            u32::from_le_bytes(hdr[0x3C..0x40].try_into().unwrap()) as usize;
-        // PE\0\0 at e_lfanew, then COFF FileHeader (20 bytes):
-        //   Machine(2) NumberOfSections(2) TimeDateStamp(4) ...
-        if e_lfanew + 24 > hdr.len() {
-            continue;
-        }
-        if &hdr[e_lfanew..e_lfanew + 4] != b"PE\0\0" {
-            continue;
-        }
-        let coff = e_lfanew + 4;
-        let timestamp =
-            u32::from_le_bytes(hdr[coff + 4..coff + 8].try_into().unwrap());
-
-        // OptionalHeader.SizeOfImage lives at COFF + 20 + 56 (PE32+).
-        let opt = coff + 20;
-        let size_of_image = if opt + 60 <= hdr.len() {
-            u32::from_le_bytes(hdr[opt + 56..opt + 60].try_into().unwrap())
-        } else {
-            m.size as u32
-        };
-
-        out.insert(
-            (*name).to_string(),
-            json!({
-                "base":      format!("{:#X}", m.base.to_umem() as u64),
-                "size":      m.size,
-                "image":     size_of_image,
-                "timestamp": timestamp,
-            }),
-        );
-    }
-    out
+    MODULES.iter()
+        .copied()
+        .filter(|name| process.module_by_name(name).is_ok())
+        .collect()
 }
 
 /// Pretty-print only successfully-resolved signatures, one hit per line.

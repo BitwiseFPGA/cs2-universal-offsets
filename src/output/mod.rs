@@ -72,6 +72,7 @@ impl<'a> CodeWriter for Item<'a> {
 
 pub struct Output<'a> {
     out_dir: &'a Path,
+    schemas_dir: &'a Path,
     result: &'a AnalysisResult,
     timestamp: DateTime<Utc>,
 }
@@ -79,29 +80,32 @@ pub struct Output<'a> {
 impl<'a> Output<'a> {
     pub fn new(
         out_dir: &'a Path,
+        schemas_dir: &'a Path,
         result: &'a AnalysisResult,
     ) -> Result<Self> {
         fs::create_dir_all(&out_dir)?;
+        fs::create_dir_all(&schemas_dir)?;
 
         Ok(Self {
             out_dir,
+            schemas_dir,
             result,
             timestamp: Utc::now(),
         })
     }
 
-    /// Emit the cheat-developer-friendly SDK files into `self.out_dir`
-    /// (which is the session's `sdk/` directory):
+    /// Emit the cheat-developer-friendly SDK files. Root-level outputs go
+    /// into `out_dir`; per-module schema headers go into `schemas_dir`.
     ///
-    /// * `cs2sdk_macros.hpp`         — SCHEMA_FIELD macros
-    /// * `<module>.hpp`              — typed schema classes
-    /// * `netvars.{json,hpp}`        — split networked fields
-    /// * `interfaces_sdk.hpp`        — typed accessor stubs
-    /// * `cs2.hpp`                   — single-include amalgamation
-    /// * `verified_features.{json,md,hpp}` — verified-working catalogue
+    ///   <out>/macros.hpp                  SCHEMA_FIELD macros
+    ///   <out>/interfaces.hpp              typed accessor stubs
+    ///   <out>/entity_system.hpp           entity system helpers
+    ///   <out>/netvars.{json,hpp}          split networked fields
+    ///   <out>/cs2.hpp                     single-include amalgamation
+    ///   <out>/verified_features.{json,hpp}  verified-working catalogue
+    ///   <out>/schemas/<module>_dll.hpp    typed schema classes per module
     ///
-    /// `build_number` is pinned into every emitted file as `CS2_BUILD`
-    /// so internal cheats can `static_assert` against the running game.
+    /// `build_number` is pinned into every emitted file as `CS2_BUILD`.
     pub fn dump_sdk_extras(&self, build_number: Option<u32>) -> Result<()> {
         let ts = self.timestamp.to_rfc3339();
 
@@ -110,7 +114,7 @@ impl<'a> Output<'a> {
         let module_data = sdk_classes::render_module_headers(&self.result.schemas, &self.result.buttons, build_number, &ts);
 
         // Render base macros (includes a rich set of global forward-decls / minimal types)
-        let macros_path = self.out_dir.join("cs2sdk_macros.hpp");
+        let macros_path = self.out_dir.join("macros.hpp");
         let mut macros = sdk_classes::render_macros_header();
 
         // Scan all module bodies for cross-module ::sdk::NAMESPACE::Type references
@@ -243,26 +247,19 @@ impl<'a> Output<'a> {
 
         fs::write(macros_path, macros)?;
 
-        // 2. per-module SDK class headers (skip modules with 0 classes
-        //    AND 0 enums to avoid emitting empty/useless headers like
-        //    host_dll.hpp).
+        // 2. per-module SDK class headers → schemas/. Skip empty modules
+        //    (namespace shell only).
         let mut module_stems = Vec::new();
         for (file_name, body) in module_data {
-            // Cheap heuristic: an "empty" module body has no `class ` or
-            // `enum class ` definitions — only the namespace shell.
-            // We still keep client.dll because of the buttons enum.
             let is_empty = !body.contains("class ") && !body.contains("enum class ");
             if is_empty { continue; }
-            fs::write(self.out_dir.join(&file_name), body)?;
+            fs::write(self.schemas_dir.join(&file_name), body)?;
             if let Some(stem) = file_name.strip_suffix(".hpp") {
                 module_stems.push(stem.to_string());
             }
         }
 
-
-        // 3. netvars (split from schema). Only emit if we actually got
-        //    any networked fields — the schema walker can come back
-        //    empty on builds where metadata layout drifted.
+        // 3. netvars (split from schema). Only emit if non-empty.
         let nvs = netvars::extract(&self.result.schemas);
         if !nvs.is_empty() {
             fs::write(self.out_dir.join("netvars.json"), netvars::render_json(&nvs))?;
@@ -271,7 +268,7 @@ impl<'a> Output<'a> {
 
         // 4. interface accessor stubs
         fs::write(
-            self.out_dir.join("interfaces_sdk.hpp"),
+            self.out_dir.join("interfaces.hpp"),
             interfaces_sdk::render_hpp(&self.result.interfaces, build_number),
         )?;
 
@@ -281,28 +278,20 @@ impl<'a> Output<'a> {
             entity_system::render_hpp(&self.result.offsets, build_number, &self.result.schemas),
         )?;
 
-        // 5. amalgamation (C++ only; Rust amalgamation dropped —
-        //    repo is C++-only output now).
-        // Try to reorder module_stems using the emitted module_order.txt
-        // file in the output `sdk/` directory so the single-include
-        // amalgamation includes modules in a stable dependency order.
+        // 5. amalgamation — reorder by schemas/module_order.txt if present.
         let mut ordered_stems = module_stems.clone();
-        let order_paths = [self.out_dir.join("sdk/module_order.txt"), self.out_dir.join("module_order.txt")];
-        for p in &order_paths {
-            if let Ok(txt) = std::fs::read_to_string(p) {
-                let mut idx_map: std::collections::BTreeMap<String, usize> = std::collections::BTreeMap::new();
-                for line in txt.lines() {
-                    if let Some((idxs, name)) = line.split_once(':') {
-                        if let Ok(idx) = idxs.parse::<usize>() {
-                            let stem = name.trim().trim_end_matches(".dll").to_string();
-                            idx_map.insert(stem, idx);
-                        }
+        if let Ok(txt) = std::fs::read_to_string(self.schemas_dir.join("module_order.txt")) {
+            let mut idx_map: std::collections::BTreeMap<String, usize> = std::collections::BTreeMap::new();
+            for line in txt.lines() {
+                if let Some((idxs, name)) = line.split_once(':') {
+                    if let Ok(idx) = idxs.parse::<usize>() {
+                        let stem = name.trim().trim_end_matches(".dll").to_string();
+                        idx_map.insert(stem, idx);
                     }
                 }
-                if !idx_map.is_empty() {
-                    ordered_stems.sort_by_key(|m| idx_map.get(m).cloned().unwrap_or(usize::MAX));
-                    break;
-                }
+            }
+            if !idx_map.is_empty() {
+                ordered_stems.sort_by_key(|m| idx_map.get(m).cloned().unwrap_or(usize::MAX));
             }
         }
 
@@ -311,19 +300,10 @@ impl<'a> Output<'a> {
             amalgamation::render_hpp(&ordered_stems, build_number),
         )?;
 
-        // 6. hand-curated "verified working features" catalogue.
-        // Lives next to the auto-generated outputs so cheat developers
-        // can copy a single file (.md / .hpp / .json) and know which
-        // offsets are confirmed working in a live internal cheat plus
-        // the gotchas (skybox tint moved to +0xE8, mat_fullbright needs
-        // both ConVar slots written, etc).
+        // 6. verified-working features catalogue (json + hpp only, no markdown).
         fs::write(
             self.out_dir.join("verified_features.json"),
             verified::render_json(build_number),
-        )?;
-        fs::write(
-            self.out_dir.join("verified_features.md"),
-            verified::render_md(build_number),
         )?;
         fs::write(
             self.out_dir.join("verified_features.hpp"),
