@@ -1,4 +1,4 @@
-//! Shared helpers for the new SDK-style emitters.
+﻿//! Shared helpers for the new SDK-style emitters.
 //!
 //! These are intentionally tiny and dependency-free so the new emitter
 //! files (`sdk_classes`, `netvars`, `interfaces_sdk`, `amalgamation`)
@@ -46,7 +46,7 @@ pub fn type_ident(input: &str) -> String {
     s
 }
 
-/// Turn an arbitrary symbol (e.g. a signature name like `Foo::Bar`) into a
+/// Turn an arbitrary symbol (e.g. a Pattern name like `Foo::Bar`) into a
 /// usable C++/C# identifier by replacing every non-`[A-Za-z0-9_]` run with
 /// `_`. Unlike [`type_ident`] this keeps the *whole* name (so `Foo::Bar`
 /// becomes `Foo__Bar` rather than being truncated at `::`). Shared by the

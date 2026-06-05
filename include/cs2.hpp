@@ -32,12 +32,10 @@ inline constexpr unsigned int CS2_BUILD = 14165;
 #include "schemas/vphysics2_dll.hpp"
 #include "schemas/worldrenderer_dll.hpp"
 
-#include "offsets.hpp"
-#include "interfaces.hpp"
-#include "interface_classes.hpp"
+#include "offsets/offsets.hpp"
+#include "interfaces/interfaces.hpp"
 #include "buttons.hpp"
-#include "protobufs.hpp"
-#include "signatures.hpp"
+#include "protobufs/protobufs.hpp"
+#include "patterns/patterns.hpp"
 
-// Implementation helpers (use the SDK above) — separated under impl/.
 #include "impl/entity_system.hpp"

@@ -1,4 +1,4 @@
-//! MSVC RTTI class-name recovery for C++ vftables.
+﻿//! MSVC RTTI class-name recovery for C++ vftables.
 //!
 //! Every polymorphic class compiled by MSVC carries a back-pointer to a
 //! `RTTICompleteObjectLocator` (COL) at slot `-1` of its virtual
@@ -12,7 +12,7 @@
 //! qword @ vftable - 8                    -> RTTICompleteObjectLocator*
 //!
 //! struct RTTICompleteObjectLocator {     // 24 bytes total, x64
-//!     uint32_t signature;                // 1 on x64
+//!     uint32_t Pattern;                // 1 on x64
 //!     uint32_t offset;                   // offset of vftable in the complete object
 //!     uint32_t cd_offset;                // ctor displacement offset
 //!     uint32_t type_descriptor_rva;      // -> TypeDescriptor (module-relative)

@@ -1,7 +1,7 @@
-//! PE/section-aware IDA-style signature scanner for CS2 modules.
+﻿//! PE/section-aware IDA-style Pattern scanner for CS2 modules.
 //!
 //! This module is the Rust port + evolution of the C++ `EnhancedScanner`
-//! from the standalone signature-dumper.  It supports:
+//! from the standalone Pattern-dumper.  It supports:
 //!
 //!   * IDA-style patterns (`"48 8B ? ? ? ? E8"`) scoped to a module's
 //!     `.text` section (with fallback to `.rdata`/`.data` for globals).
@@ -22,19 +22,9 @@ use pelite::pe64::{Pe, PeView};
 
 use crate::ui;
 
-pub mod cache;
 pub mod database;
-pub mod diff;
 pub mod writers;
 pub mod offsets_writer;
-pub mod tutorials;
-
-pub use cache::SignatureCache;
-
-#[derive(Clone, Debug, serde::Serialize)]
-pub struct SignatureTutorial {
-    pub steps: Vec<String>,
-}
 
 // ---------------------------------------------------------------------------
 // Public types
@@ -45,11 +35,10 @@ pub enum ResolveKind {
     None,
     Rel32 { rel_off: usize },
     RipRel { rel_off: usize },
-    StringRef,
 }
 
 #[derive(Clone, Debug)]
-pub struct Signature {
+pub struct Pattern {
     pub name: &'static str,
     pub module: &'static str,
     /// IDA-style bytes, or — for `StringRef` — the literal string to search.
@@ -66,24 +55,21 @@ pub struct Signature {
 }
 
 #[derive(Clone, Debug, serde::Serialize)]
-pub struct SignatureHit {
+pub struct PatternHit {
     pub name: String,
     pub module: String,
     pub resolve: &'static str,
     pub pattern: String,
     /// IDA / Hex-Rays C-style function prototype recovered for this
-    /// signature, e.g. `__int64 __fastcall(__int64 a1, float *a2)`.
-    /// Copied verbatim from `Signature::prototype` so the JSON / hpp / rs
+    /// Pattern, e.g. `__int64 __fastcall(__int64 a1, float *a2)`.
+    /// Copied verbatim from `Pattern::prototype` so the JSON / hpp / rs
     /// / md emitters can render real argument lists for hookers.  `None`
     /// when no prototype has been recorded yet.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub prototype: Option<String>,
-    /// Optional curated IDA tutorial attached to this signature.
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub ida_tutorial: Option<SignatureTutorial>,
     /// 24 bytes of the resolved function's prologue, formatted as an
     /// IDA-style space-separated hex pattern (no wildcards).  Useful as a
-    /// drop-in signature on builds where the database pattern is missing
+    /// drop-in Pattern on builds where the database pattern is missing
     /// (e.g. `StringRef` entries) or has gone stale.  `None` for misses or
     /// when the resolved RVA falls outside the module's `.text`.
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -102,97 +88,57 @@ pub struct SignatureHit {
     pub rva: Option<u64>,
     pub va: Option<u64>,
     /// Number of distinct matches the pattern produced.
-    /// `1` is ideal; `>1` means the pattern is ambiguous and should be
-    /// tightened.
-    #[serde(default = "default_match_count")]
+    /// `1` is ideal; `>1` means the pattern is ambiguous and should be tightened.
     pub matches: u32,
-    /// `true` when the result was satisfied directly from a previously
-    /// validated cache entry (no full module scan was performed).
-    #[serde(default)]
-    pub from_cache: bool,
     pub error: Option<String>,
 }
 
-fn default_match_count() -> u32 { 1 }
-
 #[derive(Default, Debug, serde::Serialize)]
-pub struct SignatureReport {
+pub struct PatternReport {
     pub total: usize,
     pub found: usize,
     pub modules: Vec<String>,
-    pub hits: Vec<SignatureHit>,
+    pub hits: Vec<PatternHit>,
 }
 
 // ---------------------------------------------------------------------------
 /// Entry point
 // ---------------------------------------------------------------------------
 
-/// Like `scan_all` but consults `cache` first.  When a cached
-/// `match_rva` still has the pattern bytes the scanner expects, the entry
-/// is satisfied without performing a full module sweep — useful when
-/// re-running on the same CS2 build.
-pub fn scan_all_with_cache<P>(
-    process: &mut P,
-    sigs: &[Signature],
-    cache: &SignatureCache,
-) -> Result<SignatureReport>
+pub fn scan_all<P>(process: &mut P, sigs: &[Pattern]) -> Result<PatternReport>
 where
     P: Process + MemoryView,
 {
-
-
-    // Pre-load each unique module image once so every signature reuses it.
     let mut module_cache: BTreeMap<String, ModuleCache> = BTreeMap::new();
     for sig in sigs {
         let key = sig.module.to_ascii_lowercase();
         if !module_cache.contains_key(&key) {
             match ModuleCache::load(process, sig.module) {
-                Ok(mc) => {
-                    module_cache.insert(key, mc);
-                }
-                Err(e) => {
-                    log::warn!("module load failed for {}: {}", sig.module, e);
-                }
+                Ok(mc)  => { module_cache.insert(key, mc); }
+                Err(e)  => { log::warn!("module load failed for {}: {}", sig.module, e); }
             }
         }
     }
 
-    let mut report = SignatureReport {
+    let mut report = PatternReport {
         total: sigs.len(),
         modules: module_cache.keys().cloned().collect(),
         ..Default::default()
     };
 
     let total = sigs.len();
-    let mut cache_hits = 0u32;
     let mut ambiguous = 0u32;
     for (idx, sig) in sigs.iter().enumerate() {
         ui::progress(idx + 1, total, sig.name);
 
         let hit = match module_cache.get(&sig.module.to_ascii_lowercase()) {
-            Some(mc) => {
-                // Try the cache first.  Only accept the cache entry if the
-                // pattern still matches at the recorded RVA — otherwise the
-                // module has shifted and we must do a full scan.
-                if let Some(entry) = cache.get(&mc.name, sig.name, sig.needle)
-                    && let Some(mut hit) = try_satisfy_from_cache(mc, sig, entry)
-                {
-                    cache_hits += 1;
-                    hit.from_cache = true;
-                    hit
-                } else {
-                    scan_one(mc, sig)
-                }
-            }
-            None => SignatureHit::fail(sig, "module not loaded"),
+            Some(mc) => scan_one(mc, sig),
+            None     => PatternHit::fail(sig, "module not loaded"),
         };
 
         if hit.found {
-            if hit.matches > 1 {
-                ambiguous += 1;
-            }
-            let detail = format!("[{}, {}]", hit.resolve, hit.module);
-            ui::found(&hit.name, hit.va.unwrap_or(0), &detail);
+            if hit.matches > 1 { ambiguous += 1; }
+            ui::found(&hit.name, hit.va.unwrap_or(0), &format!("[{}, {}]", hit.resolve, hit.module));
             report.found += 1;
         } else {
             ui::not_found(&hit.name, hit.error.as_deref().unwrap_or("no hit"));
@@ -201,67 +147,14 @@ where
     }
     ui::progress_clear();
 
-    if cache_hits > 0 {
-        log::info!("signature cache satisfied {}/{} entries", cache_hits, total);
-    }
     if ambiguous > 0 {
         log::warn!(
-            "{} signature(s) matched more than once in their .text section — consider tightening",
+            "{} Pattern(s) matched more than once in their .text section — consider tightening",
             ambiguous
         );
     }
 
     Ok(report)
-}
-
-/// Verify a cached `match_rva` is still valid by re-checking the pattern
-/// bytes at that exact location.  On success we replay the same `resolve`
-/// step the scanner would have performed, so the returned `va`/`rva` are
-/// fully up to date with the current module base.
-fn try_satisfy_from_cache(
-    mc: &ModuleCache,
-    sig: &Signature,
-    entry: cache::CacheEntry,
-) -> Option<SignatureHit> {
-    if matches!(sig.resolve, ResolveKind::StringRef) {
-        // String-ref entries don't have a stable byte-pattern at
-        // `match_rva`, so they always re-scan.
-        return None;
-    }
-    let (bytes, mask) = parse_ida(sig.needle).ok()?;
-    let lo = entry.match_rva as usize;
-    let hi = lo.checked_add(bytes.len())?;
-    let img = mc.image.get(lo..hi)?;
-    for (i, &b) in img.iter().enumerate() {
-        if mask[i] && b != bytes[i] {
-            return None;
-        }
-    }
-
-    let match_va = mc.base + entry.match_rva as u64;
-    let (res_rva, res_va, err) = resolve(mc, sig, entry.match_rva, match_va);
-    if err.is_some() {
-        return None;
-    }
-
-    Some(SignatureHit {
-        name: display_name(sig.name),
-        module: mc.name.clone(),
-        resolve: kind_name(sig.resolve),
-        pattern: sig.needle.to_string(),
-        prototype: opt_proto(sig.name, sig.prototype),
-        ida_tutorial: tutorials::for_signature(sig),
-        bytes: capture_prologue(mc, res_rva),
-        pattern_synth: synthesize_pattern(mc, res_rva),
-        found: true,
-        match_rva: Some(entry.match_rva as u64),
-        match_va: Some(match_va),
-        rva: Some(res_rva),
-        va: Some(res_va),
-        matches: default_match_count(),
-        from_cache: true,
-        error: None,
-    })
 }
 
 // ---------------------------------------------------------------------------
@@ -425,17 +318,14 @@ fn find_all_pattern(hay: &[u8], bytes: &[u8], mask: &[bool]) -> Vec<usize> {
 // Core scan + resolve
 // ---------------------------------------------------------------------------
 
-fn scan_one(mc: &ModuleCache, sig: &Signature) -> SignatureHit {
-    match sig.resolve {
-        ResolveKind::StringRef => scan_string_ref(mc, sig),
-        _ => scan_pattern(mc, sig),
-    }
+fn scan_one(mc: &ModuleCache, sig: &Pattern) -> PatternHit {
+    scan_pattern(mc, sig)
 }
 
-fn scan_pattern(mc: &ModuleCache, sig: &Signature) -> SignatureHit {
+fn scan_pattern(mc: &ModuleCache, sig: &Pattern) -> PatternHit {
     let (bytes, mask) = match parse_ida(sig.needle) {
         Ok(v) => v,
-        Err(e) => return SignatureHit::fail(sig, &format!("bad pattern: {}", e)),
+        Err(e) => return PatternHit::fail(sig, &format!("bad pattern: {}", e)),
     };
 
     // .text first; .rdata fallback for globals; full-image last resort so
@@ -461,23 +351,22 @@ fn scan_pattern(mc: &ModuleCache, sig: &Signature) -> SignatureHit {
     }
 
     let Some(match_rva) = off else {
-        return SignatureHit::fail(sig, "pattern not found");
+        return PatternHit::fail(sig, "pattern not found");
     };
 
     let match_va = mc.base + match_rva as u64;
     let (res_rva, res_va, err) = resolve(mc, sig, match_rva, match_va);
 
     if let Some(e) = err {
-        return SignatureHit::fail(sig, &e);
+        return PatternHit::fail(sig, &e);
     }
 
-    SignatureHit {
+    PatternHit {
         name: display_name(sig.name),
         module: mc.name.clone(),
         resolve: kind_name(sig.resolve),
         pattern: sig.needle.to_string(),
         prototype: opt_proto(sig.name, sig.prototype),
-        ida_tutorial: tutorials::for_signature(sig),
         bytes: capture_prologue(mc, res_rva),
         pattern_synth: synthesize_pattern(mc, res_rva),
         found: true,
@@ -486,7 +375,6 @@ fn scan_pattern(mc: &ModuleCache, sig: &Signature) -> SignatureHit {
         rva: Some(res_rva),
         va: Some(res_va),
         matches,
-        from_cache: false,
         error: None,
     }
 }
@@ -518,7 +406,7 @@ fn capture_prologue(mc: &ModuleCache, rva: u64) -> Option<String> {
 
 fn resolve(
     mc: &ModuleCache,
-    sig: &Signature,
+    sig: &Pattern,
     match_rva: u32,
     match_va: u64,
 ) -> (u64, u64, Option<String>) {
@@ -537,137 +425,6 @@ fn resolve(
             let target_rva = (target_va - mc.base as i64) as u64;
             (target_rva, target_va as u64, None)
         }
-        ResolveKind::StringRef => unreachable!(),
-    }
-}
-
-// ---------------------------------------------------------------------------
-// String-ref resolution
-// ---------------------------------------------------------------------------
-
-fn scan_string_ref(mc: &ModuleCache, sig: &Signature) -> SignatureHit {
-    let Some(rdata) = mc.rdata() else {
-        return SignatureHit::fail(sig, ".rdata not present");
-    };
-
-    // C string with trailing NUL, lone occurrences only
-    let needle_bytes: Vec<u8> = {
-        let mut v = sig.needle.as_bytes().to_vec();
-        v.push(0);
-        v
-    };
-
-    let mut str_rvas: Vec<u32> = Vec::new();
-    let mask: Vec<bool> = vec![true; needle_bytes.len()];
-    for off in find_all_pattern(rdata, &needle_bytes, &mask) {
-        // ensure it's a real string start (preceded by NUL or at section start)
-        let preceded_ok = off == 0 || rdata[off - 1] == 0;
-        if preceded_ok {
-            str_rvas.push(mc.rdata_rva + off as u32);
-        }
-    }
-    if str_rvas.is_empty() {
-        return SignatureHit::fail(sig, "string not in .rdata");
-    }
-
-    let text = mc.text();
-    for str_rva in &str_rvas {
-        let str_rva = *str_rva;
-
-        // Search for a `48 8D ?5 disp32` (LEA rcx/rdx/r8/r9/...) that
-        // points to this string, then walk back to function start.
-        if let Some(hit) = find_lea_ref(text, mc.text_rva, str_rva)
-            && let Some(fn_rva) = find_function_start(text, mc.text_rva, hit)
-        {
-            let match_va = mc.base + hit as u64;
-            let fn_va = mc.base + fn_rva as u64 + sig.extra_off as u64;
-            return SignatureHit {
-                name: display_name(sig.name),
-                module: mc.name.clone(),
-                resolve: kind_name(sig.resolve),
-                pattern: format!("\"{}\"", sig.needle),
-                prototype: opt_proto(sig.name, sig.prototype),
-                ida_tutorial: tutorials::for_signature(sig),
-                bytes: capture_prologue(mc, fn_rva as u64),
-                pattern_synth: synthesize_pattern(mc, fn_rva as u64),
-                found: true,
-                match_rva: Some(hit as u64),
-                match_va: Some(match_va),
-                rva: Some(fn_rva as u64),
-                va: Some(fn_va),
-                matches: default_match_count(),
-                from_cache: false,
-                error: None,
-            };
-        }
-    }
-
-    SignatureHit::fail(sig, "no .text ref near a function start")
-}
-
-/// Scan `.text` for `48 8D _5 disp32` (LEA rax/rcx/rdx/rbx/rsp/rbp/rsi/rdi
-/// RIP-rel) or `4C 8D _5 disp32` (LEA r8..r15) whose disp32 targets `str_rva`.
-/// Returns the RVA of the instruction start on success.
-fn find_lea_ref(text: &[u8], text_rva: u32, str_rva: u32) -> Option<u32> {
-    if text.len() < 7 {
-        return None;
-    }
-    let mut i = 0usize;
-    let end = text.len() - 7;
-    while i <= end {
-        let rex = text[i];
-        // 0x48..0x4F with bit 3 (W) set = REX.W prefix used by LEA r64
-        if (rex & 0xF0) == 0x40 && (rex & 0x08) != 0 && text[i + 1] == 0x8D {
-            let modrm = text[i + 2];
-            // mod=00, rm=101 => RIP-relative
-            if (modrm & 0xC7) == 0x05 {
-                let disp = i32::from_le_bytes(text[i + 3..i + 7].try_into().unwrap()) as i64;
-                let instr_rva = text_rva as i64 + i as i64;
-                let target = instr_rva + 7 + disp;
-                if target as u32 == str_rva {
-                    return Some((text_rva as u64 + i as u64) as u32);
-                }
-            }
-        }
-        i += 1;
-    }
-    None
-}
-
-/// Walk backwards from `instr_rva` (RVA inside `.text`) looking for the end
-/// of the previous function — a run of `0xCC` (int3) padding.  The byte
-/// immediately after is the prologue of the enclosing function.
-fn find_function_start(text: &[u8], text_rva: u32, instr_rva: u32) -> Option<u32> {
-    let mut i = (instr_rva - text_rva) as isize;
-    let min = i.saturating_sub(0x4000);
-    let mut run = 0usize;
-    while i >= min && i > 0 {
-        let b = text[i as usize - 1];
-        if b == 0xCC {
-            run += 1;
-            if run >= 1 {
-                // Peek forward past padding for a recognisable prologue start.
-                let start = i as usize;
-                if start < text.len() && is_prologue(&text[start..]) {
-                    return Some(text_rva + start as u32);
-                }
-            }
-        } else {
-            run = 0;
-        }
-        i -= 1;
-    }
-    None
-}
-
-fn is_prologue(b: &[u8]) -> bool {
-    if b.is_empty() {
-        return false;
-    }
-    // Common x64 CS2 prologues
-    match b[0] {
-        0x40 | 0x41 | 0x48 | 0x4C | 0x55 | 0x53 | 0x56 | 0x57 => true,
-        _ => false,
     }
 }
 
@@ -680,20 +437,18 @@ fn kind_name(k: ResolveKind) -> &'static str {
         ResolveKind::None => "raw",
         ResolveKind::Rel32 { .. } => "rel32",
         ResolveKind::RipRel { .. } => "riprel",
-        ResolveKind::StringRef => "stringref",
     }
 }
 
-impl SignatureHit {
-    fn fail(sig: &Signature, err: &str) -> Self {
+impl PatternHit {
+    fn fail(sig: &Pattern, err: &str) -> Self {
         Self {
             name: display_name(sig.name),
             module: sig.module.to_string(),
             resolve: kind_name(sig.resolve),
             pattern: sig.needle.to_string(),
             prototype: opt_proto(sig.name, sig.prototype),
-            ida_tutorial: tutorials::for_signature(sig),
-            bytes: None,
+                bytes: None,
             pattern_synth: None,
             found: false,
             match_rva: None,
@@ -701,8 +456,7 @@ impl SignatureHit {
             rva: None,
             va: None,
             matches: 0,
-            from_cache: false,
-            error: Some(err.to_string()),
+                error: Some(err.to_string()),
         }
     }
 }

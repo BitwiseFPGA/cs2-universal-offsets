@@ -1,121 +1,47 @@
-use std::collections::{BTreeMap, BTreeSet};
-use std::fmt::{self, Write};
+﻿use std::collections::{BTreeMap, BTreeSet};
 use std::fs;
 use std::path::Path;
 
 use anyhow::Result;
-
-use chrono::{DateTime, Utc};
-
-
-use formatter::Formatter;
+use chrono::Utc;
 
 use crate::analysis::*;
 
 mod buttons;
-mod formatter;
 
-// SDK-style emitters — every disk output the dumper produces is now
-// expressed in typed, cheat-developer-friendly form.
 pub mod amalgamation;
 pub mod entity_system;
 pub mod ident;
 pub mod interface_classes;
-pub mod interfaces_sdk;
 pub mod netvars;
 pub mod protobufs;
 pub mod sdk_classes;
 pub mod verified;
-pub mod vtables;
 
-enum Item<'a> {
-    Buttons(&'a ButtonMap),
-}
+/// Emit the C++ SDK outputs:
+///   <out>/macros.hpp                  SCHEMA_FIELD macros
+///   <out>/schemas/<module>_dll.hpp    typed schema classes per module
+///   <out>/netvars.{json,hpp}          split networked fields
+///   <out>/interfaces/                 (interfaces.hpp written by caller)
+///   <out>/impl/entity_system.hpp      entity system helpers
+///   <out>/cs2.hpp                     single-include amalgamation
+///   <out>/verified_features.json      hand-curated catalogue
+pub fn dump_sdk_extras(
+    out_dir: &Path,
+    result: &AnalysisResult,
+    build_number: Option<u32>,
+) -> Result<()> {
+    let schemas_dir = out_dir.join("schemas");
+    fs::create_dir_all(out_dir)?;
+    fs::create_dir_all(&schemas_dir)?;
 
-impl<'a> Item<'a> {
-    fn write(&self, fmt: &mut Formatter<'a>, file_type: &str) -> fmt::Result {
-        match file_type {
-            "cs" => self.write_cs(fmt),
-            "hpp" => self.write_hpp(fmt),
-            "json" => self.write_json(fmt),
-            "rs" => self.write_rs(fmt),
-            "zig" => self.write_zig(fmt),
-            _ => unimplemented!(),
-        }
-    }
-}
+    let ts = Utc::now().to_rfc3339();
 
-trait CodeWriter {
-    fn write_cs(&self, fmt: &mut Formatter<'_>) -> fmt::Result;
-    fn write_hpp(&self, fmt: &mut Formatter<'_>) -> fmt::Result;
-    fn write_json(&self, fmt: &mut Formatter<'_>) -> fmt::Result;
-    fn write_rs(&self, fmt: &mut Formatter<'_>) -> fmt::Result;
-    fn write_zig(&self, fmt: &mut Formatter<'_>) -> fmt::Result;
-}
-
-impl<'a> CodeWriter for Item<'a> {
-    fn write_cs(&self, fmt: &mut Formatter<'_>) -> fmt::Result {
-        match self { Item::Buttons(b) => b.write_cs(fmt) }
-    }
-    fn write_hpp(&self, fmt: &mut Formatter<'_>) -> fmt::Result {
-        match self { Item::Buttons(b) => b.write_hpp(fmt) }
-    }
-    fn write_json(&self, fmt: &mut Formatter<'_>) -> fmt::Result {
-        match self { Item::Buttons(b) => b.write_json(fmt) }
-    }
-    fn write_rs(&self, fmt: &mut Formatter<'_>) -> fmt::Result {
-        match self { Item::Buttons(b) => b.write_rs(fmt) }
-    }
-    fn write_zig(&self, fmt: &mut Formatter<'_>) -> fmt::Result {
-        match self { Item::Buttons(b) => b.write_zig(fmt) }
-    }
-}
-
-pub struct Output<'a> {
-    out_dir: &'a Path,
-    schemas_dir: &'a Path,
-    result: &'a AnalysisResult,
-    timestamp: DateTime<Utc>,
-}
-
-impl<'a> Output<'a> {
-    pub fn new(
-        out_dir: &'a Path,
-        schemas_dir: &'a Path,
-        result: &'a AnalysisResult,
-    ) -> Result<Self> {
-        fs::create_dir_all(&out_dir)?;
-        fs::create_dir_all(&schemas_dir)?;
-
-        Ok(Self {
-            out_dir,
-            schemas_dir,
-            result,
-            timestamp: Utc::now(),
-        })
-    }
-
-    /// Emit the cheat-developer-friendly SDK files. Root-level outputs go
-    /// into `out_dir`; per-module schema headers go into `schemas_dir`.
-    ///
-    ///   <out>/macros.hpp                  SCHEMA_FIELD macros
-    ///   <out>/interfaces.hpp              typed accessor stubs
-    ///   <out>/entity_system.hpp           entity system helpers
-    ///   <out>/netvars.{json,hpp}          split networked fields
-    ///   <out>/cs2.hpp                     single-include amalgamation
-    ///   <out>/verified_features.{json,hpp}  verified-working catalogue
-    ///   <out>/schemas/<module>_dll.hpp    typed schema classes per module
-    ///
-    /// `build_number` is pinned into every emitted file as `CS2_BUILD`.
-    pub fn dump_sdk_extras(&self, build_number: Option<u32>) -> Result<()> {
-        let ts = self.timestamp.to_rfc3339();
-
-        // 1. shared SCHEMA_FIELD macros
-        // Render module headers first so we can iterate and write them below
-        let module_data = sdk_classes::render_module_headers(&self.result.schemas, &self.result.buttons, build_number, &ts);
+    // 1. shared SCHEMA_FIELD macros + per-module schema headers
+    let module_data = sdk_classes::render_module_headers(&result.schemas, &result.buttons, build_number, &ts);
 
         // Render base macros (includes a rich set of global forward-decls / minimal types)
-        let macros_path = self.out_dir.join("macros.hpp");
+        let macros_path = out_dir.join("macros.hpp");
         let mut macros = sdk_classes::render_macros_header();
 
         // Scan all module bodies for cross-module ::sdk::NAMESPACE::Type references
@@ -260,69 +186,45 @@ impl<'a> Output<'a> {
         for (file_name, body) in module_data {
             let is_empty = !body.contains("class ") && !body.contains("enum class ");
             if is_empty { continue; }
-            fs::write(self.schemas_dir.join(&file_name), body)?;
+            fs::write(schemas_dir.join(&file_name), body)?;
             if let Some(stem) = file_name.strip_suffix(".hpp") {
                 module_stems.push(stem.to_string());
             }
         }
 
         // 3. netvars (split from schema). Only emit if non-empty.
-        let nvs = netvars::extract(&self.result.schemas);
+        let nvs = netvars::extract(&result.schemas);
         if !nvs.is_empty() {
-            fs::write(self.out_dir.join("netvars.json"), netvars::render_json(&nvs))?;
-            fs::write(self.out_dir.join("netvars.hpp"), netvars::render_hpp(&nvs, build_number))?;
+            fs::write(out_dir.join("netvars.json"), netvars::render_json(&nvs))?;
+            fs::write(out_dir.join("netvars.hpp"), netvars::render_hpp(&nvs, build_number))?;
         }
 
-        // 4. interface accessor stubs
-        fs::write(
-            self.out_dir.join("interfaces.hpp"),
-            interfaces_sdk::render_hpp(&self.result.interfaces, build_number),
-        )?;
+        // 4. interfaces directory is created here; the combined header is written
+        //    by main.rs after the vtable analysis stage produces the class list.
+        fs::create_dir_all(out_dir.join("interfaces"))?;
 
         // 4b. entity system helpers — an implementation header (real code that
         //     uses the SDK), kept under impl/ to separate it from pure SDK data.
-        let impl_dir = self.out_dir.join("impl");
+        let impl_dir = out_dir.join("impl");
         fs::create_dir_all(&impl_dir)?;
         fs::write(
             impl_dir.join("entity_system.hpp"),
-            entity_system::render_hpp(&self.result.offsets, build_number, &self.result.schemas),
+            entity_system::render_hpp(&result.offsets, build_number, &result.schemas),
         )?;
 
-        // 5. amalgamation — reorder by schemas/module_order.txt if present.
-        let mut ordered_stems = module_stems.clone();
-        if let Ok(txt) = std::fs::read_to_string(self.schemas_dir.join("module_order.txt")) {
-            let mut idx_map: std::collections::BTreeMap<String, usize> = std::collections::BTreeMap::new();
-            for line in txt.lines() {
-                if let Some((idxs, name)) = line.split_once(':') {
-                    if let Ok(idx) = idxs.parse::<usize>() {
-                        let stem = name.trim().trim_end_matches(".dll").to_string();
-                        idx_map.insert(stem, idx);
-                    }
-                }
-            }
-            if !idx_map.is_empty() {
-                ordered_stems.sort_by_key(|m| idx_map.get(m).cloned().unwrap_or(usize::MAX));
-            }
-        }
-
+        // 5. amalgamation
         fs::write(
-            self.out_dir.join("cs2.hpp"),
-            amalgamation::render_hpp(&ordered_stems, build_number),
+            out_dir.join("cs2.hpp"),
+            amalgamation::render_hpp(&module_stems, build_number),
         )?;
 
-        // 6. verified-working features catalogue (json + hpp only, no markdown).
+        // 6. verified-working features catalogue (json only).
         fs::write(
-            self.out_dir.join("verified_features.json"),
+            out_dir.join("verified_features.json"),
             verified::render_json(build_number),
         )?;
-        fs::write(
-            self.out_dir.join("verified_features.hpp"),
-            verified::render_hpp(build_number),
-        )?;
 
-        Ok(())
-    }
-
+    Ok(())
 }
 
 /// Modules excluded from the runtime amalgamation (editor/tool only). Kept in
@@ -498,115 +400,9 @@ fn extract_type_idents(
     }
 }
 
-/// Free-standing emitter for the `buttons` table.
-///
-/// Writes `<out_dir>/buttons.hpp` and `<out_dir>/buttons.json`.
-/// Repo policy is C++-only output — .rs / .zig / .cs variants are
-/// no longer emitted (the buttons enum also lives inside
-/// `client_dll.hpp` for the typed-SDK consumers).
-pub fn write_buttons(
-    out_dir: &Path,
-    buttons: &ButtonMap,
-    _file_types: &[String],
-) -> Result<()> {
+pub fn write_buttons(out_dir: &Path, buttons: &ButtonMap) -> Result<()> {
     fs::create_dir_all(out_dir)?;
-    let item = Item::Buttons(buttons);
-    let timestamp = Utc::now().to_rfc3339();
-    for file_type in ["hpp", "json"] {
-        let mut out = String::new();
-        let mut fmt = Formatter::new(&mut out, 4);
-        if file_type != "json" {
-            writeln!(
-                fmt,
-                "// Generated by cs2-sdk v{} — https://cs2-sdk.com",
-                env!("CARGO_PKG_VERSION")
-            )?;
-            writeln!(fmt, "// {}\n", timestamp)?;
-        }
-        item.write(&mut fmt, file_type)?;
-        fs::write(out_dir.join(format!("buttons.{}", file_type)), out)?;
-    }
+    fs::write(out_dir.join("buttons.hpp"),  buttons::render_hpp(buttons))?;
+    fs::write(out_dir.join("buttons.json"), buttons::render_json(buttons))?;
     Ok(())
-}
-
-#[inline]
-fn zig_ident(input: &str) -> String {
-    if is_zig_identifier(input) && !is_zig_keyword(input) {
-        input.to_string()
-    } else {
-        let escaped = input.replace('\\', "\\\\").replace('"', "\\\"");
-
-        format!("@\"{}\"", escaped)
-    }
-}
-
-#[inline]
-fn is_zig_identifier(input: &str) -> bool {
-    let mut chars = input.chars();
-
-    match chars.next() {
-        Some(c) if c == '_' || c.is_ascii_alphabetic() => {}
-        _ => return false,
-    }
-
-    chars.all(|c| c == '_' || c.is_ascii_alphanumeric())
-}
-
-#[inline]
-fn is_zig_keyword(input: &str) -> bool {
-    matches!(
-        input,
-        "addrspace"
-            | "align"
-            | "allowzero"
-            | "and"
-            | "anyframe"
-            | "anytype"
-            | "asm"
-            | "async"
-            | "await"
-            | "break"
-            | "callconv"
-            | "catch"
-            | "comptime"
-            | "const"
-            | "continue"
-            | "defer"
-            | "else"
-            | "enum"
-            | "errdefer"
-            | "error"
-            | "export"
-            | "extern"
-            | "false"
-            | "fn"
-            | "for"
-            | "if"
-            | "inline"
-            | "linksection"
-            | "noalias"
-            | "noinline"
-            | "nosuspend"
-            | "null"
-            | "opaque"
-            | "or"
-            | "orelse"
-            | "packed"
-            | "pub"
-            | "resume"
-            | "return"
-            | "struct"
-            | "suspend"
-            | "switch"
-            | "test"
-            | "threadlocal"
-            | "true"
-            | "try"
-            | "union"
-            | "unreachable"
-            | "usingnamespace"
-            | "var"
-            | "volatile"
-            | "while"
-    )
 }

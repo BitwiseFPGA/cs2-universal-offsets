@@ -1,16 +1,16 @@
-//! Verified working features — hand-curated catalogue of offsets, hooks
+﻿//! Verified working features — hand-curated catalogue of offsets, hooks
 //! and ConVar tricks that have been **confirmed working in a live CS2
 //! internal cheat** against the current build.
 //!
 //! Most of this data is already present in the auto-extracted offset
-//! / signature / schema files this tool produces. The point of this
+//! / Pattern / schema files this tool produces. The point of this
 //! module is to give consumers a single place that says, in plain
 //! English, *"yes, this offset on this entity does this exact thing,
 //! and here is the gotcha you need to know to make it work."*
 //!
 //! a2x's pelite-based pipeline gives us the canonical RVAs and schema
 //! offsets — that data is the source of truth and lives in the regular
-//! `offsets.*` / `client_dll.*` / `signatures.*` files. This catalogue
+//! `offsets.*` / `client_dll.*` / `patterns.*` files. This catalogue
 //! cross-references those values with verified live-engine notes so a
 //! cheat developer can copy-paste a feature and have it work first try.
 
@@ -43,7 +43,7 @@ pub struct VerifiedFeature {
     pub fields: &'static [VerifiedField],
     /// ConVar tricks (name + flags-to-strip + value-slot offset) — empty if N/A
     pub convars: &'static [VerifiedConVar],
-    /// Hooks installed (function + module + signature key in database.rs)
+    /// Hooks installed (function + module + Pattern key in database.rs)
     pub hooks: &'static [VerifiedHook],
 }
 
@@ -67,7 +67,7 @@ pub struct VerifiedHook {
     pub function: &'static str,
     /// e.g. "scenesystem.dll"
     pub module: &'static str,
-    /// signature database key (look up in src/signatures/database.rs)
+    /// Pattern database key (look up in src/patterns/database.rs)
     pub signature: &'static str,
     /// what we do once hooked
     pub action: &'static str,
@@ -117,7 +117,7 @@ pub static FEATURES: &[VerifiedFeature] = &[
                   TraceFilter → TraceCreate → TraceGetInfo → \
                   TraceHandleBulletPen) is the prerequisite for any \
                   visibility-aware feature: aimbot vis-check, triggerbot \
-                  shot prediction, autowall damage estimation. Signatures \
+                  shot prediction, autowall damage estimation. patterns \
                   are resolved in the database but the canonical wrapper \
                   prototypes are placeholders — they were not exhaustively \
                   reverse-engineered and the argument types are best-guess. \
@@ -184,7 +184,7 @@ pub static FEATURES: &[VerifiedFeature] = &[
         name: "FOV Changer",
         status: "working",
         summary: "Two-prong approach. (1) Hook GetWorldFov in client.dll \
-                  (signature SetWorldFov, E8-CALL @ +1) and return the \
+                  (Pattern SetWorldFov, E8-CALL @ +1) and return the \
                   desired value when the local pawn is not scoped — keeps \
                   the value sticky against engine resets. (2) Every tick \
                   write the desired FOV into m_iFOV and m_iFOVStart on the \
@@ -212,7 +212,7 @@ pub static FEATURES: &[VerifiedFeature] = &[
                   Target selection scores enemies on FOV delta, distance, \
                   visibility (engine trace) and weighting flags. Final angle \
                   delivery happens via a hooked CSGOInputHistoryEntry::\
-                  WriteSubtick (signature `48 89 5C 24 ? 55 57 41 56 48 8D \
+                  WriteSubtick (Pattern `48 89 5C 24 ? 55 57 41 56 48 8D \
                   6C 24 ? 48 81 EC B0 00 00 00 8B 01 48 8B F9 81 4A 10 00 \
                   02`, unique match @ 0x180C53DB0 in build 14152) so the \
                   override only touches per-subtick shoot angles \
@@ -451,66 +451,3 @@ pub fn render_json(build_number: Option<u32>) -> String {
 }
 
 
-pub fn render_hpp(build_number: Option<u32>) -> String {
-    let mut out = String::new();
-    out.push_str("// =====================================================================\n");
-    out.push_str("// verified_features.hpp — hand-curated working CS2 cheat features\n");
-    out.push_str("// =====================================================================\n");
-    out.push_str("//\n");
-    out.push_str("// Each entry is a known-good offset / hook / ConVar trick that has been\n");
-    out.push_str("// verified live against the current CS2 build. Constants are static\n");
-    out.push_str("// constexpr so they can be used at compile time.\n");
-    out.push_str("//\n");
-    if let Some(b) = build_number {
-        out.push_str(&format!("// CS2_BUILD: {}\n", b));
-    }
-    out.push_str("// =====================================================================\n\n");
-    out.push_str("#pragma once\n\n");
-    out.push_str("#include <cstdint>\n\n");
-    out.push_str("namespace verified\n{\n");
-
-    for f in FEATURES.iter() {
-        let ns = sanitize_ident(f.name);
-        out.push_str(&format!("    // ----- {} [{}] -----\n", f.name, f.status));
-        out.push_str(&format!("    namespace {}\n    {{\n", ns));
-        out.push_str(&format!("        constexpr const char* status = \"{}\";\n", f.status.replace('\\', "\\\\").replace('"', "\\\"")));
-        for fld in f.fields.iter() {
-            let cls = sanitize_ident(fld.class);
-            let fname = sanitize_ident(fld.field);
-            out.push_str(&format!(
-                "        constexpr std::ptrdiff_t {}__{} = 0x{:X}; // {} — {}\n",
-                cls, fname, fld.offset, fld.ty, fld.note,
-            ));
-        }
-        for c in f.convars.iter() {
-            let cn = sanitize_ident(c.name);
-            out.push_str(&format!(
-                "        constexpr uint32_t convar_{}__strip_flags = 0x{:X};\n",
-                cn, c.strip_flags,
-            ));
-            out.push_str(&format!(
-                "        constexpr bool     convar_{}__write_both  = {};\n",
-                cn, c.write_both_slots,
-            ));
-        }
-        out.push_str("    }\n\n");
-    }
-
-    out.push_str("} // namespace verified\n");
-    out
-}
-
-fn sanitize_ident(input: &str) -> String {
-    let mut s = String::with_capacity(input.len());
-    for c in input.chars() {
-        if c.is_ascii_alphanumeric() || c == '_' {
-            s.push(c);
-        } else {
-            s.push('_');
-        }
-    }
-    if s.chars().next().map(|c| c.is_ascii_digit()).unwrap_or(false) {
-        s.insert(0, '_');
-    }
-    s
-}

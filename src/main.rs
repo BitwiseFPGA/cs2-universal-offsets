@@ -1,6 +1,6 @@
-// cs2-universal-dumper
+﻿// cs2-universal-dumper
 // --------------------
-// Two passes, one binary: offsets dump + PE/section-aware signature scan.
+// Two passes, one binary: offsets dump + PE/section-aware Pattern scan.
 //
 // Output layout (flat root, single `schemas/` subdir for per-module headers):
 //
@@ -10,12 +10,12 @@
 //         interfaces.hpp             typed interface accessors
 //         entity_system.hpp          CGameEntitySystem helpers
 //         buttons.{hpp,json}         symbolic button table
-//         offsets.{hpp,json}         RIPREL signatures + dwXxx aliases
+//         offsets.{hpp,json}         RIPREL patterns + dwXxx aliases
 //         vtables.{hpp,json}         interface vtable layouts
 //         netvars.{hpp,json}         split networked-field offsets (optional)
 //         protobufs.{hpp,json}       libprotobuf message layouts
-//         signatures.{hpp,json}      resolved signature catalogue
-//         ida_tutorials.json         curated IDA walkthroughs per signature
+//         patterns.{hpp,json}      resolved Pattern catalogue
+//         ida_tutorials.json         curated IDA walkthroughs per Pattern
 //         verified_features.{hpp,json}  hand-curated working catalogue
 //         manifest.json              run metadata
 //         cs2-sdk.log                warn+ log
@@ -34,27 +34,22 @@ use memflow::prelude::v1::*;
 use serde_json::json;
 use simplelog::*;
 
-use output::Output;
-use signatures::SignatureCache;
 
 mod analysis;
 mod memory;
 mod output;
-mod signatures;
+mod patterns;
 mod source2;
 mod ui;
 
 #[derive(Debug, Parser)]
-#[command(author, version, about = "CS2 Universal Dumper — offsets + signatures in one run")]
+#[command(author, version, about = "CS2 Universal Dumper — offsets + patterns in one run")]
 struct Args {
     #[arg(short, long)]
     connector: Option<String>,
 
     #[arg(short = 'a', long)]
     connector_args: Option<String>,
-
-    #[arg(short, long, value_delimiter = ',', default_values = ["hpp", "json"])]
-    file_types: Vec<String>,
 
     #[arg(short, long, default_value_t = 4)]
     indent_size: usize,
@@ -74,21 +69,11 @@ struct Args {
     skip_offsets: bool,
 
     #[arg(long)]
-    skip_signatures: bool,
+    skip_patterns: bool,
 
     #[arg(long)]
     no_sound: bool,
 
-    /// Path to a previous `signatures.json` to use as a hot cache.  When
-    /// the cached `match_rva` still matches the recorded pattern bytes,
-    /// the entry is satisfied without a full module scan.  If omitted the
-    /// most recent session under `--output` is used automatically.
-    #[arg(long)]
-    cache: Option<PathBuf>,
-
-    /// Disable the automatic "use previous session as cache" behaviour.
-    #[arg(long)]
-    no_cache: bool,
 }
 
 fn main() -> Result<()> {
@@ -100,8 +85,12 @@ fn main() -> Result<()> {
 
     let now = Local::now();
     let out_dir = args.output.clone();
-    let schemas_dir = out_dir.join("schemas");
-    for d in [&out_dir, &schemas_dir] {
+    let schemas_dir  = out_dir.join("schemas");
+    let sig_dir      = out_dir.join("Patterns");
+    let off_dir      = out_dir.join("offsets");
+    let proto_dir    = out_dir.join("protobufs");
+    let ifc_dir      = out_dir.join("interfaces");
+    for d in [&out_dir, &schemas_dir, &sig_dir, &off_dir, &proto_dir, &ifc_dir] {
         fs::create_dir_all(d)
             .with_context(|| format!("failed to create {}", d.display()))?;
     }
@@ -112,9 +101,9 @@ fn main() -> Result<()> {
     ui::kv("Timestamp", &now.format("%Y-%m-%d %H:%M:%S").to_string());
     ui::kv("Output", &out_dir.display().to_string());
     ui::kv("Process", &args.process_name);
-    ui::kv("File types", &args.file_types.join(","));
+
     ui::kv("Offsets", if args.skip_offsets { "skipped" } else { "enabled" });
-    ui::kv("Signatures", if args.skip_signatures { "skipped" } else { "enabled" });
+    ui::kv("Patterns", if args.skip_patterns { "skipped" } else { "enabled" });
 
     ui::section("Attach");
     let mut os = build_os(&args)?;
@@ -152,8 +141,6 @@ fn main() -> Result<()> {
                     cc, ec, result.schemas.len()
                 ));
 
-                let out = Output::new(&out_dir, &schemas_dir, &result)?;
-
                 build_number = result
                     .offsets
                     .iter()
@@ -163,14 +150,10 @@ fn main() -> Result<()> {
                         process.read::<u32>(m.base + o).data_part().ok()
                     });
 
-                // Emit the cheat-developer-friendly SDK extras (typed schema
-                // classes, netvars split-out, interface accessor stubs,
-                // single-include amalgamation). Pure-additive � the original
-                // outputs above are untouched.
-                if let Err(e) = out.dump_sdk_extras(build_number) {
+                if let Err(e) = output::dump_sdk_extras(&out_dir, &result, build_number) {
                     ui::warn(&format!("sdk extras emitter failed: {}", e));
                 } else {
-                    ui::ok("sdk extras (classes, netvars, accessors, amalgamation) emitted");
+                    ui::ok("sdk extras emitted");
                 }
 
                 let total_vts: usize = result.vtables.values().map(|m| m.len()).sum();
@@ -193,7 +176,6 @@ fn main() -> Result<()> {
                     ));
                 }
 
-                drop(out);
                 analysis_result = Some(result);
             }
             Err(e) => {
@@ -203,79 +185,40 @@ fn main() -> Result<()> {
         }
     }
 
-    // --- stage 2: signatures ----------------------------------------------
+    // --- stage 2: patterns ----------------------------------------------
     let mut sigs_ok = true;
-    let mut sig_report: Option<signatures::SignatureReport> = None;
+    let mut sig_report: Option<patterns::PatternReport> = None;
 
-    if !args.skip_signatures {
-        ui::section("Signatures (PE/section aware)");
+    if !args.skip_patterns {
+        ui::section("Patterns (PE/section aware)");
         ui::sound(ui::Cue::Step);
 
-        // Build the warm-start cache.  Explicit `--cache` wins.
-        let cache_path = args.cache.clone();
-        let cache = match &cache_path {
-            Some(p) => match SignatureCache::load(p) {
-                Ok(c) => {
-                    if !c.is_empty() {
-                        ui::info(&format!("warm cache from {} ({} entries)", p.display(), c.len()));
-                    }
-                    c
-                }
-                Err(e) => {
-                    ui::warn(&format!("cache load failed ({}): {}", p.display(), e));
-                    SignatureCache::default()
-                }
-            },
-            None => SignatureCache::default(),
-        };
-
-        match signatures::scan_all_with_cache(
-            &mut process,
-            signatures::database::CS2_SIGNATURES,
-            &cache,
-        ) {
+        match patterns::scan_all(&mut process, patterns::database::CS2_PATTERNS) {
             Ok(report) => {
                 ui::ok(&format!(
-                    "{}/{} signatures resolved across {} module(s)",
+                    "{}/{} patterns resolved across {} module(s)",
                     report.found,
                     report.total,
                     report.modules.len()
                 ));
 
-                let json_path = out_dir.join("signatures.json");
-                fs::write(&json_path, format_found_signatures(&report))?;
-                ui::ok(&format!("wrote {}", json_path.display()));
+                fs::write(sig_dir.join("patterns.json"), format_found_patterns(&report))?;
+                fs::write(sig_dir.join("patterns.hpp"), patterns::writers::render_hpp(&report.hits))?;
+                ui::ok("wrote patterns/patterns.{hpp,json}");
 
-                fs::write(out_dir.join("signatures.hpp"), signatures::writers::render_hpp(&report.hits))?;
-                fs::write(
-                    out_dir.join("ida_tutorials.json"),
-                    signatures::tutorials::render_json(signatures::database::CS2_SIGNATURES),
-                )?;
-
-                // RIPREL signatures + a2x-style dwXxx aliases.
+                // RIPREL patterns + a2x-style dwXxx aliases + registered-interface RVAs.
                 let empty_offsets = analysis::OffsetMap::new();
-                let offset_map = analysis_result
-                    .as_ref()
-                    .map(|r| &r.offsets)
-                    .unwrap_or(&empty_offsets);
-                fs::write(
-                    out_dir.join("offsets.hpp"),
-                    signatures::offsets_writer::render_offsets_hpp(&report.hits, offset_map),
-                )?;
-                fs::write(
-                    out_dir.join("offsets.json"),
-                    signatures::offsets_writer::render_offsets_json(offset_map),
-                )?;
+                let empty_ifaces = analysis::InterfaceMap::new();
+                let offset_map = analysis_result.as_ref().map(|r| &r.offsets).unwrap_or(&empty_offsets);
+                let iface_map  = analysis_result.as_ref().map(|r| &r.interfaces).unwrap_or(&empty_ifaces);
+                fs::write(off_dir.join("offsets.hpp"), patterns::offsets_writer::render_offsets_hpp(&report.hits, offset_map, iface_map))?;
+                fs::write(off_dir.join("offsets.json"), patterns::offsets_writer::render_offsets_json(offset_map))?;
 
                 // buttons.{hpp,json}
                 if let Some(result) = analysis_result.as_ref()
                     && !result.buttons.is_empty()
                 {
-                    if let Err(e) = output::write_buttons(
-                        &out_dir,
-                        &result.buttons,
-                        &args.file_types,
-                    ) {
+                    if let Err(e) = output::write_buttons(&out_dir, &result.buttons) {
                         ui::warn(&format!("buttons emit failed: {}", e));
                     } else {
                         ui::ok(&format!(
@@ -285,71 +228,27 @@ fn main() -> Result<()> {
                     }
                 }
 
-                // Diff vs. previous session, if any.
-                if let Some(prev) = &cache_path
-                    && let Ok(diff) = signatures::diff::diff_against(prev, &report)
-                {
-                    let path = out_dir.join("diff.json");
-                    fs::write(&path, serde_json::to_string_pretty(&diff)?)?;
-                    let n = diff.added.len() + diff.removed.len() + diff.shifted.len();
-                    if n > 0 {
-                        ui::info(&format!(
-                            "diff vs previous: +{} -{} ~{} (pattern changes: {})",
-                            diff.added.len(),
-                            diff.removed.len(),
-                            diff.shifted.len(),
-                            diff.pattern_changed.len(),
-                        ));
-                    }
-                }
 
                 sig_report = Some(report);
             }
             Err(e) => {
                 sigs_ok = false;
-                ui::err(&format!("signatures pass failed: {}", e));
+                ui::err(&format!("patterns pass failed: {}", e));
             }
         }
     }
 
-    // --- stage 3: vtables emit (post-sigs so we can use sig hits as a
-    // method-name oracle: a vtable slot whose RVA matches a known
-    // signature is labelled with that signature's name).
+    // --- stage 3: combined interfaces.hpp (accessors + class wrappers)
     if let Some(result) = analysis_result.as_ref() {
         if !result.vtables.is_empty() {
-            let oracle = sig_report
-                .as_ref()
-                .map(|r| output::vtables::name_oracle_from_signatures(&r.hits))
-                .unwrap_or_default();
-            // vtables.hpp is no longer emitted: the slot indices now live inside
-            // the callable wrappers (interface_classes.hpp). vtables.json is kept
-            // as the data source for offline wrapper regeneration.
-            let json = output::vtables::render_json(&result.vtables, &oracle);
-            let _ = fs::write(out_dir.join("vtables.json"), json);
-
-            // Callable interface wrappers (ifc::<module>::<Class>). Built from
-            // the same vtable map + signature oracle so slot names line up with
-            // vtables.hpp.
-            let oracle_ref = &oracle;
-            let classes: Vec<output::interface_classes::IfaceClass> = result
+            // Registered interfaces — discovered via CreateInterface walk in analysis.
+            let mut classes: Vec<output::interface_classes::IfaceClass> = result
                 .vtables
                 .iter()
                 .flat_map(|(module, ifaces)| {
                     ifaces.iter().map(move |(iface, info)| {
-                        let methods = info
-                            .methods
-                            .iter()
-                            .enumerate()
-                            .map(|(idx, m)| {
-                                let name = oracle_ref
-                                    .get(&(m.module.clone(), m.rva))
-                                    .cloned()
-                                    .unwrap_or_else(|| format!("method_{idx}"));
-                                output::interface_classes::Method {
-                                    index: idx,
-                                    symbol: output::ident::sanitize_ident(&name),
-                                }
-                            })
+                        let methods = info.methods.iter().enumerate()
+                            .map(|(idx, _)| output::interface_classes::Method { index: idx })
                             .collect();
                         output::interface_classes::IfaceClass {
                             module: module.clone(),
@@ -361,20 +260,21 @@ fn main() -> Result<()> {
                     })
                 })
                 .collect();
+
+            // Vtable-only classes reached via `p*` patterns — discovered by
+            // RTTI-walking the singleton at each resolved pattern address.
+            if let Some(sig) = sig_report.as_ref() {
+                let discovered = analysis::manual_iface::discover(&mut process, sig);
+                classes.extend(discovered);
+            }
+
             let _ = fs::write(
-                out_dir.join("interface_classes.hpp"),
-                output::interface_classes::render_hpp(&classes, build_number),
+                ifc_dir.join("interfaces.hpp"),
+                output::interface_classes::render_hpp(&result.interfaces, &classes, build_number),
             );
-            let labelled = result
-                .vtables
-                .values()
-                .flat_map(|m| m.values())
-                .flat_map(|i| i.methods.iter())
-                .filter(|m| oracle.contains_key(&(m.module.clone(), m.rva)))
-                .count();
             ui::ok(&format!(
-                "vtables emitted (vtables.{{json,hpp}}) � {} slots labelled from signatures",
-                labelled
+                "interfaces emitted ({} classes)",
+                classes.len()
             ));
         }
     }
@@ -382,14 +282,14 @@ fn main() -> Result<()> {
     // --- stage 4: protobuf message layouts (offsets + has-bits from the
     // libprotobuf reflection tables — usercmd / netmessages etc.).
     // Run LAST: this pass `read_raw`s several large modules in full, which
-    // degrades memflow's later reads — doing it after the signature pass keeps
-    // signatures reading a clean process.
+    // degrades memflow's later reads — doing it after the Pattern pass keeps
+    // patterns reading a clean process.
     let protobufs = analysis::protobufs(&mut process).unwrap_or_default();
     if !protobufs.is_empty() {
         let hpp = output::protobufs::render_hpp(&protobufs, build_number);
         let json = output::protobufs::render_json(&protobufs);
-        let _ = fs::write(out_dir.join("protobufs.hpp"), hpp);
-        let _ = fs::write(out_dir.join("protobufs.json"), json);
+        let _ = fs::write(proto_dir.join("protobufs.hpp"), hpp);
+        let _ = fs::write(proto_dir.join("protobufs.json"), json);
         let total: usize = protobufs.values().map(|m| m.len()).sum();
         ui::ok(&format!(
             "protobufs emitted (protobufs.{{json,hpp}}) — {} messages",
@@ -398,7 +298,7 @@ fn main() -> Result<()> {
     }
 
     // --- manifest ----------------------------------------------------------
-    // Minimal: timestamp, process, build, success flags, signature counts,
+    // Minimal: timestamp, process, build, success flags, Pattern counts,
     // and just the names of the modules we attached to. Per-module
     // base/image/size/timestamp were removed — consumers that need a
     // build-fingerprint use `build_number` directly.
@@ -429,10 +329,10 @@ fn main() -> Result<()> {
     if !args.skip_offsets {
         ui::kv("Offsets", if offsets_ok { "ok" } else { "FAIL" });
     }
-    if !args.skip_signatures {
+    if !args.skip_patterns {
         match &sig_report {
-            Some(r) => ui::kv("Signatures", &format!("{} / {}", r.found, r.total)),
-            None => ui::kv("Signatures", "FAIL"),
+            Some(r) => ui::kv("Patterns", &format!("{} / {}", r.found, r.total)),
+            None => ui::kv("Patterns", "FAIL"),
         }
     }
     if let Some(bn) = build_number {
@@ -529,10 +429,10 @@ fn list_loaded_module_names<P: Process + MemoryView>(
         .collect()
 }
 
-/// Pretty-print only successfully-resolved signatures, one hit per line.
+/// Pretty-print only successfully-resolved patterns, one hit per line.
 /// Unfound entries are dropped entirely � they have no usable address.
-fn format_found_signatures(report: &signatures::SignatureReport) -> String {
-    let found: Vec<&signatures::SignatureHit> =
+fn format_found_patterns(report: &patterns::PatternReport) -> String {
+    let found: Vec<&patterns::PatternHit> =
         report.hits.iter().filter(|h| h.found).collect();
 
     let name_w = found.iter().map(|h| h.name.len()).max().unwrap_or(0);
@@ -570,7 +470,7 @@ fn format_found_signatures(report: &signatures::SignatureReport) -> String {
             .collect::<Vec<_>>()
             .join(", ")
     ));
-    s.push_str("  \"signatures\": [\n");
+    s.push_str("  \"patterns\": [\n");
     for (i, h) in found.iter().enumerate() {
         let comma = if i + 1 == found.len() { "" } else { "," };
         let va = h.va.map(|v| format!("0x{:X}", v)).unwrap_or_else(|| "null".into());

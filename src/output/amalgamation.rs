@@ -1,8 +1,8 @@
-//! Single-include amalgamation header(s).
+﻿//! Single-include amalgamation header(s).
 //!
 //! For internal cheats it's enormously useful to have one file you can
 //! `#include` (or one Rust module you can copy in) that pulls in
-//! offsets + interfaces + netvars + signatures + the SDK macros all at
+//! offsets + interfaces + netvars + patterns + the SDK macros all at
 //! once.
 //!
 //! This module emits `cs2.hpp` — the single-include C++ amalgamation.
@@ -73,14 +73,12 @@ pub fn render_hpp(sdk_modules: &[String], build_number: Option<u32>) -> String {
         s.push_str(&format!("#include \"schemas/{}.hpp\"\n", m));
     }
     s.push('\n');
-    s.push_str("#include \"offsets.hpp\"\n");
-    s.push_str("#include \"interfaces.hpp\"\n");
-    s.push_str("#include \"interface_classes.hpp\"\n");
+    s.push_str("#include \"offsets/offsets.hpp\"\n");
+    s.push_str("#include \"interfaces/interfaces.hpp\"\n");
     s.push_str("#include \"buttons.hpp\"\n");
-    s.push_str("#include \"protobufs.hpp\"\n");
-    s.push_str("#include \"signatures.hpp\"\n");
+    s.push_str("#include \"protobufs/protobufs.hpp\"\n");
+    s.push_str("#include \"patterns/patterns.hpp\"\n");
     s.push('\n');
-    s.push_str("// Implementation helpers (use the SDK above) — separated under impl/.\n");
     s.push_str("#include \"impl/entity_system.hpp\"\n");
     s
 }

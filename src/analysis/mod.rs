@@ -1,4 +1,4 @@
-//! Offset / interface / schema / button extraction pipeline.
+﻿//! Offset / interface / schema / button extraction pipeline.
 //!
 //! Ports the pelite-based scanners from [a2x's `cs2-dumper`] and exposes a
 //! single [`analyze_all`] entry point that the binary's main loop calls.
@@ -15,9 +15,10 @@ use memflow::prelude::v1::*;
 
 mod buttons;
 mod interfaces;
+pub mod manual_iface;
 mod offsets;
 mod protobufs;
-mod rtti;
+pub mod rtti;
 mod schemas;
 mod vtables;
 
@@ -74,8 +75,8 @@ pub fn analyze_all<P: Process + MemoryView>(process: &mut P) -> Result<AnalysisR
 
     // NOTE: the protobuf pass (`analysis::protobufs`) is intentionally NOT run
     // here. It `read_raw`s several large modules in full, which degrades memflow's
-    // subsequent reads and makes the later signature pass miss tail signatures.
-    // main.rs runs it as its own stage AFTER signatures so sigs read clean.
+    // subsequent reads and makes the later Pattern pass miss tail patterns.
+    // main.rs runs it as its own stage AFTER patterns so sigs read clean.
 
     // VTable walk depends on the resolved interface table; run it
     // inline rather than through `analyze` so we can pass `&interfaces`.

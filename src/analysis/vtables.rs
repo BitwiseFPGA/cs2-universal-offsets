@@ -1,4 +1,4 @@
-//! Per-interface vtable dumper.
+﻿//! Per-interface vtable dumper.
 //!
 //! For every entry in [`InterfaceMap`] we follow the instance pointer
 //! to the C++ vftable (the first qword of any polymorphic object) and
@@ -21,8 +21,8 @@
 //!
 //! We don't have PDBs, so most slots are emitted as `method_<N>`. As a
 //! bonus pass, callers can cross-reference each method RVA against the
-//! signature database — if a hit's resolved RVA matches a method RVA,
-//! the signature name is used in place of `method_<N>` (handled in the
+//! Pattern database — if a hit's resolved RVA matches a method RVA,
+//! the Pattern name is used in place of `method_<N>` (handled in the
 //! writer, not here, so this analyzer stays pure).
 
 use std::collections::BTreeMap;
@@ -46,7 +46,7 @@ pub struct VTableInfo {
     /// MSVC RTTI class name recovered from `vftable[-1]` -> COL ->
     /// TypeDescriptor.  `None` when the vtable doesn't carry RTTI
     /// (compiler thunks, `/GR-` builds) or when the COL fails our
-    /// signature/self-RVA sanity checks.
+    /// Pattern/self-RVA sanity checks.
     pub rtti_class: Option<String>,
     /// One entry per virtual method, in slot order. `module` is the DLL
     /// that hosts the method body; `rva` is its offset within that DLL.
@@ -54,10 +54,7 @@ pub struct VTableInfo {
 }
 
 #[derive(Debug, Clone)]
-pub struct VTableMethod {
-    pub module: String,
-    pub rva: u64,
-}
+pub struct VTableMethod;
 
 /// `module → interface_name → vtable_info`
 pub type VTableMap = BTreeMap<String, BTreeMap<String, VTableInfo>>;
@@ -92,8 +89,19 @@ pub fn vtables<P: Process + MemoryView>(
 
         let mut by_iface: BTreeMap<String, VTableInfo> = BTreeMap::new();
 
-        for (iface_name, iface_rva) in ifaces {
-            let inst_va = host.1 + *iface_rva as u64;
+        for (iface_name, entry) in ifaces {
+            // For mov-style factories we need to dereference to reach the
+            // actual singleton; for lea-style the resolved RVA already IS
+            // the singleton.
+            let inst_va = if entry.needs_deref {
+                let slot_va = host.1 + entry.rva as u64;
+                match process.read::<u64>(Address::from(slot_va)).data_part() {
+                    Ok(v) if v != 0 => v,
+                    _ => continue,
+                }
+            } else {
+                host.1 + entry.rva as u64
+            };
             match dump_one(process, inst_va, &modules) {
                 Ok(Some(info)) => {
                     debug!(
@@ -153,7 +161,7 @@ fn dump_one<P: MemoryView>(
     for chunk in raw.chunks_exact(8) {
         let p = u64::from_le_bytes(chunk.try_into().unwrap());
         match classify(p, modules) {
-            Some((m, rva)) => methods.push(VTableMethod { module: m, rva }),
+            Some(_) => methods.push(VTableMethod),
             None => break,
         }
     }

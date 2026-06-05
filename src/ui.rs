@@ -131,26 +131,9 @@ fn flush() {
 }
 
 pub fn banner() {
-    // The ascii is intentionally light + curved-feeling (lots of round 0/o).
-    let art = [
-        "",
-        "      ╭──────────────────────────────────────────────────────────────╮",
-        "      │                                                              │",
-        "      │     ██████╗ ███████╗██████╗      ███████╗██████╗ ██╗  ██╗    │",
-        "      │    ██╔════╝ ██╔════╝╚════██╗     ██╔════╝██╔══██╗██║ ██╔╝    │",
-        "      │    ██║      ███████╗ █████╔╝     ███████╗██║  ██║█████╔╝     │",
-        "      │    ██║      ╚════██║██╔═══╝      ╚════██║██║  ██║██╔═██╗     │",
-        "      │    ╚██████╗ ███████║███████╗     ███████║██████╔╝██║  ██╗    │",
-        "      │     ╚═════╝ ╚══════╝╚══════╝     ╚══════╝╚═════╝ ╚═╝  ╚═╝    │",
-        "      │                                                              │",
-        "      │       c s 2   u n i v e r s a l   d u m p e r   v 1 . 0      │",
-        "      │                                                              │",
-        "      ╰──────────────────────────────────────────────────────────────╯",
-        "",
-    ];
-    for l in art {
-        println!("{FG_CYAN}{l}{RESET}");
-    }
+    println!();
+    println!("    {FG_CYAN}{BOLD}cs2-sdk{RESET} {DIM}{FG_GRAY}— CS2 SDK generator{RESET}");
+    println!();
 }
 
 pub fn section(title: &str) {
@@ -175,10 +158,6 @@ pub fn kv(key: &str, value: &str) {
     println!(
         "    {FG_GRAY}{BULLET}{RESET} {FG_SOFT}{key:<18}{RESET} {FG_WHITE}{value}{RESET}"
     );
-}
-
-pub fn info(msg: &str) {
-    println!("    {FG_CYAN}{ARROW}{RESET} {FG_SOFT}{msg}{RESET}");
 }
 
 pub fn ok(msg: &str) {

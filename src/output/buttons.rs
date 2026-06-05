@@ -1,79 +1,18 @@
 use std::collections::BTreeMap;
-use std::fmt::{self, Write};
 
-use super::{ButtonMap, CodeWriter, Formatter, zig_ident};
+use super::ButtonMap;
 
-impl CodeWriter for ButtonMap {
-    fn write_cs(&self, fmt: &mut Formatter<'_>) -> fmt::Result {
-        fmt.block("namespace CS2Dumper", false, |fmt| {
-            writeln!(fmt, "// Module: client.dll")?;
-
-            fmt.block("public static class Buttons", false, |fmt| {
-                for (name, value) in self {
-                    writeln!(fmt, "public const nint {} = {:#X};", name, value)?;
-                }
-
-                Ok(())
-            })
-        })
+pub fn render_hpp(buttons: &ButtonMap) -> String {
+    let mut s = String::from("#pragma once\n\n#include <cstddef>\n#include <cstdint>\n\nnamespace button {\n");
+    for (name, value) in buttons {
+        s.push_str(&format!("    constexpr std::ptrdiff_t {} = {:#X};\n", name, value));
     }
+    s.push_str("}\n");
+    s
+}
 
-    fn write_hpp(&self, fmt: &mut Formatter<'_>) -> fmt::Result {
-        writeln!(fmt, "#pragma once\n")?;
-        writeln!(fmt, "#include <cstddef>")?;
-        writeln!(fmt, "#include <cstdint>\n")?;
-
-        fmt.block("namespace button", false, |fmt| {
-            for (name, value) in self {
-                writeln!(fmt, "constexpr std::ptrdiff_t {} = {:#X};", name, value)?;
-            }
-            Ok(())
-        })
-    }
-
-    fn write_json(&self, fmt: &mut Formatter<'_>) -> fmt::Result {
-        let content = {
-            let buttons: BTreeMap<_, _> = self.iter().map(|(name, value)| (name, value)).collect();
-
-            BTreeMap::from_iter([("client.dll", buttons)])
-        };
-
-        fmt.write_str(&serde_json::to_string_pretty(&content).unwrap())
-    }
-
-    fn write_rs(&self, fmt: &mut Formatter<'_>) -> fmt::Result {
-        writeln!(fmt, "#![allow(non_upper_case_globals, unused)]\n")?;
-
-        fmt.block("pub mod cs2_dumper", false, |fmt| {
-            writeln!(fmt, "// Module: client.dll")?;
-
-            fmt.block("pub mod buttons", false, |fmt| {
-                for (name, value) in self {
-                    let mut name = name.clone();
-
-                    if name == "use" {
-                        name = format!("r#{}", name);
-                    }
-
-                    writeln!(fmt, "pub const {}: usize = {:#X};", name, value)?;
-                }
-
-                Ok(())
-            })
-        })
-    }
-
-    fn write_zig(&self, fmt: &mut Formatter<'_>) -> fmt::Result {
-        fmt.block("pub const cs2_dumper = struct", true, |fmt| {
-            writeln!(fmt, "// Module: client.dll")?;
-
-            fmt.block("pub const buttons = struct", true, |fmt| {
-                for (name, value) in self {
-                    writeln!(fmt, "pub const {}: usize = {:#X};", zig_ident(name), value)?;
-                }
-
-                Ok(())
-            })
-        })
-    }
+pub fn render_json(buttons: &ButtonMap) -> String {
+    let map: BTreeMap<_, _> = buttons.iter().collect();
+    let content = BTreeMap::from([("client.dll", map)]);
+    serde_json::to_string_pretty(&content).unwrap_or_else(|_| "{}".into())
 }
