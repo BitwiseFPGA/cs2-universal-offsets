@@ -6749,62 +6749,6 @@ namespace ifc {
         };
     } // namespace v8system
 
-    namespace vconcomm {
-        // CVConComm (iface: VConComm001) | 50 methods
-        struct CVConComm {
-            virtual void method_0() = 0;
-            virtual void method_1() = 0;
-            virtual void method_2() = 0;
-            virtual void method_3() = 0;
-            virtual void method_4() = 0;
-            virtual void method_5() = 0;
-            virtual void method_6() = 0;
-            virtual void method_7() = 0;
-            virtual void method_8() = 0;
-            virtual void method_9() = 0;
-            virtual void method_10() = 0;
-            virtual void method_11() = 0;
-            virtual void method_12() = 0;
-            virtual void method_13() = 0;
-            virtual void method_14() = 0;
-            virtual void method_15() = 0;
-            virtual void method_16() = 0;
-            virtual void method_17() = 0;
-            virtual void method_18() = 0;
-            virtual void method_19() = 0;
-            virtual void method_20() = 0;
-            virtual void method_21() = 0;
-            virtual void method_22() = 0;
-            virtual void method_23() = 0;
-            virtual void method_24() = 0;
-            virtual void method_25() = 0;
-            virtual void method_26() = 0;
-            virtual void method_27() = 0;
-            virtual void method_28() = 0;
-            virtual void method_29() = 0;
-            virtual void method_30() = 0;
-            virtual void method_31() = 0;
-            virtual void method_32() = 0;
-            virtual void method_33() = 0;
-            virtual void method_34() = 0;
-            virtual void method_35() = 0;
-            virtual void method_36() = 0;
-            virtual void method_37() = 0;
-            virtual void method_38() = 0;
-            virtual void method_39() = 0;
-            virtual void method_40() = 0;
-            virtual void method_41() = 0;
-            virtual void method_42() = 0;
-            virtual void method_43() = 0;
-            virtual void method_44() = 0;
-            virtual void method_45() = 0;
-            virtual void method_46() = 0;
-            virtual void method_47() = 0;
-            virtual void method_48() = 0;
-            virtual void method_49() = 0;
-        };
-    } // namespace vconcomm
-
     namespace vphysics2 {
         // CVPhysics2Interface (iface: VPhysics2_Interface_001) | 169 methods
         struct CVPhysics2Interface {

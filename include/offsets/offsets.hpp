@@ -250,9 +250,6 @@ namespace offsets {
     namespace v8system {
         constexpr std::ptrdiff_t Source2V8System001 = 0x31730;
     }
-    namespace vconcomm {
-        constexpr std::ptrdiff_t VConComm001 = 0x395C0;
-    }
     namespace vphysics2 {
         constexpr std::ptrdiff_t VPhysics2_Interface_001 = 0x40DDA0;
     }

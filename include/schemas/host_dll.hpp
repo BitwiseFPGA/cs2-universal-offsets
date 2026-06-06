@@ -3,7 +3,7 @@
 // module:        host.dll
 // classes:       2
 // enums:         0
-// generated_at:  2026-06-05T23:20:39.166779600+00:00
+// generated_at:  2026-06-06T15:16:52.412291800+00:00
 //
 // Use:
 //   auto* pawn = reinterpret_cast<C_CSPlayerPawn*>(addr);
